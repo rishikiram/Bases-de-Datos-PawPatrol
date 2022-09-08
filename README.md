@@ -1,2 +1,2 @@
-# Bases_de_Datos_PawPatrol
+# Bases-de-Datos-PawPatrol
 Repo para nuestro equipo de Bases de datos, 2022 otoño
