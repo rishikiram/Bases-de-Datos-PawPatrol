@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class Planta extends Entidad{
 
     int llave;
@@ -19,6 +21,18 @@ public class Planta extends Entidad{
         luz = Luz;
         fechaGerminacion = FechaGerminacion;
         riegaFrequencia = RiegaFrequencia;
+    }
+    public Planta(ArrayList<String> atributos) {
+        llave = Integer.parseInt(atributos.get(0));
+        precio = Integer.parseInt(atributos.get(1));
+        cantidad = Integer.parseInt(atributos.get(2));
+        nombre = atributos.get(3);
+        genero = atributos.get(4);
+        cuidados = atributos.get(5);
+        sustrato = atributos.get(6);
+        luz = atributos.get(7);
+        fechaGerminacion = atributos.get(8);
+        riegaFrequencia = atributos.get(9);
     }
     
 

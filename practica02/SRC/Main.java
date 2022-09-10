@@ -1,12 +1,18 @@
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Main {
-    public static void main(String... args){
-        Tabla viveros = new Tabla(new File("./archivos/viveros.csv"));
-        Tabla empleados = new Tabla(new File("./archivos/empleados.csv"));
-        Tabla plantas = new Tabla(new File("./archivos/plantas.csv"));
+    public static void main(String... args) {
+        try {
+            Tabla viveros = new Tabla(new File("./archivos/viveros.csv"), "vivero");
+            Tabla empleados = new Tabla(new File("./archivos/empleados.csv"), "empleado");
+            Tabla plantas = new Tabla(new File("./archivos/plantas.csv"), "planta");
+        } catch( IOException io) {
+            //PARA HACER
+        }
+
 
     }
 

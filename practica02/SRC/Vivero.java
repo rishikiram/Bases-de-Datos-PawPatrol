@@ -14,6 +14,13 @@ public class Vivero extends Entidad{
     telefonos = Telefonos;
     fechaApertura = FechaApertura;
   }
+  public Vivero(ArrayList<String> atributos) {
+    llave = Integer.parseInt(atributos.get(0));
+    nombre = atributos.get(1);
+    direccion = Main.stringToArrayList(atributos.get(2));
+    telefonos = Main.stringToArrayList(atributos.get(3));
+    fechaApertura = atributos.get(4);
+  }
 
   public static String[] atributos;
 
