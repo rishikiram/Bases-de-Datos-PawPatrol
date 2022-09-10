@@ -1,4 +1,11 @@
 public class Planta{
+
+    int llave;
+    String nombre, genero, cuidados, sustrato, luz, fechaGerminacion, riegaFrequencia;
+    int precio, cantidad;
+    String trabajaVivero;
+
+
     public Planta (int Llave, int Precio, int Cantidad, String Nombre,
                    String Genero, String Cuidados, String Sustrato, String Luz,
                    String FechaGerminacion, String RiegaFrequencia) {
@@ -13,9 +20,7 @@ public class Planta{
         fechaGerminacion = FechaGerminacion;
         riegaFrequencia = RiegaFrequencia;
     }
-    int llave;
-    String nombre, genero, cuidados, sustrato, luz, fechaGerminacion, riegaFrequencia;
-    int precio, cantidad;
+    
 
     public static String[] atributos ={"precio", "cantidad",
             "nombre", "genero", "cuidados", "sustrato",

@@ -15,7 +15,6 @@ public class Main {
         return rstr.toString();
     }
     public static ArrayList<String> stringToArrayList(String str) {
-
         ArrayList<String> arr = new ArrayList<>();
         arr.addAll(Arrays.asList(str.split("/s[-]/s")));
         return arr;
