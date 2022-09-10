@@ -1,10 +1,16 @@
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Main {
-    public static void main(String... args) {
+    public static void main(String... args){
+        Tabla viveros = new Tabla(new File("./archivos/viveros.csv"));
+        Tabla empleados = new Tabla(new File("./archivos/empleados.csv"));
+        Tabla plantas = new Tabla(new File("./archivos/plantas.csv"));
 
     }
+
+
     public static String arrayListToString(ArrayList<String> arr) {
         StringBuilder rstr = new StringBuilder();
         for (String s: arr) {

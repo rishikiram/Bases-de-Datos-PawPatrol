@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class Vivero {
+public class Vivero extends Entidad{
   int llave;
   String nombre;
   ArrayList<String> direccion;

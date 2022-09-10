@@ -1,4 +1,4 @@
-public class Planta{
+public class Planta extends Entidad{
 
     int llave;
     String nombre, genero, cuidados, sustrato, luz, fechaGerminacion, riegaFrequencia;

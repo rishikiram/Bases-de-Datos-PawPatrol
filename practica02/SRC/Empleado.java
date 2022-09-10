@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class Empleado{
+public class Empleado extends Entidad{
     int llave;
     String nombre;
     ArrayList<String> correos;
