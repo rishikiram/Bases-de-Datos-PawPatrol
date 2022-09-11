@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 /**
  *
@@ -41,7 +40,7 @@ public class Tabla {
             String line = scanner.nextLine();
             atributos.clear();
             atributos.addAll(Arrays.asList(line.split("\\s*[,]\\s*")));
-            entidades.add(instanciateEntidad(atributos));
+            entidades.add(instantiateEntidad(atributos));
         }
 
     }
@@ -49,7 +48,7 @@ public class Tabla {
     Añadir entidad a entidades,
     return true si es exitosa
     * */
-    public Entidad instanciateEntidad(ArrayList<String> atributos) {
+    public Entidad instantiateEntidad(ArrayList<String> atributos) {
         switch (clase) {
             case "vivero":
                 return (new Vivero(atributos));
@@ -156,8 +155,8 @@ public class Tabla {
         ArrayList<String> atributos = new ArrayList<>();
         atributos.add(idAux);
         atributos.add(nombre);
-        atributos.addAll(direccionAux);
-        atributos.addAll(telefonosAux);
+        atributos.add(Main.arrayListToString(direccionAux));
+        atributos.add(Main.arrayListToString(telefonosAux));
         atributos.add(fecha);
         atributos.add(tipo);
 
