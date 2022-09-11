@@ -82,8 +82,8 @@ public class Vivero extends Entidad {
    /** Opcional solo lo puse para ver como imprimia */
   @Override
   public String toString() {
-    return "Vivero [direccion=" + direccion + ", fechaApertura=" + fechaApertura + ", llave=" + llave + ", nombre="
-        + nombre + ", telefonos=" + telefonos + ", tipoVivero=" + tipoVivero + "]";
+    return "Vivero [direccion=" + Main.arrayListToString(direccion) + ", fechaApertura=" + fechaApertura + ", llave=" + llave + ", nombre="
+        + nombre + ", telefonos=" + Main.arrayListToString(telefonos) + ", tipoVivero=" + tipoVivero + "]";
   }
 
 

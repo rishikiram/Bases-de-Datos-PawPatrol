@@ -33,32 +33,38 @@ public class Tabla {
     public File archivo;
     public String clase;
 
-    /* Loads all entidads from file associatd with an Entidad */
+    /* Loads all entidades from file associatd with an Entidad */
     public void loadTable() throws FileNotFoundException {
         Scanner scanner = new Scanner(archivo);
         ArrayList<String> atributos = new ArrayList<>();
         while (scanner.hasNextLine()) {
             String line = scanner.nextLine();
-            atributos.addAll(Arrays.asList(line.split(",")));
-            switch (clase) {
-                case "vivero":
-                    entidades.add(new Vivero(atributos));
-                    System.out.println(entidades.toString());
-                    break;
-                case "planta":
-                    entidades.add(new Planta(atributos));
-                    break;
-                case "empleado":
-                    entidades.add(new Empleado(atributos));
-                    break;
-                default:
-                    // PARA HACER error
-            }
             atributos.clear();
+            atributos.addAll(Arrays.asList(line.split("\s*[,]\s*")));
+            entidades.add(instanciateEntidad(atributos));
         }
 
     }
-
+    /**
+    Añadir entidad a entidades,
+    return true si es exitosa
+    * */
+    public Entidad instanciateEntidad(ArrayList<String> atributos) {
+        switch (clase) {
+            case "vivero":
+                return (new Vivero(atributos));
+                break;
+            case "planta":
+                return (new Planta(atributos));
+                break;
+            case "empleado":
+                return (new Empleado(atributos));
+                break;
+            default:
+                // PARA HACER error
+        }
+        return null;
+    }
     // PARA HACER
 
     /* */
@@ -76,14 +82,24 @@ public class Tabla {
         return false;
     }
 
-    // Escribe información en el archivo
+    // Escribe información en list entidades en el archivo
     public void saveTable() throws IOException {
+
+        FileWriter writer = new FileWriter(archivo, false);
+        StringBuilder collect = new StringBuilder();
+
+        for (Entidad e : entidades) {
+            collect.append(String.join(",   ", e.toArray()));
+            collect.append("\n");
+
+        }
+        writer.write(collect.toString());
+        writer.close();
+
+
+
+        /* old version
         ArrayList<String> atributos = new ArrayList<>();
-        /**
-         * En este caso es escribiran en todos los archivos, pero se puede modificar a
-         * que solo se imprima en
-         * uno en especifico
-         */
         atributos.add("esto");
         atributos.add("es");
         atributos.add("solo");
@@ -111,6 +127,7 @@ public class Tabla {
                 System.out.println("Parece que algo salío mal");
         }
         atributos.clear();
+        */
     }
 
     // Así más o menos pensé que podian meter los datos
