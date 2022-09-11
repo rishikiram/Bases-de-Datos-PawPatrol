@@ -1,9 +1,12 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
+<<<<<<< HEAD
 
 /**
  *
@@ -15,6 +18,8 @@ import java.util.Scanner;
  * @since Fundamentos de Bases de Datos
  *
  */
+=======
+>>>>>>> 3ff7dd55cb63145e033f8a9b7b27f1bad1e7c7c4
 
 public class Tabla {
 

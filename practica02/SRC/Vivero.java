@@ -53,6 +53,13 @@ public class Vivero extends Entidad {
     fechaApertura = atributos.get(4);
     tipoVivero = atributos.get(5);
   }
+  public Vivero(ArrayList<String> atributos) {
+    llave = Integer.parseInt(atributos.get(0));
+    nombre = atributos.get(1);
+    direccion = Main.stringToArrayList(atributos.get(2));
+    telefonos = Main.stringToArrayList(atributos.get(3));
+    fechaApertura = atributos.get(4);
+  }
 
   public static String[] atributos = {"llave", "nombre", "direccion",
   "telefonos","fechaApertura","tipoVivero"};

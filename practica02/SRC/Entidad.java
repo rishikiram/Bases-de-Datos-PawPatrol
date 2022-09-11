@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 /**
  *
@@ -8,6 +9,10 @@
  * @since Fundamentos de Bases de Datos
  *
  */
+=======
+import java.util.ArrayList;
+
+>>>>>>> 3ff7dd55cb63145e033f8a9b7b27f1bad1e7c7c4
 public abstract class Entidad {
     int llave;
     public abstract String[] toArray();
