@@ -6,9 +6,9 @@ import java.util.Arrays;
 public class Main {
 
     public static void main(String... args) throws IOException {
-            Tabla viveros = new Tabla(new File("viveros.csv"), "vivero");
-            Tabla empleados = new Tabla(new File("empleados.csv"), "empleado");
-            Tabla plantas = new Tabla(new File("plantas.csv"), "planta");
+            Tabla viveros = new TablaViveros(new File("viveros.csv"));
+            Tabla empleados = new TablaEmpleados(new File("empleados.csv"));
+            Tabla plantas = new TablaPlantas(new File("plantas.csv"));
           
             viveros.saveTable();
             empleados.saveTable();
