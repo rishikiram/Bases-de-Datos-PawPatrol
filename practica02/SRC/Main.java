@@ -28,7 +28,7 @@ public class Main {
     }
     public static ArrayList<String> stringToArrayList(String str) {
         ArrayList<String> arr = new ArrayList<>();
-        arr.addAll(Arrays.asList(str.split("/s[-]/s")));
+        arr.addAll(Arrays.asList(str.split("\\s*[-]\\s*")));
         return arr;
     }
 }

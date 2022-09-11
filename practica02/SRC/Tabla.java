@@ -40,7 +40,7 @@ public class Tabla {
         while (scanner.hasNextLine()) {
             String line = scanner.nextLine();
             atributos.clear();
-            atributos.addAll(Arrays.asList(line.split("\s*[,]\s*")));
+            atributos.addAll(Arrays.asList(line.split("\\s*[,]\\s*")));
             entidades.add(instanciateEntidad(atributos));
         }
 
@@ -53,13 +53,10 @@ public class Tabla {
         switch (clase) {
             case "vivero":
                 return (new Vivero(atributos));
-                break;
             case "planta":
                 return (new Planta(atributos));
-                break;
             case "empleado":
                 return (new Empleado(atributos));
-                break;
             default:
                 // PARA HACER error
         }
@@ -95,7 +92,6 @@ public class Tabla {
         }
         writer.write(collect.toString());
         writer.close();
-
 
 
         /* old version
