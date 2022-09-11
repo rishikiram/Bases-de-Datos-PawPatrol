@@ -4,27 +4,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Main {
-<<<<<<< HEAD
+
     public static void main(String... args) throws IOException {
-        //try {
-           // Tabla viveros = new Tabla(new File("viveros.csv"), "vivero");
-           // Tabla empleados = new Tabla(new File("./archivos/empleados.csv"), "empleado");
-          //  Tabla plantas = new Tabla(new File("./archivos/plantas.csv"), "planta");
-      //  } catch( IOException io) {
-            //PARA HACER
-       // }
-=======
-    public static void main(String... args) {
-        try {
-            Tabla viveros = new Tabla(new File("./archivos/viveros.csv"), "vivero");
-            Tabla empleados = new Tabla(new File("./archivos/empleados.csv"), "empleado");
-            Tabla plantas = new Tabla(new File("./archivos/plantas.csv"), "planta");
-        } catch( IOException io) {
-            //PARA HACER
-        }
-
->>>>>>> 3ff7dd55cb63145e033f8a9b7b27f1bad1e7c7c4
-
+            Tabla viveros = new Tabla(new File("viveros.csv"), "vivero");
+            Tabla empleados = new Tabla(new File("empleados.csv"), "empleado");
+            Tabla plantas = new Tabla(new File("plantas.csv"), "planta");
+          
+            viveros.saveTable();
+            empleados.saveTable();
+            plantas.saveTable();
+        
     }
 
 

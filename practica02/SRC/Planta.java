@@ -1,9 +1,4 @@
 import java.util.ArrayList;
-<<<<<<< HEAD
-=======
-
-public class Planta extends Entidad{
->>>>>>> 3ff7dd55cb63145e033f8a9b7b27f1bad1e7c7c4
 
 /**
  *
@@ -50,22 +45,6 @@ public class Planta extends Entidad {
         fechaGerminacion = FechaGerminacion;
         riegaFrequencia = RiegaFrequencia;
     }
-<<<<<<< HEAD
-=======
-    public Planta(ArrayList<String> atributos) {
-        llave = Integer.parseInt(atributos.get(0));
-        precio = Integer.parseInt(atributos.get(1));
-        cantidad = Integer.parseInt(atributos.get(2));
-        nombre = atributos.get(3);
-        genero = atributos.get(4);
-        cuidados = atributos.get(5);
-        sustrato = atributos.get(6);
-        luz = atributos.get(7);
-        fechaGerminacion = atributos.get(8);
-        riegaFrequencia = atributos.get(9);
-    }
-    
->>>>>>> 3ff7dd55cb63145e033f8a9b7b27f1bad1e7c7c4
 
     /**
      * Planta con un arreglo de atributos??

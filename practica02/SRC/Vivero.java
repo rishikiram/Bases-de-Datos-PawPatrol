@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -53,13 +54,8 @@ public class Vivero extends Entidad {
     fechaApertura = atributos.get(4);
     tipoVivero = atributos.get(5);
   }
-  public Vivero(ArrayList<String> atributos) {
-    llave = Integer.parseInt(atributos.get(0));
-    nombre = atributos.get(1);
-    direccion = Main.stringToArrayList(atributos.get(2));
-    telefonos = Main.stringToArrayList(atributos.get(3));
-    fechaApertura = atributos.get(4);
-  }
+
+
 
   public static String[] atributos = {"llave", "nombre", "direccion",
   "telefonos","fechaApertura","tipoVivero"};
@@ -83,4 +79,13 @@ public class Vivero extends Entidad {
     return atributos;
   }
 
+   /** Opcional solo lo puse para ver como imprimia */
+  @Override
+  public String toString() {
+    return "Vivero [direccion=" + direccion + ", fechaApertura=" + fechaApertura + ", llave=" + llave + ", nombre="
+        + nombre + ", telefonos=" + telefonos + ", tipoVivero=" + tipoVivero + "]";
+  }
+
+
+   
 }

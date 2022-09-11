@@ -46,15 +46,7 @@ public class Empleado extends Entidad {
         salario = Salario;
         rol = Rol;
     }
-    public Empleado(ArrayList<String> atributos) {
-        llave = Integer.parseInt(atributos.get(0));
-        nombre = atributos.get(1);
-        direccion = Main.stringToArrayList(atributos.get(2));
-        correos = Main.stringToArrayList(atributos.get(3));
-        telefonos = Main.stringToArrayList(atributos.get(4));
-        fechaNacimiento = atributos.get(5);
-    }
-
+    
     /**
      * Empleado con un arreglo de atributos??
      *
