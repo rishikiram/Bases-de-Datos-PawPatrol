@@ -1,7 +1,4 @@
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
@@ -25,16 +22,25 @@ public abstract class Tabla {
 //    public String clase;
 
     /* Loads all entidades from file associatd with an Entidad */
-    public void loadTable() throws FileNotFoundException {
-        Scanner scanner = new Scanner(archivo);
+    public void loadTable() throws IOException {
+//        Scanner scanner = new Scanner(archivo);
+//        ArrayList<String> atributos = new ArrayList<>();
+//        while (scanner.hasNextLine()) {
+//            String line = scanner.nextLine();
+//            atributos.clear();
+//            atributos.addAll(Arrays.asList(line.split("\\s*[,]\\s*")));
+//            entidades.add(instantiateEntidad(atributos));
+//        }
+//        scanner.close();
         ArrayList<String> atributos = new ArrayList<>();
-        while (scanner.hasNextLine()) {
-            String line = scanner.nextLine();
-            atributos.clear();
-            atributos.addAll(Arrays.asList(line.split("\\s*[,]\\s*")));
-            entidades.add(instantiateEntidad(atributos));
+        try(BufferedReader br = new BufferedReader(new FileReader(archivo))) {
+            for(String line; (line = br.readLine()) != null; ) {
+                atributos.clear();
+                atributos.addAll(Arrays.asList(line.split("\\s*[,]\\s*")));
+                entidades.add(instantiateEntidad(atributos));
+            }
+
         }
-        scanner.close();
     }
 
     public void inicializar(File archivo) throws IOException{
@@ -323,8 +329,15 @@ public abstract class Tabla {
     public abstract String getNombre();
 
     public void mostrarEntidades(){
-        for(Entidad e: this.entidades){
-            System.out.println(e);
+
+        if (entidades.size() == 0) {
+            System.out.println("No hay datos en el archivo.");
+        }
+        else {
+            System.out.println(String.join(",   ", entidades.get(0).getAtributos()));
+            for (Entidad e : this.entidades) {
+                System.out.println(String.join(",   ", e.toArray()));
+            }
         }
     }
 }
