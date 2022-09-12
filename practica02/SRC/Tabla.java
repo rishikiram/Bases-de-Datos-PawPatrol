@@ -148,13 +148,15 @@ public abstract class Tabla {
 
         FileWriter writer = new FileWriter(archivo, false);
         StringBuilder collect = new StringBuilder();
-
+        Boolean wr
         for (Entidad e : entidades) {
             collect.append(String.join(",   ", e.toArray()));
             collect.append("\n");
 
         }
-        writer.write(collect.toString());
+        if (collect.length() > 0) {
+            writer.write(collect.toString());
+        }
         writer.close();
 
 
