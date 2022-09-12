@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class Empleado extends Entidad {
 
-    /* Atributos */
+    /* Atributos */ 
     int llave;
     ArrayList<String> nombre;
     ArrayList<String> direccion;
@@ -90,6 +90,14 @@ public class Empleado extends Entidad {
     /* Método para obtener los atributos */
     public String[] getAtributos() {
         return atributos;
+    }
+
+    public static boolean atributosSonValidos(String[] atributos){
+        if(atributos == null || atributos.length != 8){
+            return false;
+        }
+
+        return true;
     }
 
 }
