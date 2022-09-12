@@ -51,7 +51,7 @@ public class Planta extends Entidad {
     }
 
     /**
-     * Planta con un arreglo de atributos??
+     * Constructor de una planta con ArrayList
      *
      * @param atributos
      */

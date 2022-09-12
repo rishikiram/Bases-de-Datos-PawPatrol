@@ -52,7 +52,7 @@ public class Empleado extends Entidad {
     }
     
     /**
-     * Empleado con un arreglo de atributos??
+     * Constructor de una Empleado con ArrayList
      *
      * @param atributos
      */
@@ -84,7 +84,7 @@ public class Empleado extends Entidad {
         String teleStr = Main.arrayListToString(telefonos);
         String dirStr = Main.arrayListToString(direccion);
         return new String[] { Integer.toString(llave), nomStr, dirStr, corStr,
-                teleStr, fechaNacimiento, Integer.toString(salario) };
+                teleStr, fechaNacimiento, Integer.toString(salario), rol };
     }
 
     /* Método para obtener los atributos */

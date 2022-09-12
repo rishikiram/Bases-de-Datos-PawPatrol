@@ -138,7 +138,12 @@ public class Main {
         }
         
     }
-
+    /**
+     * Convierte un ArrayList<String> a un String de formato
+     * "cosa1 - cosa2 - cosa3 - ...
+     * @param arr       array de strings(como multivaluados)
+     * @return      string de formato: "cosa1 - cosa2 - cosa3 - ..."
+     * */
     public static String arrayListToString(ArrayList<String> arr) {
         StringBuilder rstr = new StringBuilder();
         for (String s: arr) {
@@ -148,6 +153,12 @@ public class Main {
         rstr.delete(rstr.length()-3, rstr.length());
         return rstr.toString();
     }
+    /**
+     * Convierte un String que arrayListToString() returns
+     * a un ArrayList<String> seperado de " - "
+     * @param str       string de arrayListToString()
+     * @return          ArrayList split de los " - "
+     * */
     public static ArrayList<String> stringToArrayList(String str) {
         ArrayList<String> arr = new ArrayList<>();
         arr.addAll(Arrays.asList(str.split("\\s*[-]\\s*")));

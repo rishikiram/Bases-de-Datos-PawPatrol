@@ -46,7 +46,7 @@ public class Vivero extends Entidad {
   }
 
   /**
-   * Vivero con un arreglo de atributos
+   * Constructor de una vivero con ArrayList
    *
    * @param atributos
    */

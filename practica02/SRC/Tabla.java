@@ -48,7 +48,8 @@ public abstract class Tabla {
     }
 
 
-     /* Regresa una entidad correspondiente al tipo de la tabla con los atributos dados
+     /**
+      * Regresa una entidad correspondiente al tipo de la tabla con los atributos dados
      * @param atributos Atributos de la entidad
      * @return Nueva entidad
      */
@@ -140,7 +141,9 @@ public abstract class Tabla {
         }
     }
 
-    // Escribe información en list entidades en el archivo
+    /**
+     * Escribe información en list entidades en el archivo
+     * */
     public void saveTable() throws IOException {
 
         FileWriter writer = new FileWriter(archivo, false);
