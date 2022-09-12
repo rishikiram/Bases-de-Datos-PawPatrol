@@ -95,12 +95,26 @@ public abstract class Tabla {
         return false;
     }
 
+    public Entidad getEntidadPorLlave(int llave){
+        for(Entidad e : this.entidades){
+            if(e.getLlave()==llave){
+                return e;
+            }
+        }
+        return null;
+    }
+
     /**
      * Edita una entidad en la tabla después de preguntarle al usuario lo que quiere editar.
      * @return True si se pudo editar una entidad, False de lo contrario
      */
-    public Boolean editEntidad(Entidad entidadAEditar) {
+    public Boolean editEntidad(int llave) {
         try {
+            Entidad entidadAEditar = this.getEntidadPorLlave(llave);
+            if(entidadAEditar==null){
+                System.out.println("No se encontró la entidad.");
+                return false;
+            }
             Entidad entidadEditada = this.getEntidadModificadaDesdeMenu(entidadAEditar.getAtributos());
             for(Entidad e : this.entidades){
                 if (e.getLlave() == e.getLlave()){
@@ -163,42 +177,110 @@ public abstract class Tabla {
         */
     }
 
-    // Así más o menos pensé que podian meter los datos
-    // Ejemplo con vivero
-    // public void saveTableAux() throws IOException {
-    //     Scanner sc = new Scanner(System.in);
-    //     Scanner scan = new Scanner(System.in);
+    /**
+     * Recibe del usuario un valor entero
+     * @param in Scanner de donde está ingresando información el usuario
+     * @param nombreParam Nombre del parámetro que se está solicitando
+     * @param valorOriginal Valor actual del parámetro solicitado, puede ser null si no tiene un valor actual
+     * @return El valor que el usuario eligió
+     */
+    protected int inputIntParameter(Scanner in, String nombreParam, Integer valorOriginal){
+        int eleccion=0;
+        boolean chosen = false;
+        String prompt = "Ingresa "+nombreParam;
+        if(valorOriginal!=null){
+            prompt+=" (presiona enter para conservar el valor actual <"+valorOriginal.toString()+">)";
+        }
+        prompt+=":";
+        do{
+            System.out.println(prompt);
+            try {
+                String line = in.nextLine();
+                if(line.isEmpty() && valorOriginal!=null){
+                    eleccion = valorOriginal;
+                    chosen=true;
+                }else{
+                    try{
+                        eleccion = Integer.parseInt(line);
+                        chosen=true;
+                    }catch(NumberFormatException e){
+                        System.out.println("Necesitas ingresar un número entero, vuelve a intentar");
+                    }
+                }    
+            } catch (Exception e) {
+                System.out.println("Hubo un error al registrar tu eleccion, vuelve a intentar por favor");
+            }
+        }while(!chosen);
 
-    //     System.out.println("Ingrese el ID Vivero");
-    //     int id = scan.nextInt();
-    //     String idAux = Integer.toString(id);
+        return eleccion;
+    }
 
-    //     System.out.println("Ingrese el nombre");
-    //     String nombre = sc.nextLine();
+    /**
+     * Recibe del usuario un valor string
+     * @param in Scanner de donde está ingresando información el usuario
+     * @param nombreParam Nombre del parámetro que se está solicitando
+     * @param valorOriginal Valor actual del parámetro solicitado, puede ser null si no tiene un valor actual
+     * @return El valor que el usuario eligió
+     */
+    protected String inputStringParameter(Scanner in, String nombreParam, String valorOriginal){
+        String eleccion="";
+        boolean chosen = false;
+        String prompt = "Ingresa "+nombreParam;
+        if(valorOriginal!=null){
+            prompt+=" (presiona enter para conservar el valor actual <"+valorOriginal+">)";
+        }
+        prompt+=":";
+        do{
+            System.out.println(prompt);
+            try{
+                String line = in.nextLine();
+                if(line.isEmpty() && valorOriginal!=null){
+                    eleccion = valorOriginal;
+                    chosen=true;
+                }else if(line.isEmpty()){
+                    System.out.println("La cadena no puede ser vacía, por favor vuelve a intentar");
+                }else if(line.contains(",")){
+                    System.out.println("La cadena no puede contener comas ',', favor de volver a intentar");
+                }else{
+                    eleccion = line;
+                    chosen=true;
+                }
+            }catch (Exception e) {
+                System.out.println("Hubo un error al registrar tu eleccion, vuelve a intentar por favor");
+            }
+        }while(!chosen);
 
-    //     System.out.println("Ingrese la direccion"); // creo que aquí puedes poner que meta más
-    //     String direccion = sc.nextLine();
-    //     ArrayList<String> direccionAux = new ArrayList<String>(Arrays.asList(direccion.split(",")));
+        return eleccion;
+    }
 
-    //     System.out.println("Ingrese los telefonos"); // creo que aquí puedes poner que meta más
-    //     String telefonos = sc.nextLine();
-    //     ArrayList<String> telefonosAux = new ArrayList<String>(Arrays.asList(telefonos.split(",")));
+    /**
+     * Recibe del usuario uno o varios teléfonos separados por guiones
+     * @param in Scanner de donde está ingresando información el usuario
+     * @param valorOriginal Valor actual del parámetro solicitado, puede ser null si no tiene un valor actual
+     * @return El valor que el usuario eligió
+     */
+    protected String inputPhoneParameters(Scanner in, String valorOriginal){
+        String eleccion="";
+        boolean chosen = false;
+        do{
+            eleccion=this.inputStringParameter(in, "uno o más teléfono(s) (separados por guiones '-'", valorOriginal);
 
-    //     System.out.println("Ingrese la fecha de apertura");
-    //     String fecha = sc.nextLine();
+            ArrayList<String> telefonos = Main.stringToArrayList(eleccion);
+            boolean validos = true;
+            for(String t:telefonos){
+                if(!Main.esTelefonoValido(t)){
+                    validos=false;
+                }
+            }
+            if(validos){
+                chosen=true;
+            }else{
+                System.out.println("Hubo teléfono(s) inválido(s), por favor vuelva a intentar");
+            }
+        }while(!chosen);
 
-    //     System.out.println("Ingrese el tipo de vivero");
-    //     String tipo = sc.nextLine();
+        return eleccion;
+    }
 
-    //     ArrayList<String> atributos = new ArrayList<>();
-    //     atributos.add(idAux);
-    //     atributos.add(nombre);
-    //     atributos.addAll(direccionAux);
-    //     atributos.addAll(telefonosAux);
-    //     atributos.add(fecha);
-    //     atributos.add(tipo);
-
-    //     sc.close();
-    //     scan.close();
-    // }
+    public abstract String getNombre();
 }

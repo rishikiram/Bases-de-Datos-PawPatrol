@@ -23,4 +23,9 @@ public class TablaEmpleados extends Tabla {
     public Entidad getEntidadModificadaDesdeMenu(String[] atributos){
         return null; //TODO: Implementar
     }
+
+    @Override
+    public String getNombre(){
+        return "Empleados";
+    }
 }

@@ -2,6 +2,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Scanner;
+import java.util.regex.Pattern;
 
 public class Main {
 
@@ -46,17 +48,17 @@ public class Main {
                     // Viveros
                     case 1:
                         //Agregar para que en opciones maneje con la tabla viveros
-                        opciones("Viveros");
+                        opciones(viveros);
                         break;
                     // Empleados
                     case 2:
                         //Agregar para que en opciones maneje con la tabla empleados
-                        opciones("Empleados");
+                        opciones(empleados);
                         break;
                     // Plantas
                     case 3:
                         //Agregar para que en opciones maneje con la tabla plantas
-                        opciones("Plantas");
+                        opciones(plantas);
                         break;
                     // Cuando ingrese un número pero no sea alguna opción
                     default:
@@ -70,13 +72,14 @@ public class Main {
                 excep = true;
             }
         } while (excep || repetir);    
+        in.close();
     }
 
     /**
      * Función que despliega las opciones de las modificaciones que se pueden hacer en las distintas tablas.
      * @param tabla - Recibe un string para indicar en que tabla se va trabajar.
      */
-    public static void opciones(String tabla){
+    public static void opciones(Tabla tabla){
         boolean repetir;
         boolean excep;
         int opc;
@@ -86,7 +89,7 @@ public class Main {
             excep = false;
             try {
                 System.out.println("\n\t\t*** Menu ***");
-                System.out.println( green + "Tabla: " + tabla + reset);
+                System.out.println( green + "Tabla: " + tabla.getNombre() + reset);
                 System.out.println("--------------------------------------------");
                 System.out.println("1. Agregar información.");
                 System.out.println("2. Consultar información.");
@@ -99,19 +102,21 @@ public class Main {
                 switch (opc) {
                     // Agregar información
                     case 1:
-                        //Agregar la función que agregue info pero conectarla con la tabla a trabajar
+                        tabla.addEntidad();
                         break;
                     // Consultar información
                     case 2:
-                        //Agregar la función que consulte info pero conectarla con la tabla a trabajar
+                        //Agregar la función que consulte info
                         break;
                     // Editar información
                     case 3:
-                        //Agregar la función que editar info pero conectarla con la tabla a trabajar
+                        // TODO: Pedir la llave de la entidad al usuario
+                        // tabla.editEntidad(llave);
                         break;
                     // Eliminar información
                     case 4:
-                        //Agregar la función que elimine info pero conectarla con la tabla a trabajar
+                        // TODO: Pedir la llave de la entidad al usuario
+                        // tabla.deleteEntidad(llave);
                         break;
                     // Verificar si un elemento esta en la lista
                     default:
@@ -125,6 +130,13 @@ public class Main {
                 excep = true;
             }
         } while (excep || repetir);
+        in.close();
+        try{
+            tabla.saveTable();
+        }catch(IOException e){
+            System.out.println("No se pudo guardar la tabla en el archivo");
+        }
+        
     }
 
     public static String arrayListToString(ArrayList<String> arr) {
@@ -140,5 +152,19 @@ public class Main {
         ArrayList<String> arr = new ArrayList<>();
         arr.addAll(Arrays.asList(str.split("\\s*[-]\\s*")));
         return arr;
+    }
+    public static boolean esTelefonoValido(String s){
+        String patron=  "^(\\+\\d{1,3}( )?)?((\\(\\d{1,3}\\))|\\d{1,3})[- .]?\\d{3,4}[- .]?\\d{4}$"; // https://stackoverflow.com/questions/42104546/java-regular-expressions-to-validate-phone-numbers
+        if(s==null || s.isEmpty()){
+            return false;
+        }
+        return Pattern.compile(patron).matcher(s).matches();
+    }
+    public static boolean esCorreoValido(String s){
+        String patron=  "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";// https://howtodoinjava.com/java/regex/java-regex-validate-email-address/
+        if(s==null || s.isEmpty()){
+            return false;
+        }
+        return Pattern.compile(patron).matcher(s).matches();
     }
 }

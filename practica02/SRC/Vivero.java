@@ -65,17 +65,24 @@ public class Vivero extends Entidad {
   public String[] toArray() {
     /*
      * return String[] de
-     * [llave, nombre, direccion, telefonos, fechaApertura]
+     * [llave, nombre, direccion, telefonos, fechaApertura, tipoVivero]
      */
     String teleStr = Main.arrayListToString(telefonos);
     String dirStr = Main.arrayListToString(direccion);
     return new String[] { Integer.toString(llave), nombre, dirStr, teleStr,
-        fechaApertura };
+        fechaApertura, tipoVivero};
   }
 
   /* Método para obtener los atributos */
   public String[] getAtributos() {
-    return atributos;
+    return new String[]{
+      Integer.toString(llave),
+      nombre,
+      Main.arrayListToString(direccion),
+      Main.arrayListToString(telefonos),
+      fechaApertura,
+      tipoVivero
+    };
   }
 
    /** Opcional solo lo puse para ver como imprimia */
@@ -85,6 +92,15 @@ public class Vivero extends Entidad {
         + nombre + ", telefonos=" + Main.arrayListToString(telefonos) + ", tipoVivero=" + tipoVivero + "]";
   }
 
-
+  
+  public static boolean atributosSonValidos(String[] atributos) {
+    if(atributos==null){
+      return false;
+    }
+    if(atributos.length!=6){
+      return false;
+    }
+    return true;
+  }
    
 }
