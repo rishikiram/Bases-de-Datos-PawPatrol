@@ -4,10 +4,7 @@ import java.util.ArrayList;
 
 public class TablaEmpleados extends Tabla {
     public TablaEmpleados(File Archivo) throws IOException {
-        archivo = Archivo;
-        if (!archivo.exists()) {
-            archivo.createNewFile();
-        }
+        this.inicializar(Archivo);
     }
 
     @Override

@@ -37,6 +37,16 @@ public abstract class Tabla {
         scanner.close();
     }
 
+    public void inicializar(File archivo) throws IOException{
+        this.archivo = archivo;
+        if (!archivo.exists()) {
+            System.out.println("Creando archivo '"+archivo.getPath()+"'...");
+            archivo.createNewFile();
+        }else{
+            this.loadTable();
+        }
+    }
+
 
      /* Regresa una entidad correspondiente al tipo de la tabla con los atributos dados
      * @param atributos Atributos de la entidad
@@ -67,7 +77,7 @@ public abstract class Tabla {
         try {
             Entidad entidadNueva = this.getEntidadNuevaDesdeMenu();
             for(Entidad e : this.entidades){
-                if (e.getLlave() == e.getLlave()){
+                if (e.getLlave() == entidadNueva.getLlave()){
                     System.out.println("La llave ya existe en la tabla, no se puede agregar la entidad.");
                     return false;
                 }
@@ -117,7 +127,7 @@ public abstract class Tabla {
             }
             Entidad entidadEditada = this.getEntidadModificadaDesdeMenu(entidadAEditar.getAtributos());
             for(Entidad e : this.entidades){
-                if (e.getLlave() == e.getLlave()){
+                if (e.getLlave() == entidadEditada.getLlave()){
                     System.out.println("La llave ya existe en la tabla, no se pueden guardar los cambios a la entidad.");
                     return false;
                 }
@@ -283,4 +293,10 @@ public abstract class Tabla {
     }
 
     public abstract String getNombre();
+
+    public void mostrarEntidades(){
+        for(Entidad e: this.entidades){
+            System.out.println(e);
+        }
+    }
 }

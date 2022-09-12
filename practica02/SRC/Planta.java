@@ -17,6 +17,10 @@ public class Planta extends Entidad {
     String nombre, genero, cuidados, sustrato, luz, fechaGerminacion, riegaFrequencia;
     int precio, cantidad;
 
+    public int getLlave(){
+        return this.llave;
+    }
+
     /**
      * Constructor de una planta
      *

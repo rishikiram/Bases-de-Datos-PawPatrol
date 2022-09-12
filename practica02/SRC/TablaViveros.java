@@ -5,10 +5,7 @@ import java.util.Scanner;
 
 public class TablaViveros extends Tabla {
     public TablaViveros(File Archivo) throws IOException {
-        archivo = Archivo;
-        if (!archivo.exists()) {
-            archivo.createNewFile();
-        }
+        this.inicializar(Archivo);
     }
 
     @Override

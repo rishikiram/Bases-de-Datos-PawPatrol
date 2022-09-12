@@ -106,7 +106,7 @@ public class Main {
                         break;
                     // Consultar información
                     case 2:
-                        //Agregar la función que consulte info
+                        tabla.mostrarEntidades();
                         break;
                     // Editar información
                     case 3:

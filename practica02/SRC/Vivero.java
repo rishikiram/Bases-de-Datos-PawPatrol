@@ -20,6 +20,11 @@ public class Vivero extends Entidad {
   String fechaApertura;
   String tipoVivero;
 
+  @Override
+  public int getLlave(){
+    return this.llave;
+}
+
   /**
    * Constuctor de un vivero
    *
@@ -32,7 +37,7 @@ public class Vivero extends Entidad {
    */
   public Vivero(int Llave, String Nombre, ArrayList<String> Direccion, ArrayList<String> Telefonos,
       String FechaApertura, String TipoVivero) {
-    llave = Llave;
+    this.llave = Llave;
     nombre = Nombre;
     direccion = Direccion;
     telefonos = Telefonos;
@@ -46,7 +51,7 @@ public class Vivero extends Entidad {
    * @param atributos
    */
   public Vivero(ArrayList<String> atributos) {
-    llave = Integer.parseInt(atributos.get(0));
+    this.llave = Integer.parseInt(atributos.get(0));
     nombre = atributos.get(1);
     direccion = Main.stringToArrayList(atributos.get(2));
     telefonos = Main.stringToArrayList(atributos.get(3));

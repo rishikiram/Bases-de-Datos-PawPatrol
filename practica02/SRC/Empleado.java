@@ -23,6 +23,10 @@ public class Empleado extends Entidad {
     int salario;
     String rol;
 
+    public int getLlave(){
+        return this.llave;
+    }
+
     /**
      * Constructor de un empleado
      *

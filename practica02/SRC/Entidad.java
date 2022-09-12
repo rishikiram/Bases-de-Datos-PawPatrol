@@ -9,10 +9,7 @@
  *
  */
 public abstract class Entidad {
-    int llave;
-    public int getLlave(){
-        return this.llave;
-    }
+    public abstract int getLlave();
     public abstract String[] toArray();
     public abstract String[] getAtributos();
 }
