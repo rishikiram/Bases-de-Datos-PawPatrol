@@ -292,6 +292,30 @@ public abstract class Tabla {
         return eleccion;
     }
 
+    protected String inputEmailParameters(Scanner in, String valorOriginal){
+        String eleccion = "";
+        boolean chosen= false;
+        do {
+            eleccion = this.inputStringParameter(in, "Uno o más correos (separados por guines '-')", valorOriginal);
+            ArrayList<String> emails = Main.stringToArrayList(eleccion);
+            boolean validos = true;
+            for(String e : emails){
+                if(!Main.esCorreoValido(e)){
+                    validos = false;
+                }
+            }
+
+            if(validos){
+                chosen = true;
+            }else{
+                System.out.println("Hubo correo(s) invalidos, intente de nuevo");
+            }
+            
+        } while (!chosen);
+
+        return eleccion;
+    }
+
     public abstract String getNombre();
 
     public void mostrarEntidades(){
