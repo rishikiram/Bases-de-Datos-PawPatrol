@@ -80,14 +80,7 @@ public class Vivero extends Entidad {
 
   /* Método para obtener los atributos */
   public String[] getAtributos() {
-    return new String[]{
-      Integer.toString(llave),
-      nombre,
-      Main.arrayListToString(direccion),
-      Main.arrayListToString(telefonos),
-      fechaApertura,
-      tipoVivero
-    };
+    return atributos;
   }
 
    /** Opcional solo lo puse para ver como imprimia */

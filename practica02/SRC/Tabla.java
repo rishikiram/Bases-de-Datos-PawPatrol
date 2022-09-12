@@ -125,7 +125,7 @@ public abstract class Tabla {
                 System.out.println("No se encontró la entidad.");
                 return false;
             }
-            Entidad entidadEditada = this.getEntidadModificadaDesdeMenu(entidadAEditar.getAtributos());
+            Entidad entidadEditada = this.getEntidadModificadaDesdeMenu(entidadAEditar.toArray());
             for(Entidad e : this.entidades){
                 if (e.getLlave() == entidadEditada.getLlave()){
                     System.out.println("La llave ya existe en la tabla, no se pueden guardar los cambios a la entidad.");
