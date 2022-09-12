@@ -14,8 +14,8 @@ public class Planta extends Entidad {
 
     /* Atributos */
     int llave;
-    String nombre, genero, cuidados, sustrato, luz, fechaGerminacion, riegaFrequencia;
     int precio, cantidad;
+    String nombre, genero, cuidados, sustrato, luz, fechaGerminacion, riegaFrequencia;
 
     public int getLlave(){
         return this.llave;
@@ -38,7 +38,7 @@ public class Planta extends Entidad {
     public Planta(int Llave, int Precio, int Cantidad, String Nombre,
             String Genero, String Cuidados, String Sustrato, String Luz,
             String FechaGerminacion, String RiegaFrequencia) {
-        llave = Llave;
+        llave = Llave; 
         precio = Precio;
         cantidad = Cantidad;
         nombre = Nombre;
@@ -88,6 +88,15 @@ public class Planta extends Entidad {
     /* Método para obtener los atributos */
     public String[] getAtributos() {
         return atributos;
+    }
+
+    public static boolean atributosSonValidos(String[] atributos){
+
+        if(atributos == null || atributos.length != 10){
+            return false;
+        }
+
+        return true;
     }
 
 }
