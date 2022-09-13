@@ -138,6 +138,10 @@ public class Main {
         
     }
 
+    /**
+     * Función para pedir al usuario la llave con la que se buscará en la tabla y haremos la modificación
+     * @return la llave de busqueda
+     */
     public static int setLlave(){
         int llave;
         Scanner scanner = new Scanner(System.in);
