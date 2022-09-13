@@ -16,22 +16,14 @@ import java.util.Scanner;
 
 public abstract class Tabla {
 
-    // ¡éditeme!
     public ArrayList<Entidad> entidades = new ArrayList<>();
     public File archivo;
-//    public String clase;
 
-    /* Loads all entidades from file associatd with an Entidad */
+    /**
+     *  Loads all entidades from file associated with an Entidad
+     *  into entidades
+     *  */
     public void loadTable() throws IOException {
-//        Scanner scanner = new Scanner(archivo);
-//        ArrayList<String> atributos = new ArrayList<>();
-//        while (scanner.hasNextLine()) {
-//            String line = scanner.nextLine();
-//            atributos.clear();
-//            atributos.addAll(Arrays.asList(line.split("\\s*[,]\\s*")));
-//            entidades.add(instantiateEntidad(atributos));
-//        }
-//        scanner.close();
         ArrayList<String> atributos = new ArrayList<>();
         try(BufferedReader br = new BufferedReader(new FileReader(archivo))) {
             for(String line; (line = br.readLine()) != null; ) {
