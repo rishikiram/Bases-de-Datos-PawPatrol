@@ -2,6 +2,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
@@ -27,6 +28,8 @@ public class Main {
 
 
         int opc;
+        int exit;
+        boolean confirm = false;
         Scanner in = new Scanner(System.in);
         System.out.println(purple + "\n\t*** BIENVENIDO ***" + reset);
         boolean excep;
@@ -49,22 +52,47 @@ public class Main {
                     case 1:
                         //Agregar para que en opciones maneje con la tabla viveros
                         opciones(viveros);
+                        confirm = true;
                         break;
                     // Empleados
                     case 2:
                         //Agregar para que en opciones maneje con la tabla empleados
                         opciones(empleados);
+                        confirm = true;
                         break;
                     // Plantas
                     case 3:
                         //Agregar para que en opciones maneje con la tabla plantas
                         opciones(plantas);
+                        confirm = true;
                         break;
                     // Cuando ingrese un número pero no sea alguna opción
                     default:
-                        System.out.println(yellow + "\n\tElige una opcion de menu :c" + reset);
+                        System.out.println(yellow + "\n\tElige una opción de menu :c" + reset);
                         repetir = true;
+                        confirm = false;
                         break;
+                }
+                while(confirm){
+                    try {
+                        System.out.println("¿Deseas hacer alguna otra modificación en las tablas?");
+                        System.out.println("1. Si");
+                        System.out.println("2. No");
+                        exit = in.nextInt();
+                        if (exit == 1) {
+                            confirm = false;
+                            repetir = true;
+                        } else if (exit == 2) {
+                            System.exit(0);
+                        } else {
+                            System.out.println(yellow + "Ingresa una opción del menú." + reset);
+                            confirm = true;
+                        }
+                    }catch (InputMismatchException e){
+                        System.out.println(red + "Ingresa únicamente numeros." + reset);
+                        confirm = true;
+                        in.next();
+                    }
                 }
             } catch (Exception e) {
                 System.out.println(red + "\n\tDebes ingresar un numero\tIntentalo de nuevo" + reset);
@@ -82,58 +110,84 @@ public class Main {
     public static void opciones(Tabla tabla){
         boolean repetir;
         boolean excep;
+        boolean edit = false;
         int opc;
+        int exit;
         Scanner in = new Scanner(System.in);
         do {
-            repetir = false;
-            excep = false;
-            try {
-                System.out.println("\n\t\t*** Menu ***");
-                System.out.println( green + "Tabla: " + tabla.getNombre() + reset);
-                System.out.println("--------------------------------------------");
-                System.out.println("1. Agregar información.");
-                System.out.println("2. Consultar información.");
-                System.out.println("3. Editar información.");
-                System.out.println("4. Eliminar información.");
-                System.out.println("--------------------------------------------");
-                System.out.println("Ingresa una opción del menu: ");
-                opc = in.nextInt();
-                switch (opc) {
-                    // Agregar información
-                    case 1:
-                        tabla.addEntidad();
-                        break;
-                    // Consultar información
-                    case 2:
-                        tabla.mostrarEntidades();
-                        break;
-                    // Editar información
-                    case 3:
-                        tabla.editEntidad(setLlave());
-                        break;
-                    // Eliminar información
-                    case 4:
-                        tabla.deleteEntidad(setLlave());
-                        break;
-                    // Verificar si un elemento esta en la lista
-                    default:
-                        System.out.println(yellow + "\n\tElige una opcion de menu plis :c" + reset);
-                        repetir = true;
-                        break;
+            do {
+                repetir = false;
+                excep = false;
+                try {
+                    System.out.println("\n\t\t*** Menu ***");
+                    System.out.println(green + "Tabla: " + tabla.getNombre() + reset);
+                    System.out.println("--------------------------------------------");
+                    System.out.println("1. Agregar información.");
+                    System.out.println("2. Consultar información.");
+                    System.out.println("3. Editar información.");
+                    System.out.println("4. Eliminar información.");
+                    System.out.println("--------------------------------------------");
+                    System.out.println("Ingresa una opción del menu: ");
+                    opc = in.nextInt();
+                    switch (opc) {
+                        // Agregar información
+                        case 1:
+                            tabla.addEntidad();
+                            break;
+                        // Consultar información
+                        case 2:
+                            tabla.mostrarEntidades();
+                            break;
+                        // Editar información
+                        case 3:
+                            //tabla.editEntidad(setLlave());
+                            break;
+                        // Eliminar información
+                        case 4:
+                            //tabla.deleteEntidad(setLlave());
+                            break;
+                        // Verificar si un elemento esta en la lista
+                        default:
+                            System.out.println(yellow + "\n\tElige una opcion de menu plis :c" + reset);
+                            repetir = true;
+                            break;
+                    }
+                } catch (Exception e2) {
+                    System.out.println(red + "\n\tDebes ingresar un numero\tIntentalo de nuevo" + reset);
+                    in.next();
+                    excep = true;
                 }
-            } catch (Exception e2) {
-                System.out.println(red + "\n\tDebes ingresar un numero\tIntentalo de nuevo" + reset);
-                in.next();
-                excep = true;
+            } while (excep || repetir);
+            //in.close();
+            try {
+                tabla.saveTable();
+            } catch (IOException e) {
+                System.out.println("No se pudo guardar la tabla en el archivo");
             }
-        } while (excep || repetir);
-        in.close();
-        try{
-            tabla.saveTable();
-        }catch(IOException e){
-            System.out.println("No se pudo guardar la tabla en el archivo");
-        }
-        
+            do{
+                try {
+                    System.out.println("¿Deseas hacer alguna modificación en esta tabla?");
+                    System.out.println("1. Si");
+                    System.out.println("2. No");
+                    exit = in.nextInt();
+                    if (exit == 1) {
+                        edit = true;
+                        repetir = false;
+                    } else if (exit == 2) {
+                        edit = false;
+                        repetir = false;
+                    } else {
+                        System.out.println(yellow + "Ingresa una opción del menú." + reset);
+                        repetir = true;
+                        edit = false;
+                    }
+                }catch (InputMismatchException e){
+                    System.out.println(red + "Ingresa únicamente numeros." + reset);
+                    repetir = true;
+                    in.next();
+                }
+            }while(repetir);
+        }while(edit);
     }
 
     /**
