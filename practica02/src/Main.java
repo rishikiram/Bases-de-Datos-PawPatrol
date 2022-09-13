@@ -17,9 +17,9 @@ public class Main {
     static String reset="\u001B[0m";
 
     public static void main(String... args) throws IOException {
-        Tabla viveros = new TablaViveros(new File("viveros.csv"));
-        Tabla empleados = new TablaEmpleados(new File("empleados.csv"));
-        Tabla plantas = new TablaPlantas(new File("plantas.csv"));
+        Tabla viveros = new TablaViveros(new File("src/viveros.csv"));
+        Tabla empleados = new TablaEmpleados(new File("src/empleados.csv"));
+        Tabla plantas = new TablaPlantas(new File("src/plantas.csv"));
           
         viveros.saveTable();
         empleados.saveTable();
@@ -62,7 +62,7 @@ public class Main {
                         break;
                     // Cuando ingrese un número pero no sea alguna opción
                     default:
-                        System.out.println(yellow + "\n\tElige una opcion de menu plis :c" + reset);
+                        System.out.println(yellow + "\n\tElige una opcion de menu :c" + reset);
                         repetir = true;
                         break;
                 }
@@ -98,7 +98,6 @@ public class Main {
                 System.out.println("--------------------------------------------");
                 System.out.println("Ingresa una opción del menu: ");
                 opc = in.nextInt();
-
                 switch (opc) {
                     // Agregar información
                     case 1:
@@ -110,13 +109,11 @@ public class Main {
                         break;
                     // Editar información
                     case 3:
-                        // TODO: Pedir la llave de la entidad al usuario
-                        // tabla.editEntidad(llave);
+                        tabla.editEntidad(setLlave());
                         break;
                     // Eliminar información
                     case 4:
-                        // TODO: Pedir la llave de la entidad al usuario
-                        // tabla.deleteEntidad(llave);
+                        tabla.deleteEntidad(setLlave());
                         break;
                     // Verificar si un elemento esta en la lista
                     default:
@@ -138,6 +135,21 @@ public class Main {
         }
         
     }
+
+    /**
+     * Función para pedir al usuario la llave con la que se buscará en la tabla y haremos la modificación
+     * @return la llave de busqueda
+     */
+    public static int setLlave(){
+        int llave;
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Ingresa la llave:");
+        llave = scanner.nextInt();
+
+        return llave;
+    }
+
     /**
      * Convierte un ArrayList<String> a un String de formato
      * "cosa1 - cosa2 - cosa3 - ...

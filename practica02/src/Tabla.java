@@ -133,14 +133,13 @@ public abstract class Tabla {
                 return false;
             }
             Entidad entidadEditada = this.getEntidadModificadaDesdeMenu(entidadAEditar.toArray());
-            for(Entidad e : this.entidades){
-                if (e.getLlave() == entidadEditada.getLlave()){
-                    System.out.println("La llave ya existe en la tabla, no se pueden guardar los cambios a la entidad.");
-                    return false;
+            for(int i=0; i<this.entidades.size(); i++){
+                if (this.entidades.get(i).getLlave() == entidadEditada.getLlave()){
+                    this.entidades.set(i, entidadEditada);
+                    return true;
                 }
             }
-            this.entidades.add(entidadEditada);
-            return true;
+            return false;
         } catch (Exception e) {
             System.out.println("Hubo un error al editar la entidad"); // TODO: Mejorar manejo de excepción
             return false;
@@ -229,6 +228,7 @@ public abstract class Tabla {
                 }    
             } catch (Exception e) {
                 System.out.println("Hubo un error al registrar tu eleccion, vuelve a intentar por favor");
+                e.printStackTrace();                
             }
         }while(!chosen);
 
@@ -334,9 +334,9 @@ public abstract class Tabla {
             System.out.println("No hay datos en el archivo.");
         }
         else {
-            System.out.println(String.join(",   ", entidades.get(0).getAtributos()));
+            System.out.println(String.join(",\t", entidades.get(0).getAtributos()));
             for (Entidad e : this.entidades) {
-                System.out.println(String.join(",   ", e.toArray()));
+                System.out.println(String.join(",\t", e.toArray()));
             }
         }
     }
