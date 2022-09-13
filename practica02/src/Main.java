@@ -17,9 +17,9 @@ public class Main {
     static String reset="\u001B[0m";
 
     public static void main(String... args) throws IOException {
-        Tabla viveros = new TablaViveros(new File("src/viveros.csv"));
-        Tabla empleados = new TablaEmpleados(new File("src/empleados.csv"));
-        Tabla plantas = new TablaPlantas(new File("src/plantas.csv"));
+        Tabla viveros = new TablaViveros(new File("archivos-generados/viveros.csv"));
+        Tabla empleados = new TablaEmpleados(new File("archivos-generados/empleados.csv"));
+        Tabla plantas = new TablaPlantas(new File("archivos-generados/plantas.csv"));
           
         viveros.saveTable();
         empleados.saveTable();
