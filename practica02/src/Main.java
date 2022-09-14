@@ -216,6 +216,12 @@ public class Main {
         arr.addAll(Arrays.asList(str.split("\\s*[-]\\s*")));
         return arr;
     }
+
+    /**
+     * Indica si una cadena es un teléfono válido
+     * @param s La cadena
+     * @return Un booleano que indica si una cadena es un teléfono válido
+     */
     public static boolean esTelefonoValido(String s){
         String patron=  "^(\\+\\d{1,3}( )?)?((\\(\\d{1,3}\\))|\\d{1,3})[- .]?\\d{3,4}[- .]?\\d{4}$"; // https://stackoverflow.com/questions/42104546/java-regular-expressions-to-validate-phone-numbers
         if(s==null || s.isEmpty()){
@@ -223,6 +229,12 @@ public class Main {
         }
         return Pattern.compile(patron).matcher(s).matches();
     }
+
+    /**
+     * Indica si una cadena es una representación válida de una fecha en formato dd/mm/aaaa
+     * @param s La cadena
+     * @return Un booleano que indica si una cadena es una fecha válida
+     */
     public static boolean esFechaValida(String s){
         String patron=  "^([0-2][0-9]||3[0-1])/(0[0-9]||1[0-2])/([0-9][0-9])?[0-9][0-9]$"; // https://stackoverflow.com/questions/8283405/what-is-the-regular-expression-for-date-format-dd-mm-yyyy
         if(s==null || s.isEmpty()){
@@ -230,6 +242,12 @@ public class Main {
         }
         return Pattern.compile(patron).matcher(s).matches();
     }
+
+    /**
+     * Indica si una cadena es una representación válida de un correo electrónico
+     * @param s La cadena
+     * @return Un booleano que indica si una cadena es un correo electrónico válido
+     */
     public static boolean esCorreoValido(String s){
         String patron=  "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";// https://howtodoinjava.com/java/regex/java-regex-validate-email-address/
         if(s==null || s.isEmpty()){
@@ -237,6 +255,12 @@ public class Main {
         }
         return Pattern.compile(patron).matcher(s).matches();
     }
+
+    /**
+     * Recibe del usuario número entero hasta que la entrada, en efecto, sea un entero.
+     * @param sc El scanner
+     * @return el número ingresado
+     */
     public static int readInt(Scanner sc){
         Integer entrada=null;
         do{

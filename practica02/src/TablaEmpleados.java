@@ -48,7 +48,7 @@ public class TablaEmpleados extends Tabla {
         ArrayList<String> telefonosArray = Main.stringToArrayList(telefonos);
         fechaNacimiento = this.inputDateParameter(sc, "nacimiento", fechaNacimiento);
         salario = this.inputIntParameter(sc, "el salario mensual", salario);
-        rol = this.inputStringParameter(sc, "el rol del empleado", rol);
+        rol = this.inputRoleParameters(sc, rol);
 
         return new Empleado(llave, nombreArray, direccionArray, correosArray, telefonosArray, fechaNacimiento, salario, rol);
     }

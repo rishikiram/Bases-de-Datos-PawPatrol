@@ -373,6 +373,74 @@ public abstract class Tabla {
         return eleccion;
     }
 
+    /**
+     * Funcion que recibe del usuario un rol para un empelado de un vivero
+     * @param in Scanner de entrada
+     * @param valorOriginal Valor actual del parámetro solicitado, puede ser null si no tiene un valor actual
+     * @return La cadena con el rol seleccionado por el usuario
+     */
+    protected String inputRoleParameters(Scanner in, String valorOriginal){
+        String rol = null;
+        int eleccion;
+        boolean chosen= false;
+        boolean willEdit = true;
+        do {
+            if(valorOriginal!=null){
+                System.out.println("¿Deseas editar el rol del empleado (valor actua: <"+valorOriginal+">)?\n"
+                    +"1) Sí\n"
+                    +"2 o Enter) No"
+                );
+                String line = in.nextLine();
+                if(line.isEmpty() || line.equals("2")){
+                    chosen=true;
+                    willEdit=false;
+                    break;
+                }else if(line.equals("1")){
+                    chosen=true;
+                }else{
+                    System.out.println("Elección inválida, favor de volver a intentar '"+line+"'");
+                }
+            }
+
+        }while(!chosen);
+        
+        chosen=false;
+        if(willEdit){do {
+            System.out.println(
+                "Seleccione un rol para el empleado:\n"
+                +"1) Gerente\n"
+                +"2) Cuidador de plantas\n"
+                +"3) Encargado de mostrar plantas a los clientes\n"
+                +"4) Cajero"
+            );
+            eleccion = Main.readInt(in);
+            switch (eleccion) {
+                case 1:
+                    rol = "Gerente";
+                    chosen=true;
+                    break;
+                case 2:
+                    rol = "Cuidador de plantas";
+                    chosen=true;
+                    break;
+                case 3:
+                    rol = "Encargado de mostrar plantas a los clientes";
+                    chosen=true;
+                    break;
+                case 4:
+                    rol = "Cajero";
+                    chosen=true;
+                    break;
+                default:
+                    System.out.println("Elección inválida, vuelve a ingresar por favor");
+                    chosen=false;
+                    break;
+            }
+        } while (!chosen);}
+
+        return rol;
+    }
+
     /** Función que regresa el nombre de las entidades que contiene la tabla 
     * @return El nombre de las entidades que contiene la tabla 
     */
