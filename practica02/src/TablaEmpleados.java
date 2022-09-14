@@ -38,7 +38,7 @@ public class TablaEmpleados extends Tabla {
         }
 
         llave = this.inputNewLlaveParameter(sc, llave);
-        nombre = this.inputStringParameter(sc, "ll nombre", nombre);
+        nombre = this.inputStringParameter(sc, "el nombre del empleado", nombre);
         ArrayList<String> nombreArray = Main.stringToArrayList(nombre);
         direccion = this.inputStringParameter(sc, "la(s) direccione(s) (separadas por guiones)", direccion);
         ArrayList<String> direccionArray = Main.stringToArrayList(direccion);
@@ -46,7 +46,7 @@ public class TablaEmpleados extends Tabla {
         ArrayList<String> correosArray = Main.stringToArrayList(correos);
         telefonos = this.inputPhoneParameters(sc, telefonos);
         ArrayList<String> telefonosArray = Main.stringToArrayList(telefonos);
-        fechaNacimiento = this.inputStringParameter(sc, "la fecha de nacimiento", fechaNacimiento);
+        fechaNacimiento = this.inputDateParameter(sc, "nacimiento", fechaNacimiento);
         salario = this.inputIntParameter(sc, "el salario mensual", salario);
         rol = this.inputStringParameter(sc, "el rol del empleado", rol);
 

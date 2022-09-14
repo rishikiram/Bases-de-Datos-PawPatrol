@@ -41,6 +41,7 @@ public abstract class Tabla {
             System.out.println("Creando archivo '"+archivo.getPath()+"'...");
             archivo.createNewFile();
         }else{
+            System.out.println("Leyendo archivo '"+archivo.getPath()+"'...");
             this.loadTable();
         }
     }
@@ -148,11 +149,12 @@ public abstract class Tabla {
         for (Entidad e : entidades) {
             collect.append(String.join(",   ", e.toArray()));
             collect.append("\n");
-
+            System.out.println(String.join(",   ", e.toArray()));
         }
         if (collect.length() > 0) {
             writer.write(collect.toString());
         }
+        writer.close();
     }
 
     /**
@@ -284,7 +286,7 @@ public abstract class Tabla {
         String eleccion="";
         boolean chosen = false;
         do{
-            eleccion=this.inputStringParameter(in, "uno o más teléfono(s) (separados por guiones '-'", valorOriginal);
+            eleccion=this.inputStringParameter(in, "uno o más teléfono(s) (separados por guiones '-')", valorOriginal);
 
             ArrayList<String> telefonos = Main.stringToArrayList(eleccion);
             boolean validos = true;
@@ -303,6 +305,42 @@ public abstract class Tabla {
         return eleccion;
     }
 
+    /**
+     * Recibe del usuario una fecha
+     * @param in Scanner de donde está ingresando información el usuario
+     * @param label El concepto de la fecha (se mostrará "la fecha de <label>")
+     * @param valorOriginal Valor actual del parámetro solicitado, puede ser null si no tiene un valor actual
+     * @return El valor que el usuario eligió
+     */
+    protected String inputDateParameter(Scanner in, String label, String valorOriginal){
+        String eleccion="";
+        boolean chosen = false;
+        do{
+            eleccion=this.inputStringParameter(in, "la fecha de " + label + " (dd/mm/aaaa)", valorOriginal);
+
+            ArrayList<String> telefonos = Main.stringToArrayList(eleccion);
+            boolean validos = true;
+            for(String t:telefonos){
+                if(!Main.esFechaValida(t)){
+                    validos=false;
+                }
+            }
+            if(validos){
+                chosen=true;
+            }else{
+                System.out.println("La fecha ingresada no es válida, vuelva a intentar");
+            }
+        }while(!chosen);
+
+        return eleccion;
+    }
+
+    /**
+     * Funcion que recibe del usuario un conjunto de uno o más correos electrónicos separados por guiones
+     * @param in Scanner de entrada
+     * @param valorOriginal Valor actual del parámetro solicitado, puede ser null si no tiene un valor actual
+     * @return La cadena con los correos ingresados por el usuario
+     */
     protected String inputEmailParameters(Scanner in, String valorOriginal){
         String eleccion = "";
         boolean chosen= false;
@@ -327,10 +365,15 @@ public abstract class Tabla {
         return eleccion;
     }
 
+    /** Función que regresa el nombre de las entidades que contiene la tabla 
+    * @return El nombre de las entidades que contiene la tabla 
+    */
     public abstract String getNombre();
 
+    /**
+     * Muestra todas las entidades contenidas en una tabla
+     */
     public void mostrarEntidades(){
-
         if (entidades.size() == 0) {
             System.out.println("No hay datos en el archivo.");
         }

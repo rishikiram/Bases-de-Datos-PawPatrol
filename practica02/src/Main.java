@@ -21,11 +21,6 @@ public class Main {
         Tabla viveros = new TablaViveros(new File("archivos-generados/viveros.csv"));
         Tabla empleados = new TablaEmpleados(new File("archivos-generados/empleados.csv"));
         Tabla plantas = new TablaPlantas(new File("archivos-generados/plantas.csv"));
-          
-        viveros.saveTable();
-        empleados.saveTable();
-        plantas.saveTable();
-
 
         int opc;
         int exit;
@@ -223,6 +218,13 @@ public class Main {
     }
     public static boolean esTelefonoValido(String s){
         String patron=  "^(\\+\\d{1,3}( )?)?((\\(\\d{1,3}\\))|\\d{1,3})[- .]?\\d{3,4}[- .]?\\d{4}$"; // https://stackoverflow.com/questions/42104546/java-regular-expressions-to-validate-phone-numbers
+        if(s==null || s.isEmpty()){
+            return false;
+        }
+        return Pattern.compile(patron).matcher(s).matches();
+    }
+    public static boolean esFechaValida(String s){
+        String patron=  "^([0-2][0-9]||3[0-1])/(0[0-9]||1[0-2])/([0-9][0-9])?[0-9][0-9]$"; // https://stackoverflow.com/questions/8283405/what-is-the-regular-expression-for-date-format-dd-mm-yyyy
         if(s==null || s.isEmpty()){
             return false;
         }

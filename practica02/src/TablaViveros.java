@@ -38,7 +38,7 @@ public class TablaViveros extends Tabla {
         ArrayList<String> direccionesArray = Main.stringToArrayList(direccionesString);
         telefonosString = this.inputPhoneParameters(sc, telefonosString);
         ArrayList<String> telefonosArray = Main.stringToArrayList(telefonosString);
-        fecha = this.inputStringParameter(sc, "la fecha de apertura", fecha);
+        fecha = this.inputDateParameter(sc, "creación", fecha);
         tipo = this.inputStringParameter(sc, "el tipo de vivero", tipo);
 
         return new Vivero(id, nombre, direccionesArray, telefonosArray, fecha, tipo);
