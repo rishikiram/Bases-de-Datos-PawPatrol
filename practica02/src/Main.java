@@ -45,7 +45,7 @@ public class Main {
                 System.out.println("3. Tabla de Plantas.");
                 System.out.println("--------------------------------------------");
                 System.out.println("Ingresa una opción del menu: ");
-                opc = in.nextInt();
+                opc = Main.readInt(in);
 
                 switch (opc) {
                     // Viveros
@@ -74,33 +74,26 @@ public class Main {
                         break;
                 }
                 while(confirm){
-                    try {
-                        System.out.println("¿Deseas hacer alguna otra modificación en las tablas?");
-                        System.out.println("1. Si");
-                        System.out.println("2. No");
-                        exit = in.nextInt();
-                        if (exit == 1) {
-                            confirm = false;
-                            repetir = true;
-                        } else if (exit == 2) {
-                            System.exit(0);
-                        } else {
-                            System.out.println(yellow + "Ingresa una opción del menú." + reset);
-                            confirm = true;
-                        }
-                    }catch (InputMismatchException e){
-                        System.out.println(red + "Ingresa únicamente numeros." + reset);
+                    System.out.println("¿Deseas hacer alguna otra modificación en las tablas?");
+                    System.out.println("1. Si");
+                    System.out.println("2. No");
+                    exit = Main.readInt(in);
+                    if (exit == 1) {
+                        confirm = false;
+                        repetir = true;
+                    } else if (exit == 2) {
+                        System.exit(0);
+                    } else {
+                        System.out.println(yellow + "Ingresa una opción del menú." + reset);
                         confirm = true;
-                        in.next();
                     }
                 }
             } catch (Exception e) {
                 System.out.println(red + "\n\tDebes ingresar un numero\tIntentalo de nuevo" + reset);
-                in.next();
+                e.printStackTrace();
                 excep = true;
             }
         } while (excep || repetir);    
-        in.close();
     }
 
     /**
@@ -128,7 +121,7 @@ public class Main {
                     System.out.println("4. Eliminar información.");
                     System.out.println("--------------------------------------------");
                     System.out.println("Ingresa una opción del menu: ");
-                    opc = in.nextInt();
+                    opc = Main.readInt(in);
                     switch (opc) {
                         // Agregar información
                         case 1:
@@ -140,11 +133,11 @@ public class Main {
                             break;
                         // Editar información
                         case 3:
-                            //tabla.editEntidad(setLlave());
+                            tabla.editEntidad(setLlave());
                             break;
                         // Eliminar información
                         case 4:
-                            //tabla.deleteEntidad(setLlave());
+                            tabla.deleteEntidad(setLlave());
                             break;
                         // Verificar si un elemento esta en la lista
                         default:
@@ -154,11 +147,10 @@ public class Main {
                     }
                 } catch (Exception e2) {
                     System.out.println(red + "\n\tDebes ingresar un numero\tIntentalo de nuevo" + reset);
-                    in.next();
+                    e2.printStackTrace();
                     excep = true;
                 }
             } while (excep || repetir);
-            //in.close();
             try {
                 tabla.saveTable();
             } catch (IOException e) {
@@ -169,7 +161,7 @@ public class Main {
                     System.out.println("¿Deseas hacer alguna modificación en esta tabla?");
                     System.out.println("1. Si");
                     System.out.println("2. No");
-                    exit = in.nextInt();
+                    exit = Main.readInt(in);
                     if (exit == 1) {
                         edit = true;
                         repetir = false;
@@ -184,7 +176,6 @@ public class Main {
                 }catch (InputMismatchException e){
                     System.out.println(red + "Ingresa únicamente numeros." + reset);
                     repetir = true;
-                    in.next();
                 }
             }while(repetir);
         }while(edit);
@@ -199,7 +190,7 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Ingresa la llave:");
-        llave = scanner.nextInt();
+        llave = Main.readInt(scanner);
 
         return llave;
     }
@@ -243,5 +234,17 @@ public class Main {
             return false;
         }
         return Pattern.compile(patron).matcher(s).matches();
+    }
+    public static int readInt(Scanner sc){
+        Integer entrada=null;
+        do{
+            try{
+                String line = sc.nextLine();
+                entrada = Integer.parseInt(line);
+            }catch(NumberFormatException e){
+                System.out.println("Debes ingresar un número, favor de volver a intentar");
+            }
+        }while(entrada==null);
+        return entrada;
     }
 }

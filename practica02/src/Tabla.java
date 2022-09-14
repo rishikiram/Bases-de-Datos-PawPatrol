@@ -153,39 +153,6 @@ public abstract class Tabla {
         if (collect.length() > 0) {
             writer.write(collect.toString());
         }
-        writer.close();
-
-
-        /* old version
-        ArrayList<String> atributos = new ArrayList<>();
-        atributos.add("esto");
-        atributos.add("es");
-        atributos.add("solo");
-        atributos.add("un ejemplo");
-        FileWriter writer = new FileWriter(archivo, true);
-        String collect = atributos.stream().collect(Collectors.joining(","));
-
-        switch (clase) {
-            case "vivero":
-                writer.write(collect);
-                writer.write("\n");
-                writer.close();
-                break;
-            case "planta":
-                writer.write(collect);
-                writer.write("\n");
-                writer.close();
-                break;
-            case "empleado":
-                writer.write(collect);
-                writer.write("\n");
-                writer.close();
-                break;
-            default:
-                System.out.println("Parece que algo salío mal");
-        }
-        atributos.clear();
-        */
     }
 
     /**

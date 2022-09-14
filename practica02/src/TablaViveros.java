@@ -41,8 +41,6 @@ public class TablaViveros extends Tabla {
         fecha = this.inputStringParameter(sc, "la fecha de apertura", fecha);
         tipo = this.inputStringParameter(sc, "el tipo de vivero", tipo);
 
-        sc.close();
-
         return new Vivero(id, nombre, direccionesArray, telefonosArray, fecha, tipo);
     }
 
