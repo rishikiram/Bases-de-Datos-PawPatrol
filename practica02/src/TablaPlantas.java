@@ -38,7 +38,7 @@ public class TablaPlantas extends Tabla {
             riegaFrecuencia = atributos[9];
         }
 
-        llave = this.inputIntParameter(sc, "el ID de la planta", llave);
+        llave = this.inputNewLlaveParameter(sc, llave);
         precio = this.inputIntParameter(sc, "el precio de la planta", precio);
         cantidad = this.inputIntParameter(sc, "la cantidad de plantas", cantidad);
         nombre = this.inputStringParameter(sc, "el nombre de la planta", nombre);

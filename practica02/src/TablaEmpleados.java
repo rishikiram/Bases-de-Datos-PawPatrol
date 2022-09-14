@@ -37,7 +37,7 @@ public class TablaEmpleados extends Tabla {
             rol = atributos[7];
         }
 
-        llave = this.inputIntParameter(sc, "el ID", llave);
+        llave = this.inputNewLlaveParameter(sc, llave);
         nombre = this.inputStringParameter(sc, "ll nombre", nombre);
         ArrayList<String> nombreArray = Main.stringToArrayList(nombre);
         direccion = this.inputStringParameter(sc, "la(s) direccione(s) (separadas por guiones)", direccion);

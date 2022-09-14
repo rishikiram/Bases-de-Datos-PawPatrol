@@ -228,6 +228,48 @@ public abstract class Tabla {
     }
 
     /**
+     * Recibe del usuario un valor entero para ser usado como un nuevo ID
+     * @param in Scanner de donde está ingresando información el usuario
+     * @param valorOriginal Valor actual del ID (para el caso en que se esté editando un ID), puede ser null si no se está editando ningún valor
+     * @return El valor que el usuario eligió
+     */
+    protected int inputNewLlaveParameter(Scanner in, Integer valorOriginal){
+        int eleccion=0;
+        boolean chosen = false;
+        String prompt = "Ingresa la llave";
+        if(valorOriginal!=null){
+            prompt+=" (presiona enter para conservar el valor actual <"+valorOriginal.toString()+">)";
+        }
+        prompt+=":";
+        do{
+            System.out.println(prompt);
+            try {
+                String line = in.nextLine();
+                if(line.isEmpty() && valorOriginal!=null){
+                    eleccion = valorOriginal;
+                    chosen=true;
+                }else{
+                    try{
+                        eleccion = Integer.parseInt(line);
+                        if(this.getEntidadPorLlave(eleccion)!=null){
+                            System.out.println("La llave ya se encuentra en la tabla, vuelve a intentar");
+                        }else{
+                            chosen=true;
+                        }
+                    }catch(NumberFormatException e){
+                        System.out.println("Necesitas ingresar un número entero, vuelve a intentar");
+                    }
+                }    
+            } catch (Exception e) {
+                System.out.println("Hubo un error al registrar tu eleccion, vuelve a intentar por favor");
+                e.printStackTrace();                
+            }
+        }while(!chosen);
+
+        return eleccion;
+    }
+
+    /**
      * Recibe del usuario un valor string
      * @param in Scanner de donde está ingresando información el usuario
      * @param nombreParam Nombre del parámetro que se está solicitando

@@ -32,7 +32,7 @@ public class TablaViveros extends Tabla {
             tipo = atributos[5];
         }
         
-        id = this.inputIntParameter(sc, "el ID", id);
+        id = this.inputNewLlaveParameter(sc, id);
         nombre = this.inputStringParameter(sc, "el nombre", nombre);
         direccionesString = this.inputStringParameter(sc, "la(s) direccione(s) (separadas por guiones)", direccionesString);
         ArrayList<String> direccionesArray = Main.stringToArrayList(direccionesString);
