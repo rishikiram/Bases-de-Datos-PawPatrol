@@ -20,8 +20,7 @@ public abstract class Tabla {
     public File archivo;
 
     /**
-     *  Loads all entidades from file associated with an Entidad
-     *  into entidades
+     *  Loads all entidades from the file 'archivos' into 'entidades'
      *  */
     public void loadTable() throws IOException {
         ArrayList<String> atributos = new ArrayList<>();
@@ -35,6 +34,10 @@ public abstract class Tabla {
         }
     }
 
+    /**
+     * inicializa el archivo si no existe
+     * @param archivo   File object de la .csv
+     * */
     public void inicializar(File archivo) throws IOException{
         this.archivo = archivo;
         if (!archivo.exists()) {
@@ -105,6 +108,11 @@ public abstract class Tabla {
         return false;
     }
 
+    /**
+     * Busca una entidad de la tabla y return lo
+     * @param llave La llave de la entidad a buscar
+     * @return la entidad o null
+     */
     public Entidad getEntidadPorLlave(int llave){
         for(Entidad e : this.entidades){
             if(e.getLlave()==llave){
