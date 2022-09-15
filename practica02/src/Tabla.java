@@ -88,7 +88,7 @@ public abstract class Tabla {
             this.entidades.add(entidadNueva);
             return true;
         } catch (Exception e) {
-            System.out.println("Hubo un error al agregar la entidad"); // TODO: Mejorar manejo de excepción
+            System.out.println("Hubo un error al agregar la entidad");
             return false;
         }
     }
@@ -142,7 +142,7 @@ public abstract class Tabla {
             }
             return false;
         } catch (Exception e) {
-            System.out.println("Hubo un error al editar la entidad"); // TODO: Mejorar manejo de excepción
+            System.out.println("Hubo un error al editar la entidad");
             return false;
         }
     }
@@ -291,7 +291,7 @@ public abstract class Tabla {
      * @return El valor que el usuario eligió
      */
     protected String inputPhoneParameters(Scanner in, String valorOriginal){
-        String eleccion="";
+        String eleccion;
         boolean chosen = false;
         do{
             eleccion=this.inputStringParameter(in, "uno o más teléfono(s) (separados por guiones '-')", valorOriginal);
@@ -321,7 +321,7 @@ public abstract class Tabla {
      * @return El valor que el usuario eligió
      */
     protected String inputDateParameter(Scanner in, String label, String valorOriginal){
-        String eleccion="";
+        String eleccion;
         boolean chosen = false;
         do{
             eleccion=this.inputStringParameter(in, "la fecha de " + label + " (dd/mm/aaaa)", valorOriginal);
@@ -350,7 +350,7 @@ public abstract class Tabla {
      * @return La cadena con los correos ingresados por el usuario
      */
     protected String inputEmailParameters(Scanner in, String valorOriginal){
-        String eleccion = "";
+        String eleccion;
         boolean chosen= false;
         do {
             eleccion = this.inputStringParameter(in, "Uno o más correos (separados por guines '-')", valorOriginal);

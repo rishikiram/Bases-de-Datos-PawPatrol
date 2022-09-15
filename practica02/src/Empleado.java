@@ -23,9 +23,10 @@ public class Empleado extends Entidad {
     int salario;
     String rol;
 
-    public int getLlave(){
-        return this.llave;
-    }
+    /* Arreglo de atributos de un empleado */
+    static String[] atributos = { "llave", "nombre", "direccion", "correos",
+            "telefonos", "fechaNacimiento", "salario", "rol" };
+
 
     /**
      * Constructor de un empleado
@@ -52,9 +53,8 @@ public class Empleado extends Entidad {
     }
     
     /**
-     * Constructor de una Empleado con ArrayList
-     *
-     * @param atributos
+     * Constructor de un Empleado con ArrayList.
+     * @param atributos - Un arrayList con los atributos que tendrá nuestro empleado.
      */
     public Empleado(ArrayList<String> atributos) {
         llave = Integer.parseInt(atributos.get(0));
@@ -67,18 +67,11 @@ public class Empleado extends Entidad {
         rol = atributos.get(7);
     }
 
-    /* Arreglo de atributos de un empleado */
-    static String[] atributos = { "llave", "nombre", "direccion", "correos",
-            "telefonos", "fechaNacimiento", "salario", "rol" };
-
     /**
-     * Método para convertir un ArrayList a un string
+     * Método para convertir un ArrayList a un arreglo de tipo String.
+     * @return - Arreglo de tipo String que tendrá los atributos.
      */
     public String[] toArray() {
-        /*
-         * return String[] de
-         * [llave, nombre, direccion, telefonos, fechaApertura]
-         */
         String nomStr = Main.arrayListToString(nombre);
         String corStr = Main.arrayListToString(correos);
         String teleStr = Main.arrayListToString(telefonos);
@@ -87,17 +80,29 @@ public class Empleado extends Entidad {
                 teleStr, fechaNacimiento, Integer.toString(salario), rol };
     }
 
-    /* Método para obtener los atributos */
+    /**
+     * Método que regresa la llave.
+     * @return llave del empleado.
+     */
+    public int getLlave(){
+        return this.llave;
+    }
+
+    /**
+     *  Método para obtener los atributos.
+     *  @return - Arreglo de atributos.
+     */
     public String[] getAtributos() {
         return atributos;
     }
 
+    /**
+     * Método que verifica si se tienen todos los atributos necesarios.
+     * @param atributos - Arreglo donde verificaremos que los atributos estén completos.
+     * @return - True si son correctos, False si falta algo.
+     */
     public static boolean atributosSonValidos(String[] atributos){
-        if(atributos == null || atributos.length != 8){
-            return false;
-        }
-
-        return true;
+        return (atributos == null || atributos.length != 8);
     }
 
 }

@@ -13,7 +13,6 @@ public class Main {
     static String green="\033[32m";
     static String yellow="\033[33m";
     static String purple="\033[35m";
-    static String cyan="\033[36m";
     // Reset
     static String reset="\u001B[0m";
 
@@ -24,7 +23,7 @@ public class Main {
 
         int opc;
         int exit;
-        boolean confirm = false;
+        boolean confirm;
         Scanner in = new Scanner(System.in);
         System.out.println(purple + "\n\t*** BIENVENIDO ***" + reset);
         boolean excep;
@@ -41,7 +40,7 @@ public class Main {
                 System.out.println("--------------------------------------------");
                 System.out.println("Ingresa una opción del menu: ");
                 opc = Main.readInt(in);
-
+                clearScreen();
                 switch (opc) {
                     // Viveros
                     case 1:
@@ -76,6 +75,7 @@ public class Main {
                     if (exit == 1) {
                         confirm = false;
                         repetir = true;
+                        clearScreen();
                     } else if (exit == 2) {
                         System.exit(0);
                     } else {
@@ -117,6 +117,7 @@ public class Main {
                     System.out.println("--------------------------------------------");
                     System.out.println("Ingresa una opción del menu: ");
                     opc = Main.readInt(in);
+                    clearScreen();
                     switch (opc) {
                         // Agregar información
                         case 1:
@@ -131,12 +132,12 @@ public class Main {
                             tabla.editEntidad(setLlave());
                             break;
                         // Eliminar información
-                        case 4:
+                        case 4 :
                             tabla.deleteEntidad(setLlave());
                             break;
-                        // Verificar si un elemento esta en la lista
+                        //Si no ingresa alguna opcion del menú
                         default:
-                            System.out.println(yellow + "\n\tElige una opcion de menu plis :c" + reset);
+                            System.out.println(yellow + "\n\tElige una opción de menu :c" + reset);
                             repetir = true;
                             break;
                     }
@@ -157,19 +158,21 @@ public class Main {
                     System.out.println("1. Si");
                     System.out.println("2. No");
                     exit = Main.readInt(in);
-                    if (exit == 1) {
+                    if (exit == 1) {}
+                        clearScreen();
                         edit = true;
                         repetir = false;
                     } else if (exit == 2) {
                         edit = false;
                         repetir = false;
+                        clearScreen();
                     } else {
                         System.out.println(yellow + "Ingresa una opción del menú." + reset);
                         repetir = true;
                         edit = false;
                     }
                 }catch (InputMismatchException e){
-                    System.out.println(red + "Ingresa únicamente numeros." + reset);
+                    System.out.println(red + "Ingresa únicamente números." + reset);
                     repetir = true;
                 }
             }while(repetir);
@@ -178,7 +181,7 @@ public class Main {
 
     /**
      * Función para pedir al usuario la llave con la que se buscará en la tabla y haremos la modificación
-     * @return la llave de busqueda
+     * @return la llave de búsqueda
      */
     public static int setLlave(){
         int llave;
@@ -272,5 +275,26 @@ public class Main {
             }
         }while(entrada==null);
         return entrada;
+    }
+
+    /**
+     * Método que limpia la consola dependiendo el sistema operativo.
+     */
+    public static void clearScreen(){
+        try{
+            String operatingSystem = System.getProperty("os.name");
+            ProcessBuilder processBuilder;
+            if(operatingSystem.contains("Windows")){
+                processBuilder = new ProcessBuilder("cmd", "/c", "cls");
+                Process startProcess = processBuilder.inheritIO().start();
+                startProcess.waitFor();
+            } else {
+                processBuilder = new ProcessBuilder("clear");
+                Process startProcess = processBuilder.inheritIO().start();
+                startProcess.waitFor();
+            }
+        }catch(Exception e){
+            System.out.println(e);
+        }
     }
 }

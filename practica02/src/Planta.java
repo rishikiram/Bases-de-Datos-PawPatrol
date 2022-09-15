@@ -17,9 +17,10 @@ public class Planta extends Entidad {
     int precio, cantidad;
     String nombre, genero, cuidados, sustrato, luz, fechaGerminacion, riegaFrequencia;
 
-    public int getLlave(){
-        return this.llave;
-    }
+    /* Arreglo de atributos de una planta */
+    public static String[] atributos = { "precio", "cantidad",
+            "nombre", "genero", "cuidados", "sustrato",
+            "luz", "fechaGerminacion", "riegaFrequencia" };
 
     /**
      * Constructor de una planta
@@ -68,35 +69,33 @@ public class Planta extends Entidad {
         riegaFrequencia = atributos.get(9);
     }
 
-    /* Arreglo de atributos de una planta */
-    public static String[] atributos = { "precio", "cantidad",
-            "nombre", "genero", "cuidados", "sustrato",
-            "luz", "fechaGerminacion", "riegaFrequencia" };
-
     /**
      * Método para convertir un ArrayList a un string
      */
     public String[] toArray() {
-        /*
-         * return String[] de
-         * {llave, precio...}
-         */
         return new String[] { Integer.toString(llave), Integer.toString(precio), Integer.toString(cantidad), nombre,
                 genero, cuidados, sustrato, luz, fechaGerminacion, riegaFrequencia };
     }
 
-    /* Método para obtener los atributos */
+    /**
+     * Método que regresa la llave de la planta.
+     * @return Llave de la planta.
+     */
+    public int getLlave(){
+        return this.llave;
+    }
+
+    /**
+     * Método que regresa los atributos.
+     * @return Arreglo con los atributos de la planta.
+     */
     public String[] getAtributos() {
         return atributos;
     }
 
     public static boolean atributosSonValidos(String[] atributos){
 
-        if(atributos == null || atributos.length != 10){
-            return false;
-        }
-
-        return true;
+        return (atributos == null || atributos.length != 10);
     }
 
 }
