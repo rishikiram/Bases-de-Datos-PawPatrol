@@ -158,7 +158,7 @@ public class Main {
                     System.out.println("1. Si");
                     System.out.println("2. No");
                     exit = Main.readInt(in);
-                    if (exit == 1) {}
+                    if (exit == 1) {
                         clearScreen();
                         edit = true;
                         repetir = false;
