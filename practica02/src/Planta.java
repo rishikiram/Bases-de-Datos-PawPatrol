@@ -95,7 +95,7 @@ public class Planta extends Entidad {
 
     public static boolean atributosSonValidos(String[] atributos){
 
-        return (atributos == null || atributos.length != 10);
+        return !(atributos == null || atributos.length != 10);
     }
 
 }

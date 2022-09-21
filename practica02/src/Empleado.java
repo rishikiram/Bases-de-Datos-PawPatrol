@@ -102,7 +102,7 @@ public class Empleado extends Entidad {
      * @return - True si son correctos, False si falta algo.
      */
     public static boolean atributosSonValidos(String[] atributos){
-        return (atributos == null || atributos.length != 8);
+        return !(atributos == null || atributos.length != 8);
     }
 
 }

@@ -384,8 +384,8 @@ public abstract class Tabla {
         int eleccion;
         boolean chosen= false;
         boolean willEdit = true;
-        do {
-            if(valorOriginal!=null){
+        if(valorOriginal!=null){
+            do {
                 System.out.println("¿Deseas editar el rol del empleado (valor actua: <"+valorOriginal+">)?\n"
                     +"1) Sí\n"
                     +"2 o Enter) No"
@@ -400,10 +400,10 @@ public abstract class Tabla {
                 }else{
                     System.out.println("Elección inválida, favor de volver a intentar '"+line+"'");
                 }
-            }
-
-        }while(!chosen);
+            }while(!chosen);
+        }
         
+
         chosen=false;
         if(willEdit){do {
             System.out.println(
