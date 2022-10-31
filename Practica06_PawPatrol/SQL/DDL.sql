@@ -7,7 +7,7 @@ CREATE TABLE vivero(
   fecha_apertura date
 );
 
-CREATE TABLE cajero(
+CREATE TABLE empleado(
   id_persona int PRIMARY KEY,
   numero_exterior int,
   cp int,
@@ -16,60 +16,36 @@ CREATE TABLE cajero(
   nombre varchar(100),
   apellido_paterno varchar(100),
   apellido_materno varchar(100),
-  salario int,
+  salario int
+);
+
+CREATE TABLE cajero(
   cantidad_recaudada int,
   id_vivero int NOT NULL
     FOREIGN KEY(id_vivero)
-    REFERENCES vivero(id_vivero),
-);
+    REFERENCES vivero(id_vivero)
+) INHERITS (empleado);
 
 CREATE TABLE cuidador(
-  id_persona int PRIMARY KEY,
-  numero_exterior int,
-  cp int,
-  calle varchar(100),
-  fecha_nacimiento date,
-  nombre varchar(100),
-  apellido_paterno varchar(100),
-  apellido_materno varchar(100),
-  salario int,
   turno_es_matutino bool,
   id_vivero int NOT NULL
     FOREIGN KEY(id_vivero)
-    REFERENCES vivero(id_vivero),
-);
+    REFERENCES vivero(id_vivero)
+) INHERITS (empleado);
 
 CREATE TABLE gerente(
-  id_persona int PRIMARY KEY,
-  numero_exterior int,
-  cp int,
-  calle varchar(100),
-  fecha_nacimiento date,
-  nombre varchar(100),
-  apellido_paterno varchar(100),
-  apellido_materno varchar(100),
-  salario int,
   fecha_comienzo date,
   id_vivero int NOT NULL
     FOREIGN KEY(id_vivero)
-    REFERENCES vivero(id_vivero),
-);
+    REFERENCES vivero(id_vivero)
+) INHERITS (empleado);
 
 CREATE TABLE encargado(
-  id_persona int PRIMARY KEY,
-  numero_exterior int,
-  cp int,
-  calle varchar(100),
-  fecha_nacimiento date,
-  nombre varchar(100),
-  apellido_paterno varchar(100),
-  apellido_materno varchar(100),
-  salario int,
   num_clientes_ayudados int,
   id_vivero int NOT NULL
     FOREIGN KEY(id_vivero)
-    REFERENCES vivero(id_vivero),
-);
+    REFERENCES vivero(id_vivero)
+) INHERITS (empleado);
 
 CREATE TABLE cliente(
   id_persona int PRIMARY KEY,
@@ -79,7 +55,7 @@ CREATE TABLE cliente(
   fecha_nacimiento date,
   nombre varchar(100),
   apellido_paterno varchar(100),
-  apellido_materno varchar(100),
+  apellido_materno varchar(100)
 );
 
 CREATE TABLE planta(
@@ -107,7 +83,7 @@ CREATE TABLE c_info_planta(
   tipo_sustrato varchar(100)
 );
 
-CREATE TABLE venta_fisica(
+CREATE TABLE venta(
   CONSTRAINT pk_venta_fisica
   PRIMARY KEY (id_venta, id_pago),
 
@@ -115,23 +91,17 @@ CREATE TABLE venta_fisica(
   id_pago int
     CONSTRAINT fk_id_pago
     FOREIGN KEY(id_pago)
-    REFERENCES efectivo(id_pago), tarjeta_debito(id_pago), tarjeta_credito(id_pago),
-  fecha date,
+    REFERENCES pago(id_pago)
+  fecha date
+);
+
+CREATE TABLE venta_fisica(
   id_cajero int
     FOREIGN KEY(id_cajero)
     REFERENCES cajero(id_persona),
-);
+) INHERITS (venta);
 
 CREATE TABLE venta_en_linea(
-  CONSTRAINT pk_venta_en_linea
-  PRIMARY KEY(id_cliente, id_pago),
-
-  id_venta int,
-  id_pago int
-    CONSTRAINT fk_id_pago
-    FOREIGN KEY(id_pago)
-    REFERENCES efectivo(id_pago), tarjeta_debito(id_pago), tarjeta_credito(id_pago),
-  fecha date,
   num_seguimiento int,
   numero_ex int,
   cp int,
@@ -139,26 +109,25 @@ CREATE TABLE venta_en_linea(
   id_cliente int
     FOREIGN KEY(id_cliente)
     REFERENCES cliente(id_persona),
+) INHERITS (venta);
+
+CREATE TABLE pago(
+  id_pago int PRIMARY KEY,
+  cantidad int
 );
 
 CREATE TABLE efectivo(
-  id_pago int PRIMARY KEY,
-  cantidad int,
   cantidad_recibida int,
   cantidad_dado int
-);
+) INHERITS (pago);
 
 CREATE TABLE tarjeta_credito(
-  id_pago int PRIMARY KEY,
-  cantidad int,
   num_meses_sinintereses int
-);
+) INHERITS (pago);
 
 CREATE TABLE tarjeta_debito(
-  id_pago int PRIMARY KEY,
-  cantidad int,
   cantidad_retiro_efectivo int
-);
+) INHERITS (pago);
 
 CREATE TABLE ayudar(
   id_empleado_encargado int
@@ -173,14 +142,14 @@ CREATE TABLE correo(
   correo varchar(100),
   id_persona int NOT NULL
     FOREIGN KEY(id_persona)
-    REFERENCES encargado(id_persona), gerente(id_persona), cuidador(id_persona), cajero(id_persona),
+    REFERENCES empleado(id_persona)
 );
 
 CREATE TABLE telefono_persona(
   telefono_persona varchar(100),
   id_persona int NOT NULL
     FOREIGN KEY(id_persona)
-    REFERENCES encargado(id_persona), gerente(id_persona), cuidador(id_persona), cajero(id_persona),
+    REFERENCES empleado(id_persona),
 );
 CREATE TABLE telefono_vivero(
   telefono varchar(100),
