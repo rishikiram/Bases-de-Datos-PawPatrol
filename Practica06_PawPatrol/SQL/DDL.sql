@@ -141,7 +141,7 @@ ADD CONSTRAINT pk_planta PRIMARY KEY (id_planta, id_info_planta),
 CONSTRAINT fk_info_planta FOREIGN KEY (id_info_planta) REFERENCES c_info_planta(nombre);
 
 ALTER TABLE pago
-ADD CONSTRAINT pk_pago PRIMARY KEY (id_pago);
+ADD CONSTRAINT pk_pago PRIMARY KEY (id_pago, id_venta);
 ADD CONSTRAINT pf_venta FOREIGN KEY (id_venta) REFERENCES venta(id_venta);
 
 ALTER TABLE venta
