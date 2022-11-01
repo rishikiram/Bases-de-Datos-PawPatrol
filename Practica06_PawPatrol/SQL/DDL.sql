@@ -70,6 +70,7 @@ CREATE TABLE planta(
 
 CREATE TABLE pago(
   id_pago int,
+  id_venta int,
   cantidad int
 );
 
@@ -88,7 +89,6 @@ CREATE TABLE tarjeta_debito(
 
 CREATE TABLE venta(
   id_venta int,
-  id_pago int,
   fecha date
 );
 
@@ -142,11 +142,10 @@ CONSTRAINT fk_info_planta FOREIGN KEY (id_info_planta) REFERENCES c_info_planta(
 
 ALTER TABLE pago
 ADD CONSTRAINT pk_pago PRIMARY KEY (id_pago);
---ADD CONSTRAINT pf_venta FOREIGN KEY (id_venta) REFERENCES venta(id_venta);
+ADD CONSTRAINT pf_venta FOREIGN KEY (id_venta) REFERENCES venta(id_venta);
 
 ALTER TABLE venta
-ADD CONSTRAINT pk_venta PRIMARY KEY (id_venta, id_pago),
-ADD CONSTRAINT fk_pago FOREIGN KEY(id_pago) REFERENCES pago(id_pago); --borrar idealmente
+ADD CONSTRAINT pk_venta PRIMARY KEY (id_venta);
 
 ALTER TABLE venta_fisica
 ADD CONSTRAINT fk_cajero FOREIGN KEY(id_cajero) REFERENCES cajero(id_persona);
