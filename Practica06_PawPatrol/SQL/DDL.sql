@@ -1,5 +1,5 @@
 CREATE TABLE vivero(
-  id_vivero int PRIMARY KEY,
+  id_vivero int,
   nombre_vivero varchar(100),
   calle varchar(100),
   numero_exterior int,
@@ -8,7 +8,7 @@ CREATE TABLE vivero(
 );
 
 CREATE TABLE empleado(
-  id_persona int PRIMARY KEY,
+  id_persona int,
   numero_exterior int,
   cp int,
   calle varchar(100),
@@ -16,39 +16,28 @@ CREATE TABLE empleado(
   nombre varchar(100),
   apellido_paterno varchar(100),
   apellido_materno varchar(100),
-  salario int
+  salario int,
+  id_vivero int
 );
 
 CREATE TABLE cajero(
-  cantidad_recaudada int,
-  id_vivero int NOT NULL
-    FOREIGN KEY(id_vivero)
-    REFERENCES vivero(id_vivero)
+  cantidad_recaudada int
 ) INHERITS (empleado);
 
 CREATE TABLE cuidador(
-  turno_es_matutino bool,
-  id_vivero int NOT NULL
-    FOREIGN KEY(id_vivero)
-    REFERENCES vivero(id_vivero)
+  turno_es_matutino bit
 ) INHERITS (empleado);
 
 CREATE TABLE gerente(
-  fecha_comienzo date,
-  id_vivero int NOT NULL
-    FOREIGN KEY(id_vivero)
-    REFERENCES vivero(id_vivero)
+  fecha_comienzo date
 ) INHERITS (empleado);
 
 CREATE TABLE encargado(
-  num_clientes_ayudados int,
-  id_vivero int NOT NULL
-    FOREIGN KEY(id_vivero)
-    REFERENCES vivero(id_vivero)
+  num_clientes_ayudados int
 ) INHERITS (empleado);
 
 CREATE TABLE cliente(
-  id_persona int PRIMARY KEY,
+  id_persona int,
   numero_exterior int,
   cp int,
   calle varchar(100),
@@ -58,22 +47,10 @@ CREATE TABLE cliente(
   apellido_materno varchar(100)
 );
 
-CREATE TABLE planta(
-  CONSTRAINT pk_planta
-  PRIMARY KEY (id_planta, id_info_planta),
 
-  id_planta int,
-  id_info_planta varchar(100)
-    CONSTRAINT fk_info_planta
-    FOREIGN KEY (id_info_plant)
-    REFERENCES c_info_planta(nombre),
-  id_vivero int NOT NULL,
-  id_venta int,
-  fecha_germinacion date
-);
 
 CREATE TABLE c_info_planta(
-  nombre varchar(100) PRIMARY KEY,
+  nombre varchar(100)
   riego int,
   cuidados varchar(100),
   area varchar(100), --este no estoy segura a q se referia
@@ -83,36 +60,16 @@ CREATE TABLE c_info_planta(
   tipo_sustrato varchar(100)
 );
 
-CREATE TABLE venta(
-  CONSTRAINT pk_venta_fisica
-  PRIMARY KEY (id_venta, id_pago),
-
+CREATE TABLE planta(
+  id_planta int,
+  id_info_planta varchar(100),
+  id_vivero int NOT NULL,
   id_venta int,
-  id_pago int
-    CONSTRAINT fk_id_pago
-    FOREIGN KEY(id_pago)
-    REFERENCES pago(id_pago)
-  fecha date
+  fecha_germinacion date
 );
 
-CREATE TABLE venta_fisica(
-  id_cajero int
-    FOREIGN KEY(id_cajero)
-    REFERENCES cajero(id_persona),
-) INHERITS (venta);
-
-CREATE TABLE venta_en_linea(
-  num_seguimiento int,
-  numero_ex int,
-  cp int,
-  calle varchar(100),
-  id_cliente int
-    FOREIGN KEY(id_cliente)
-    REFERENCES cliente(id_persona),
-) INHERITS (venta);
-
 CREATE TABLE pago(
-  id_pago int PRIMARY KEY,
+  id_pago int,
   cantidad int
 );
 
@@ -129,31 +86,83 @@ CREATE TABLE tarjeta_debito(
   cantidad_retiro_efectivo int
 ) INHERITS (pago);
 
+CREATE TABLE venta(
+  id_venta int,
+  id_pago int,
+  fecha date
+);
+
+CREATE TABLE venta_fisica(
+  id_cajero int
+) INHERITS (venta);
+
+CREATE TABLE venta_en_linea(
+  num_seguimiento int,
+  numero_ex int,
+  cp int,
+  calle varchar(100),
+  id_cliente int
+) INHERITS (venta);
+
 CREATE TABLE ayudar(
   id_empleado_encargado int
-    FOREIGN KEY (id_empleado_encargado)
-    REFERENCES encargado(id_persona),
   id_venta_fisica int
-  FOREIGN KEY (id_venta_fisica)
-  REFERENCES venta_fisica(id_venta),
 );
 
 CREATE TABLE correo(
   correo varchar(100),
-  id_persona int NOT NULL
-    FOREIGN KEY(id_persona)
-    REFERENCES empleado(id_persona)
+  id_persona int
 );
 
 CREATE TABLE telefono_persona(
   telefono_persona varchar(100),
-  id_persona int NOT NULL
-    FOREIGN KEY(id_persona)
-    REFERENCES empleado(id_persona),
+  id_persona int
 );
 CREATE TABLE telefono_vivero(
   telefono varchar(100),
-  id_vivero int NOT NULL
-    FOREIGN KEY(id_vivero)
-    REFERENCES vivero(id_vivero),
+  id_vivero int
 );
+
+ALTER TABLE vivero
+ADD CONSTRAINT pk_vivero PRIMARY KEY (id_vivero);
+
+ALTER TABLE empleado
+ADD CONSTRAINT pk_empleado PRIMARY KEY (id_persona),
+ADD CONSTRAINT fk1_empleado FOREIGN KEY(id_vivero) REFERENCES vivero(id_vivero);
+
+ALTER TABLE cliente
+ADD CONSTRAINT pk_cliente PRIMARY KEY (id_persona);
+
+ALTER TABLE c_info_planta
+ADD CONSTRAINT pk_c_info_planta PRIMARY KEY (nombre);
+
+ALTER TABLE planta
+ADD CONSTRAINT pk_planta PRIMARY KEY (id_planta, id_info_planta),
+CONSTRAINT fk_info_planta FOREIGN KEY (id_info_planta) REFERENCES c_info_planta(nombre);
+
+ALTER TABLE pago
+ADD CONSTRAINT pk_pago PRIMARY KEY (id_pago);
+--ADD CONSTRAINT pf_venta FOREIGN KEY (id_venta) REFERENCES venta(id_venta);
+
+ALTER TABLE venta
+ADD CONSTRAINT pk_venta PRIMARY KEY (id_venta, id_pago),
+ADD CONSTRAINT fk_pago FOREIGN KEY(id_pago) REFERENCES pago(id_pago); --borrar idealmente
+
+ALTER TABLE venta_fisica
+ADD CONSTRAINT fk_cajero FOREIGN KEY(id_cajero) REFERENCES cajero(id_persona);
+
+ALTER TABLE venta_en_linea
+ADD CONSTRAINT fk_cliente FOREIGN KEY(id_cliente) REFERENCES cliente(id_persona);
+
+ALTER TABLE ayudar
+ADD CONSTRAINT FOREIGN KEY (id_empleado_encargado) REFERENCES encargado(id_persona),
+ADD CONSTRAINT FOREIGN KEY (id_venta_fisica) REFERENCES venta_fisica(id_venta);
+
+ALTER TABLE correo
+ADD CONSTRAINT FOREIGN KEY(id_persona) REFERENCES empleado(id_persona);
+
+ALTER TABLE telefono_persona
+ADD CONSTRAINT FOREIGN KEY(id_persona) REFERENCES empleado(id_persona);
+
+ALTER TABLE telefono_vivero
+ADD CONSTRAINT FOREIGN KEY(id_vivero) REFERENCES vivero(id_vivero);
