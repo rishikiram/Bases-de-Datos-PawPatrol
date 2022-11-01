@@ -132,7 +132,7 @@ ALTER TABLE
 ADD
   CONSTRAINT pk_pago PRIMARY KEY (id_pago),
 ADD
-  CONSTRAINT pf_venta FOREIGN KEY (id_venta) REFERENCES venta(id_venta);
+  CONSTRAINT fk_pago FOREIGN KEY (id_venta) REFERENCES venta(id_venta);
 
 ALTER TABLE
   cajero
