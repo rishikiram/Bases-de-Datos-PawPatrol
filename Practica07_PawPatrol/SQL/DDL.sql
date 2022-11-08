@@ -197,7 +197,7 @@ ADD
     
 COMMENT ON TABLE ayudar IS 'Tabla que relaciona ventas fisicas con el encargado que ayudo en la venta';
 COMMENT ON COLUMN ayudar.id_empleado_encargado IS 'ID del empleado que ayudo con la venta';
-COMMENT ON COLUMN ayudar.id_venta_fisica IS 'ID de la venta fisica'
+COMMENT ON COLUMN ayudar.id_venta_fisica IS 'ID de la venta fisica';
 
 COMMENT ON TABLE c_info_planta IS 'Tabla catalogo de las plantas que maneja el vivero';
 COMMENT ON COLUMN c_info_planta.nombre IS 'El nombre de la planta';
@@ -252,5 +252,56 @@ COMMENT ON TABLE efectivo IS 'Generalizacion de la tabla pago, para pagos con ef
 COMMENT ON COLUMN efectivo.id_pago IS 'El id del pago';
 COMMENT ON COLUMN efectivo.id_venta IS 'El id de la venta asociada al pago';
 COMMENT ON COLUMN efectivo.cantidad IS 'La cantidad que se pago en efectivo';
-COMMENT ON COLUMN efectivo.cantidad_recibida IS 'La cantidad de efectivo que dio el cliente';
-COMMENT ON COLUMN efectivo.cantidad_dado IS 'El cambio devuelto al cliente';
+
+COMMENT ON TABLE pago IS 'Súper tabla con los pagos, o bien, transacciones específicas a una forma de pago';
+COMMENT ON COLUMN pago.id_pago IS 'El id del pago';
+COMMENT ON COLUMN pago.id_venta IS 'El id de la venta asociada al pago';
+COMMENT ON COLUMN pago.cantidad IS 'La cantidad que fue transferida en el pago';
+
+COMMENT ON TABLE planta IS 'Tabla con las plantas (ejemplares)';
+COMMENT ON COLUMN planta.id_planta IS 'ID de la planta (ejemplar)';
+COMMENT ON COLUMN planta.id_info_planta IS 'ID de la entrada del catálogo con información sobre la planta.';
+COMMENT ON COLUMN planta.id_vivero IS 'ID del vivero en que estuvo/está albergada la planta.';
+COMMENT ON COLUMN planta.id_venta IS 'ID de la venta en que fue vendida la planta, si es que fue vendida (puede ser nulo).';
+COMMENT ON COLUMN planta.fecha_germinacion IS 'Fecha en que germinó la planta.';
+
+COMMENT ON TABLE tarjeta_credito IS 'Generalizacion de la tabla pago, para pagos con efectivo';
+COMMENT ON COLUMN tarjeta_credito.id_pago IS 'El id del pago';
+COMMENT ON COLUMN tarjeta_credito.id_venta IS 'El id de la venta asociada al pago';
+COMMENT ON COLUMN tarjeta_credito.cantidad IS 'La cantidad que se pagó con la tarjeta de crédito';
+COMMENT ON COLUMN tarjeta_credito.num_meses_sinintereses IS 'La cantidad de meses sin intereses aplicados al pago';
+
+COMMENT ON TABLE tarjeta_debito IS 'Generalizacion de la tabla pago, para pagos con efectivo';
+COMMENT ON COLUMN tarjeta_debito.id_pago IS 'El id del pago';
+COMMENT ON COLUMN tarjeta_debito.id_venta IS 'El id de la venta asociada al pago';
+COMMENT ON COLUMN tarjeta_debito.cantidad IS 'La cantidad que se pagó con la tarjeta de débito';
+COMMENT ON COLUMN tarjeta_debito.cantidad_retiro_efectivo IS 'Cantidad de dinero que el cliente retiró en efectivo';
+
+COMMENT ON TABLE telefono_persona IS 'Tabla que guarda teléfonos asociados a personas';
+COMMENT ON COLUMN telefono_persona.telefono_persona IS 'Teléfono de la persona';
+COMMENT ON COLUMN telefono_persona.id_persona IS 'ID de la persona';
+
+COMMENT ON TABLE telefono_vivero IS 'Tabla que guarda teléfonos asociados a viveros';
+COMMENT ON COLUMN telefono_vivero.telefono IS 'Teléfono del vivero';
+COMMENT ON COLUMN telefono_vivero.id_vivero IS 'ID del vivero';
+
+COMMENT ON TABLE venta IS 'Súper clase que contiene los registros de ventas';
+COMMENT ON COLUMN venta.id_venta IS 'ID de la venta';
+COMMENT ON COLUMN venta.fecha IS 'Fecha de la venta';
+
+COMMENT ON TABLE venta_en_linea IS 'Clase que contiene los registros de ventas en línea';
+COMMENT ON COLUMN venta_en_linea.id_venta IS 'ID de la venta en línea';
+COMMENT ON COLUMN venta_en_linea.fecha IS 'Fecha de la venta en línea';
+COMMENT ON COLUMN venta_en_linea.num_seguimiento IS 'Número de seguimiento';
+COMMENT ON COLUMN venta_en_linea.numero_ex IS 'Número exterior de la dirección de envío';
+COMMENT ON COLUMN venta_en_linea.cp IS 'Código postal de la dirección de envío';
+COMMENT ON COLUMN venta_en_linea.calle IS 'Calle de la dirección de envío';
+COMMENT ON COLUMN venta_en_linea.id_cliente IS 'ID del cliente que hizo la compra';
+
+COMMENT ON TABLE vivero IS 'Tabla con los registros de los viveros (sucursales)';
+COMMENT ON COLUMN vivero.id_vivero IS 'ID único del vivero';
+COMMENT ON COLUMN vivero.nombre_vivero IS 'Nombre del vivero';
+COMMENT ON COLUMN vivero.calle IS 'Calle en la que está el vivero';
+COMMENT ON COLUMN vivero.numero_exterior IS 'Número exterior de la dirección del vivero';
+COMMENT ON COLUMN vivero.cp IS 'Código postal de la dirección del vivero';
+COMMENT ON COLUMN vivero.fecha_apertura IS 'Fecha en la que se inaguró el vivero';
