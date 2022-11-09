@@ -72,50 +72,106 @@ CREATE TABLE telefono_persona(
   id_persona int
 );
 CREATE TABLE telefono_vivero(telefono varchar(100), id_vivero int);
+--
 ALTER TABLE vivero
 ADD CONSTRAINT pk_vivero PRIMARY KEY (id_vivero);
 ALTER TABLE empleado
 ADD CONSTRAINT pk_empleado PRIMARY KEY (id_persona),
-  ADD CONSTRAINT fk1_empleado FOREIGN KEY(id_vivero) REFERENCES vivero(id_vivero);
+  ADD CONSTRAINT fk1_empleado
+  FOREIGN KEY(id_vivero)
+  REFERENCES vivero(id_vivero)
+  ON UPDATE CASCADE
+  ON DELETE CASCADE;
 ALTER TABLE cliente
 ADD CONSTRAINT pk_cliente PRIMARY KEY (id_persona);
 ALTER TABLE c_info_planta
 ADD CONSTRAINT pk_c_info_planta PRIMARY KEY (nombre);
 ALTER TABLE planta
 ADD CONSTRAINT pk_planta PRIMARY KEY (id_planta, id_info_planta),
-  ADD CONSTRAINT fk1_planta FOREIGN KEY (id_info_planta) REFERENCES c_info_planta(nombre);
+  ADD CONSTRAINT fk1_planta
+  FOREIGN KEY (id_info_planta)
+  REFERENCES c_info_planta(nombre)
+  ON UPDATE CASCADE
+  ON DELETE CASCADE;
 ALTER TABLE venta
 ADD CONSTRAINT pk_venta PRIMARY KEY (id_venta);
 ALTER TABLE pago
 ADD CONSTRAINT pk_pago PRIMARY KEY (id_pago),
-  ADD CONSTRAINT fk_pago FOREIGN KEY (id_venta) REFERENCES venta(id_venta);
+  ADD CONSTRAINT fk_pago
+  FOREIGN KEY (id_venta)
+  REFERENCES venta(id_venta)
+  ON UPDATE CASCADE
+  ON DELETE CASCADE;
 ALTER TABLE cajero
 ADD CONSTRAINT pk_cajero PRIMARY KEY (id_persona),
-  ADD CONSTRAINT fk1_cajero FOREIGN KEY (id_vivero) REFERENCES vivero(id_vivero);
+  ADD CONSTRAINT fk1_cajero
+  FOREIGN KEY (id_vivero)
+  REFERENCES vivero(id_vivero)
+  ON UPDATE CASCADE
+  ON DELETE CASCADE;
 ALTER TABLE cuidador
-ADD CONSTRAINT fk_cuidador FOREIGN KEY (id_vivero) REFERENCES vivero(id_vivero);
+ADD CONSTRAINT fk_cuidador
+FOREIGN KEY (id_vivero)
+REFERENCES vivero(id_vivero)
+ON UPDATE CASCADE
+ON DELETE CASCADE;
 ALTER TABLE gerente
-ADD CONSTRAINT fk_gerente FOREIGN KEY (id_vivero) REFERENCES vivero(id_vivero);
+ADD CONSTRAINT fk_gerente
+FOREIGN KEY (id_vivero)
+REFERENCES vivero(id_vivero)
+ON UPDATE CASCADE
+ON DELETE CASCADE;
 ALTER TABLE encargado
 ADD CONSTRAINT pk_encargado PRIMARY KEY(id_persona),
-  ADD CONSTRAINT fk_encargado FOREIGN KEY (id_vivero) REFERENCES vivero(id_vivero);
+  ADD CONSTRAINT fk_encargado
+  FOREIGN KEY (id_vivero)
+  REFERENCES vivero(id_vivero)
+  ON UPDATE CASCADE
+  ON DELETE CASCADE;
 ALTER TABLE venta_fisica
 ADD CONSTRAINT pk_venta_fisica PRIMARY KEY(id_venta),
-  ADD CONSTRAINT fk_venta_fisica FOREIGN KEY(id_cajero) REFERENCES cajero(id_persona);
+  ADD CONSTRAINT fk_venta_fisica
+  FOREIGN KEY(id_cajero)
+  REFERENCES cajero(id_persona)
+  ON UPDATE CASCADE
+  ON DELETE CASCADE;
 ALTER TABLE venta_en_linea
 ADD CONSTRAINT pk_venta_en_linea PRIMARY KEY(id_venta),
-  ADD CONSTRAINT fk_venta_en_linea FOREIGN KEY(id_cliente) REFERENCES cliente(id_persona);
+  ADD CONSTRAINT fk_venta_en_linea
+  FOREIGN KEY(id_cliente)
+  REFERENCES cliente(id_persona)
+  ON UPDATE CASCADE
+  ON DELETE CASCADE;
 ALTER TABLE ayudar
-ADD CONSTRAINT fk1_ayudar FOREIGN KEY(id_empleado_encargado) REFERENCES encargado(id_persona),
-  ADD CONSTRAINT fk2_ayudar FOREIGN KEY(id_venta_fisica) REFERENCES venta_fisica(id_venta);
+ADD CONSTRAINT fk1_ayudar
+FOREIGN KEY(id_empleado_encargado)
+REFERENCES encargado(id_persona)
+ON UPDATE CASCADE
+ON DELETE CASCADE,
+  ADD CONSTRAINT fk2_ayudar
+  FOREIGN KEY(id_venta_fisica)
+  REFERENCES venta_fisica(id_venta)
+  ON UPDATE CASCADE
+  ON DELETE CASCADE;
 ALTER TABLE correo
-ADD CONSTRAINT fk_correo FOREIGN KEY(id_persona) REFERENCES empleado(id_persona);
+ADD CONSTRAINT fk_correo
+FOREIGN KEY(id_persona)
+REFERENCES empleado(id_persona)
+ON UPDATE CASCADE
+ON DELETE CASCADE;
 ALTER TABLE telefono_persona
-ADD CONSTRAINT fk_telefono_persona FOREIGN KEY(id_persona) REFERENCES empleado(id_persona);
+ADD CONSTRAINT fk_telefono_persona
+FOREIGN KEY(id_persona)
+REFERENCES empleado(id_persona)
+ON UPDATE CASCADE
+ON DELETE CASCADE;
 ALTER TABLE telefono_vivero
-ADD CONSTRAINT fk_telefono_vivero FOREIGN KEY(id_vivero) REFERENCES vivero(id_vivero);
+ADD CONSTRAINT fk_telefono_vivero
+FOREIGN KEY(id_vivero)
+REFERENCES vivero(id_vivero)
+ON UPDATE CASCADE
+ON DELETE CASCADE;
 
-    
 COMMENT ON TABLE ayudar IS 'Tabla que relaciona ventas fisicas con el encargado que ayudo en la venta';
 COMMENT ON COLUMN ayudar.id_empleado_encargado IS 'ID del empleado que ayudo con la venta';
 COMMENT ON COLUMN ayudar.id_venta_fisica IS 'ID de la venta fisica';
@@ -197,7 +253,6 @@ COMMENT ON COLUMN encargado.apellido_paterno IS 'El apellido paterno del encarga
 COMMENT ON COLUMN encargado.apellido_materno IS 'El apellido materno del encargado';
 COMMENT ON COLUMN encargado.salario IS 'El salario del encargado';
 COMMENT ON COLUMN encargado.id_vivero IS 'El id del vivero donde trabaja el encargado';
-COMMENT ON COLUMN encargado.turno_es_matutino IS 'Si el empleado tiene turno matutino o no';
 COMMENT ON COLUMN encargado.num_clientes_ayudados IS 'El numero de clientes que ha ayudado el encargado';
 
 COMMENT ON TABLE gerente IS 'Tabla con la informacion de los gerentes de los viveros';
@@ -211,7 +266,6 @@ COMMENT ON COLUMN gerente.apellido_paterno IS 'El apellido paterno del gerente';
 COMMENT ON COLUMN gerente.apellido_materno IS 'El apellido materno del gerente';
 COMMENT ON COLUMN gerente.salario IS 'El salario del gerente';
 COMMENT ON COLUMN gerente.id_vivero IS 'El id del vivero donde trabaja el gerente';
-COMMENT ON COLUMN gerente.turno_es_matutino IS 'Si el gerente tiene turno matutino o no';
 
 COMMENT ON TABLE pago IS 'Súper tabla con los pagos, o bien, transacciones específicas a una forma de pago';
 COMMENT ON COLUMN pago.id_pago IS 'El id del pago';
