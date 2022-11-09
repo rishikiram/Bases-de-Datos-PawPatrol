@@ -144,7 +144,7 @@ COMMENT ON COLUMN cajero.id_vivero IS 'El id del vivero donde trabaja el emplead
 COMMENT ON COLUMN cajero.cantidad_recaudada IS 'La cantidad recaudada por el empleado';
 
 COMMENT ON TABLE cliente IS 'Tabla con informacion de los clientes';
-COMMENT ON COLUMN cliente.id_persona IS 'El id de la persona';
+COMMENT ON COLUMN cliente.id_persona IS 'El id del cliente';
 COMMENT ON COLUMN cliente.numero_exterior IS 'El numero exterior de la direccion del cliente';
 COMMENT ON COLUMN cliente.cp IS 'El codigo postal de la direccion del cliente';
 COMMENT ON COLUMN cliente.calle IS 'La calle de la direccion del cliente';
@@ -173,6 +173,45 @@ COMMENT ON TABLE efectivo IS 'Generalizacion de la tabla pago, para pagos con ef
 COMMENT ON COLUMN efectivo.id_pago IS 'El id del pago';
 COMMENT ON COLUMN efectivo.id_venta IS 'El id de la venta asociada al pago';
 COMMENT ON COLUMN efectivo.cantidad IS 'La cantidad que se pago en efectivo';
+
+COMMENT ON TABLE empleado IS 'Tabla con la informacion de los empleados de los viveros';
+COMMENT ON COLUMN empleado.id_persona IS 'El id del empleado';
+COMMENT ON COLUMN empleado.numero_exterior IS 'El numero exterior de la direccion del empleado';
+COMMENT ON COLUMN empleado.cp IS 'El codigo postal de la direccion del empleado';
+COMMENT ON COLUMN empleado.calle IS 'La calle de la direccion del empleado';
+COMMENT ON COLUMN empleado.fecha_nacimiento IS 'La fecha de nacimiento del empleado';
+COMMENT ON COLUMN empleado.nombre IS 'El nombre del empleado';
+COMMENT ON COLUMN empleado.apellido_paterno IS 'El apellido paterno del empleado';
+COMMENT ON COLUMN empleado.apellido_materno IS 'El apellido materno del empleado';
+COMMENT ON COLUMN empleado.salario IS 'El salario del empleado';
+COMMENT ON COLUMN empleado.id_vivero IS 'El id del vivero donde trabaja el empleado';
+
+COMMENT ON TABLE encargado IS 'Tabla con la informacion de los encargados de los viveros';
+COMMENT ON COLUMN encargado.id_persona IS 'El id del encargadi';
+COMMENT ON COLUMN encargado.numero_exterior IS 'El numero exterior de la direccion del encargado';
+COMMENT ON COLUMN encargado.cp IS 'El codigo postal de la direccion del encargado';
+COMMENT ON COLUMN encargado.calle IS 'La calle de la direccion del encargado';
+COMMENT ON COLUMN encargado.fecha_nacimiento IS 'La fecha de nacimiento del encargado';
+COMMENT ON COLUMN encargado.nombre IS 'El nombre del encargado';
+COMMENT ON COLUMN encargado.apellido_paterno IS 'El apellido paterno del encargado';
+COMMENT ON COLUMN encargado.apellido_materno IS 'El apellido materno del encargado';
+COMMENT ON COLUMN encargado.salario IS 'El salario del encargado';
+COMMENT ON COLUMN encargado.id_vivero IS 'El id del vivero donde trabaja el encargado';
+COMMENT ON COLUMN encargado.turno_es_matutino IS 'Si el empleado tiene turno matutino o no';
+COMMENT ON COLUMN encargado.num_clientes_ayudados IS 'El numero de clientes que ha ayudado el encargado';
+
+COMMENT ON TABLE gerente IS 'Tabla con la informacion de los gerentes de los viveros';
+COMMENT ON COLUMN gerente.id_persona IS 'El id del gerente';
+COMMENT ON COLUMN gerente.numero_exterior IS 'El numero exterior de la direccion del gerente';
+COMMENT ON COLUMN gerente.cp IS 'El codigo postal de la direccion del gerente';
+COMMENT ON COLUMN gerente.calle IS 'La calle de la direccion del gerente';
+COMMENT ON COLUMN gerente.fecha_nacimiento IS 'La fecha de nacimiento del gerente';
+COMMENT ON COLUMN gerente.nombre IS 'El nombre del gerente';
+COMMENT ON COLUMN gerente.apellido_paterno IS 'El apellido paterno del gerente';
+COMMENT ON COLUMN gerente.apellido_materno IS 'El apellido materno del gerente';
+COMMENT ON COLUMN gerente.salario IS 'El salario del gerente';
+COMMENT ON COLUMN gerente.id_vivero IS 'El id del vivero donde trabaja el gerente';
+COMMENT ON COLUMN gerente.turno_es_matutino IS 'Si el gerente tiene turno matutino o no';
 
 COMMENT ON TABLE pago IS 'Súper tabla con los pagos, o bien, transacciones específicas a una forma de pago';
 COMMENT ON COLUMN pago.id_pago IS 'El id del pago';
