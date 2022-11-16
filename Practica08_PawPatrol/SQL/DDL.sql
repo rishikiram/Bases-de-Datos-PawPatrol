@@ -33,7 +33,7 @@ CREATE TABLE cliente(
   apellido_materno varchar(100)
 );
 CREATE TABLE c_info_planta(
-  nombre varchar(100),
+  nombre int,
   riego int,
   cuidados varchar(100),
   area varchar(100),
@@ -44,7 +44,8 @@ CREATE TABLE c_info_planta(
 );
 CREATE TABLE planta(
   id_planta int,
-  id_info_planta varchar(100),
+  -- Porque mockaroo no puede evitar repetidos xd entonces un int
+  id_info_planta int,
   id_vivero int NOT NULL,
   id_venta int,
   fecha_germinacion date
