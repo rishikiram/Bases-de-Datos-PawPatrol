@@ -1,0 +1,19 @@
+DROP TABLE empleado CASCADE;
+
+--DROP TABLE agente CASCADE;
+
+--DROP TABLE entrenador CASCADE;
+
+DROP TABLE edificio CASCADE;
+
+DROP TABLE piso CASCADE;
+
+DROP TABLE evaluar CASCADE;
+
+DROP TABLE faltar CASCADE;
+
+DROP TABLE curso CASCADE;
+
+DROP TABLE horario_curso CASCADE;
+
+DROP TABLE impartir CASCADE;
