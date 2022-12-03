@@ -112,12 +112,6 @@ CREATE TABLE registro_asistencia(
     tipo varchar(100) --Preguntar el tipo de dato de tipo jsjs
 );
 
-CREATE TABLE reservar(
-    num_sala int,
-    id_cliente int,
-    horario_reserva time --Revisar si el dato está bien definido
-);
-
 CREATE TABLE asignar(
     num_sala int,
     id_curso int,
@@ -355,16 +349,6 @@ ALTER TABLE accesorio
 ADD CONSTRAINT fk_accesorio_num_piso
 FOREIGN KEY (num_piso)
 REFERENCES piso(num_piso);
-
-ALTER TABLE reservar
-ADD CONSTRAINT fk_reservar_num_sala
-FOREIGN KEY (num_sala)
-REFERENCES sala(num_sala);
-
-ALTER TABLE reservar
-ADD CONSTRAINT fk_reservar_id_cliente
-FOREIGN KEY (id_cliente)
-REFERENCES cliente(id_cliente);
 
 ALTER TABLE asignar
 ADD CONSTRAINT fk_asignar_num_sala
