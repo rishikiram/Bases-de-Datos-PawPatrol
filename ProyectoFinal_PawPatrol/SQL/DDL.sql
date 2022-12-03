@@ -15,6 +15,8 @@ CREATE TABLE empleado(
 
 CREATE TABLE agente(
     id_curso int,
+    id_programa_curso int,
+    id_cliente int,
     id_edificio int,
     num_piso int,
     pasar_piso boolean
@@ -42,30 +44,45 @@ CREATE TABLE piso(
 CREATE TABLE faltar(
     id_empleado int,
     id_curso int,
+    id_programa_curso int,
+    id_cliente int,
     fecha date
 );
 
 CREATE TABLE evaluar(
     id_empleado int,
     id_curso int,
+    id_programa_curso int,
+    id_cliente int,
     calificacion int
+);
+
+CREATE TABLE programa_curso(
+    id_programa_curso int,
+    id_cliente int,
+    nombre varchar(100),
+    temario varchar(1000)
 );
 
 CREATE TABLE curso(
     id_curso int,
+    id_programa_curso int,
     id_cliente int,
-    nombre_curso varchar(100),
     modalidad varchar(100)
 );
 
 CREATE TABLE horario_curso(
     id_curso int,
+    id_programa_curso int,
+    id_cliente int,
     rango tsrange
 );
 
 CREATE TABLE impartir(
     id_empleado int,
-    id_curso int
+    id_curso int,
+    id_programa_curso int,
+    id_cliente int
 );
 
 CREATE TABLE sala(
@@ -75,15 +92,9 @@ CREATE TABLE sala(
     costo int
 );
 
-CREATE TABLE sala_operaciones(
-    num_sala int,
-    costo int
-) INHERITS (sala);
+CREATE TABLE sala_operaciones() INHERITS (sala);
 
-CREATE TABLE sala_capacitacion(
-    num_sala int,
-    costo int
-) INHERITS (sala);
+CREATE TABLE sala_capacitacion() INHERITS (sala);
 
 
 CREATE TABLE asistencia(
@@ -110,6 +121,8 @@ CREATE TABLE reservar(
 CREATE TABLE asignar(
     num_sala int,
     id_curso int,
+    id_programa_curso int,
+    id_cliente int,
     horario_reserva time --Revisar si el dato está bien definido
 );
 
@@ -164,11 +177,11 @@ PRIMARY KEY (num_piso);
 
 ALTER TABLE curso
 ADD CONSTRAINT pk_curso
-PRIMARY KEY (id_curso);
+PRIMARY KEY (id_curso, id_programa_curso, id_cliente);
 
 ALTER TABLE horario_curso
 ADD CONSTRAINT pk_horario_curso
-PRIMARY KEY (id_curso, rango);
+PRIMARY KEY (id_curso, id_programa_curso, id_cliente, rango);
 
 ALTER TABLE estacion
 ADD CONSTRAINT pk_estacion
@@ -213,9 +226,9 @@ FOREIGN KEY (id_edificio)
 REFERENCES edificio(id_edificio);
 
 ALTER TABLE agente
-ADD CONSTRAINT fk_agente_id_curso
-FOREIGN KEY (id_curso)
-REFERENCES curso(id_curso);
+ADD CONSTRAINT fk_agente_curso
+FOREIGN KEY (id_curso, id_programa_curso, id_cliente)
+REFERENCES curso(id_curso, id_programa_curso, id_cliente);
 
 ALTER TABLE agente
 ADD CONSTRAINT fk_agente_id_edificio
@@ -233,9 +246,19 @@ FOREIGN KEY (id_empleado)
 REFERENCES empleado(id_empleado);
 
 ALTER TABLE faltar
-ADD CONSTRAINT fk_faltar_id_curso
-FOREIGN KEY (id_curso)
-REFERENCES curso(id_curso);
+ADD CONSTRAINT fk_faltar_curso
+FOREIGN KEY (id_curso, id_programa_curso, id_cliente)
+REFERENCES curso(id_curso, id_programa_curso, id_cliente);
+
+ALTER TABLE evaluar
+ADD CONSTRAINT fk_evaluar_id_empleado
+FOREIGN KEY (id_empleado)
+REFERENCES agente(id_empleado);
+
+ALTER TABLE evaluar
+ADD CONSTRAINT fk_evaluar_curso
+FOREIGN KEY (id_curso, id_programa_curso, id_cliente)
+REFERENCES curso(id_curso, id_programa_curso, id_cliente);
 
 -- *Descomentar cuando este la tabla cliente
 ALTER TABLE curso
@@ -243,10 +266,15 @@ ADD CONSTRAINT fk_curso
 FOREIGN KEY (id_cliente)
 REFERENCES cliente(id_cliente);
 
+ALTER TABLE horario_curso
+ADD CONSTRAINT fk_horario_curso_curso
+FOREIGN KEY (id_curso, id_programa_curso, id_cliente)
+REFERENCES curso(id_curso, id_programa_curso, id_cliente);
+
 ALTER TABLE impartir
-ADD CONSTRAINT fk_impartir_id_curso
-FOREIGN KEY (id_curso)
-REFERENCES curso(id_curso);
+ADD CONSTRAINT fk_impartir_curso
+FOREIGN KEY (id_curso, id_programa_curso, id_cliente)
+REFERENCES curso(id_curso, id_programa_curso, id_cliente);
 
 ALTER TABLE impartir
 ADD CONSTRAINT fk_impartir_id_empleado
@@ -344,9 +372,9 @@ FOREIGN KEY (num_sala)
 REFERENCES sala(num_sala);
 
 ALTER TABLE asignar
-ADD CONSTRAINT fk_asignar_id_curso
-FOREIGN KEY (id_curso)
-REFERENCES curso(id_curso);
+ADD CONSTRAINT fk_asignar_curso
+FOREIGN KEY (id_curso, id_programa_curso, id_cliente)
+REFERENCES curso(id_curso, id_programa_curso, id_cliente);
 
 -- Restricciones CHECK
 

@@ -14,6 +14,8 @@ DROP TABLE faltar CASCADE;
 
 DROP TABLE curso CASCADE;
 
+DROP TABLE programa_curso CASCADE;
+
 DROP TABLE horario_curso CASCADE;
 
 DROP TABLE impartir CASCADE;
