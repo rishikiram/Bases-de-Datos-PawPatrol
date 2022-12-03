@@ -16,6 +16,14 @@ DROP TABLE curso CASCADE;
 
 DROP TABLE programa_curso CASCADE;
 
+DROP TABLE reservacion_operaciones CASCADE;
+
+DROP TABLE fecha_reservacion_operaciones CASCADE;
+
+DROP TABLE laborar_operaciones CASCADE;
+
+DROP TABLE requerir CASCADE;
+
 DROP TABLE horario_curso CASCADE;
 
 DROP TABLE impartir CASCADE;

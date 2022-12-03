@@ -146,6 +146,30 @@ CREATE TABLE cliente(
     correo_contacto varchar(100)
 );
 
+CREATE TABLE reservacion_operaciones(
+    id_reservacion_operaciones int,
+    num_sala int, -- Sala de operaciones
+    sistema_operativo varchar(20)
+);
+
+CREATE TABLE fecha_reservacion_operaciones(
+    id_reservacion_operaciones int,
+    num_sala int,
+    fecha date
+);
+
+CREATE TABLE laborar_operaciones(
+    id_reservacion_operaciones int,
+    num_sala int,
+    id_empleado int
+);
+
+CREATE TABLE requerir(
+    id_reservacion_operaciones int,
+    num_sala int,
+    id_programa_curso int,
+    id_cliente int
+);
 
 -- CREACION DE RESTRICCIONES PARA TABLAS
 -- Llaves primarias
@@ -168,6 +192,10 @@ PRIMARY KEY (id_edificio);
 ALTER TABLE piso
 ADD CONSTRAINT pk_piso
 PRIMARY KEY (num_piso);
+
+ALTER TABLE programa_curso
+ADD CONSTRAINT pk_programa_curso
+PRIMARY KEY (id_programa_curso, id_cliente);
 
 ALTER TABLE curso
 ADD CONSTRAINT pk_curso
@@ -200,6 +228,14 @@ PRIMARY KEY (num_sala);
 ALTER TABLE cliente
 ADD CONSTRAINT pk_cliente
 PRIMARY KEY (id_cliente);
+
+ALTER TABLE reservacion_operaciones
+ADD CONSTRAINT pk_reservacion_operaciones
+PRIMARY KEY (id_reservacion_operaciones, num_sala);
+
+ALTER TABLE fecha_reservacion_operaciones
+ADD CONSTRAINT pk_fecha_reservacion_operaciones
+PRIMARY KEY (id_reservacion_operaciones, num_sala, fecha);
 
 
 -- Llaves foraneas
@@ -254,11 +290,15 @@ ADD CONSTRAINT fk_evaluar_curso
 FOREIGN KEY (id_curso, id_programa_curso, id_cliente)
 REFERENCES curso(id_curso, id_programa_curso, id_cliente);
 
--- *Descomentar cuando este la tabla cliente
-ALTER TABLE curso
-ADD CONSTRAINT fk_curso
+ALTER TABLE programa_curso
+ADD CONSTRAINT fk_programa_curso_id_cliente
 FOREIGN KEY (id_cliente)
 REFERENCES cliente(id_cliente);
+
+ALTER TABLE curso
+ADD CONSTRAINT fk_curso_pk_programa_curso
+FOREIGN KEY (id_cliente, id_programa_curso)
+REFERENCES programa_curso(id_cliente, id_programa_curso);
 
 ALTER TABLE horario_curso
 ADD CONSTRAINT fk_horario_curso_curso
@@ -359,6 +399,37 @@ ALTER TABLE asignar
 ADD CONSTRAINT fk_asignar_curso
 FOREIGN KEY (id_curso, id_programa_curso, id_cliente)
 REFERENCES curso(id_curso, id_programa_curso, id_cliente);
+
+ALTER TABLE reservacion_operaciones
+ADD CONSTRAINT fk_reservacion_operaciones_num_sala
+FOREIGN KEY (num_sala)
+REFERENCES sala_operaciones(num_sala);
+
+ALTER TABLE fecha_reservacion_operaciones
+ADD CONSTRAINT fk_fecha_reservacion_operaciones_pk_reservacion_operaciones
+FOREIGN KEY (id_reservacion_operaciones, num_sala)
+REFERENCES reservacion_operaciones(id_reservacion_operaciones, num_sala);
+
+ALTER TABLE laborar_operaciones
+ADD CONSTRAINT fk_laborar_operaciones_pk_reservacion_operaciones
+FOREIGN KEY (id_reservacion_operaciones, num_sala)
+REFERENCES reservacion_operaciones(id_reservacion_operaciones, num_sala);
+
+ALTER TABLE laborar_operaciones
+ADD CONSTRAINT fk_laborar_operaciones_id_empleado -- id de agente
+FOREIGN KEY (id_empleado)
+REFERENCES agente(id_empleado);
+
+ALTER TABLE requerir
+ADD CONSTRAINT fk_requerir_pk_reservacion_operaciones
+FOREIGN KEY (id_reservacion_operaciones, num_sala)
+REFERENCES reservacion_operaciones(id_reservacion_operaciones, num_sala);
+
+ALTER TABLE requerir
+ADD CONSTRAINT fk_requerir_pk_programa_curso
+FOREIGN KEY (id_programa_curso, id_cliente)
+REFERENCES programa_curso(id_programa_curso, id_cliente);
+
 
 -- Restricciones CHECK
 
