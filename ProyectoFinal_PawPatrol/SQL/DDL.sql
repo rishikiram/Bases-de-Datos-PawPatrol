@@ -4,12 +4,12 @@ CREATE TABLE empleado(
     apellido_paterno varchar(100),
     apellido_materno varchar(100),
     calle varchar(100),
-    cp int, 
+    cp int,
     num_exterior int,
     fecha_nacimiento date,
     curp varchar(100),
     correo_electronico varchar(320),
-    telefono varchar(20), 
+    telefono varchar(20),
     fotografia_archivo varchar(100)
 );
 
@@ -23,7 +23,7 @@ CREATE TABLE agente(
 ) INHERITS (empleado);
 
 CREATE TABLE entrenador(
-    num_piso int, 
+    num_piso int,
     id_edificio int,
     fecha_ingresado date,
     numero_seguridad_social int
@@ -109,7 +109,7 @@ CREATE TABLE registro_asistencia(
     id_edificio int,
     fecha date,
     hora time, --Preguntar si está bien definido
-    tipo varchar(100) --Preguntar el tipo de dato de tipo jsjs
+    tipo ENUM ('entrada', 'salida') NOT NULL
 );
 
 CREATE TABLE asignar(
@@ -123,17 +123,17 @@ CREATE TABLE asignar(
 CREATE TABLE estacion(
     num_estacion int,
     num_sala int,
-    num_piso int, 
+    num_piso int,
     id_edificio int,
-    sistema_operativo varchar(100)
+    sistema_operativo ENUM ('Linux', 'Windows') NOT NULL
 );
 
 CREATE TABLE accesorio(
     id_accesorio int,
     num_estacion int,
     num_sala int,
-    id_edificio int,
     num_piso int,
+    id_edificio int,
     tipo varchar(100) --Revisar si el dato está bien definido
 );
 
@@ -435,4 +435,6 @@ REFERENCES programa_curso(id_programa_curso, id_cliente);
 
 ALTER TABLE piso
 ADD CONSTRAINT check_num_piso
-CHECK (num_piso <= 8);
+CHECK (num_piso <= 8);--no funciona bien
+
+ALTER TABLE
