@@ -8,8 +8,8 @@ CREATE TABLE empleado(
     num_exterior int,
     fecha_nacimiento date,
     curp varchar(100),
-    correo_electronico varchar(100),
-    telefono int, 
+    correo_electronico varchar(320),
+    telefono varchar(20), 
     fotografia_archivo varchar(100)
 );
 
@@ -141,9 +141,9 @@ CREATE TABLE cliente(
     id_cliente int,
     razon_social varchar(100),
     rfc varchar(100),
-    telefono varchar(100), --Revisar porque segun yo el int no daría para escribir un numero telefonico
+    telefono varchar(20),
     persona_contacto varchar(100),
-    correo_contacto varchar(100)
+    correo_contacto varchar(320)
 );
 
 CREATE TABLE reservacion_operaciones(
