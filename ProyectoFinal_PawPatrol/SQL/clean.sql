@@ -47,3 +47,7 @@ DROP TABLE estacion CASCADE;
 DROP TABLE accesorio CASCADE;
 
 DROP TABLE cliente CASCADE;
+
+DROP TYPE in_out;
+
+DROP TYPE os;

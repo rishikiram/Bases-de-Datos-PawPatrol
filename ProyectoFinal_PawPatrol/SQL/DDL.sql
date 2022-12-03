@@ -103,29 +103,35 @@ CREATE TABLE asistencia(
     num_piso int
 );
 
+CREATE TYPE in_out AS ENUM ('entrada', 'salida');
+
 CREATE TABLE registro_asistencia(
     id_empleado int,
     num_piso int,
     id_edificio int,
     fecha date,
     hora time, --Preguntar si está bien definido
-    tipo ENUM ('entrada', 'salida') NOT NULL
+    tipo in_out NOT NULL
 );
 
 CREATE TABLE asignar(
     num_sala int,
+    num_piso int,
+    id_edificio int,
     id_curso int,
     id_programa_curso int,
     id_cliente int,
     horario_reserva time --Revisar si el dato está bien definido
 );
 
+CREATE TYPE os AS ENUM ('Linux', 'Windows');
+
 CREATE TABLE estacion(
     num_estacion int,
     num_sala int,
     num_piso int,
     id_edificio int,
-    sistema_operativo ENUM ('Linux', 'Windows') NOT NULL
+    sistema_operativo os NOT NULL
 );
 
 CREATE TABLE accesorio(
@@ -149,24 +155,32 @@ CREATE TABLE cliente(
 CREATE TABLE reservacion_operaciones(
     id_reservacion_operaciones int,
     num_sala int, -- Sala de operaciones
-    sistema_operativo varchar(20)
+    num_piso int,
+    id_edificio int,
+    sistema_operativo os NOT NULL
 );
 
 CREATE TABLE fecha_reservacion_operaciones(
     id_reservacion_operaciones int,
     num_sala int,
+    num_piso int,
+    id_edificio int,
     fecha date
 );
 
 CREATE TABLE laborar_operaciones(
     id_reservacion_operaciones int,
     num_sala int,
+    num_piso int,
+    id_edificio int,
     id_empleado int
 );
 
 CREATE TABLE requerir(
     id_reservacion_operaciones int,
     num_sala int,
+    num_piso int,
+    id_edificio int,
     id_programa_curso int,
     id_cliente int
 );
@@ -219,11 +233,11 @@ PRIMARY KEY (num_sala);
 
 ALTER TABLE sala_operaciones
 ADD CONSTRAINT pk_sala_operaciones
-PRIMARY KEY (num_sala);
+PRIMARY KEY (num_sala, num_piso, id_edificio);
 
 ALTER TABLE sala_capacitacion
 ADD CONSTRAINT pk_sala_capacitacion
-PRIMARY KEY (num_sala);
+PRIMARY KEY (num_sala, num_piso, id_edificio);
 
 ALTER TABLE cliente
 ADD CONSTRAINT pk_cliente
@@ -231,11 +245,11 @@ PRIMARY KEY (id_cliente);
 
 ALTER TABLE reservacion_operaciones
 ADD CONSTRAINT pk_reservacion_operaciones
-PRIMARY KEY (id_reservacion_operaciones, num_sala);
+PRIMARY KEY (id_reservacion_operaciones, num_sala, num_piso, id_edificio);
 
 ALTER TABLE fecha_reservacion_operaciones
 ADD CONSTRAINT pk_fecha_reservacion_operaciones
-PRIMARY KEY (id_reservacion_operaciones, num_sala, fecha);
+PRIMARY KEY (id_reservacion_operaciones, num_sala, num_piso, id_edificio, fecha);
 
 
 -- Llaves foraneas
@@ -391,9 +405,9 @@ FOREIGN KEY (num_piso)
 REFERENCES piso(num_piso);
 
 ALTER TABLE asignar
-ADD CONSTRAINT fk_asignar_num_sala
-FOREIGN KEY (num_sala)
-REFERENCES sala(num_sala);
+ADD CONSTRAINT fk_asignar_fk_sala_capacitacion
+FOREIGN KEY (num_sala, num_piso, id_edificio)
+REFERENCES sala_capacitacion(num_sala, num_piso, id_edificio);
 
 ALTER TABLE asignar
 ADD CONSTRAINT fk_asignar_curso
@@ -401,19 +415,19 @@ FOREIGN KEY (id_curso, id_programa_curso, id_cliente)
 REFERENCES curso(id_curso, id_programa_curso, id_cliente);
 
 ALTER TABLE reservacion_operaciones
-ADD CONSTRAINT fk_reservacion_operaciones_num_sala
-FOREIGN KEY (num_sala)
-REFERENCES sala_operaciones(num_sala);
+ADD CONSTRAINT fk_reservacion_operaciones_pk_sala_operaciones
+FOREIGN KEY (num_sala, num_piso, id_edificio)
+REFERENCES sala_operaciones(num_sala, num_piso, id_edificio);
 
 ALTER TABLE fecha_reservacion_operaciones
 ADD CONSTRAINT fk_fecha_reservacion_operaciones_pk_reservacion_operaciones
-FOREIGN KEY (id_reservacion_operaciones, num_sala)
-REFERENCES reservacion_operaciones(id_reservacion_operaciones, num_sala);
+FOREIGN KEY (id_reservacion_operaciones, num_sala, num_piso, id_edificio)
+REFERENCES reservacion_operaciones(id_reservacion_operaciones, num_sala, num_piso, id_edificio);
 
 ALTER TABLE laborar_operaciones
 ADD CONSTRAINT fk_laborar_operaciones_pk_reservacion_operaciones
-FOREIGN KEY (id_reservacion_operaciones, num_sala)
-REFERENCES reservacion_operaciones(id_reservacion_operaciones, num_sala);
+FOREIGN KEY (id_reservacion_operaciones, num_sala, num_piso, id_edificio)
+REFERENCES reservacion_operaciones(id_reservacion_operaciones, num_sala, num_piso, id_edificio);
 
 ALTER TABLE laborar_operaciones
 ADD CONSTRAINT fk_laborar_operaciones_id_empleado -- id de agente
@@ -422,8 +436,8 @@ REFERENCES agente(id_empleado);
 
 ALTER TABLE requerir
 ADD CONSTRAINT fk_requerir_pk_reservacion_operaciones
-FOREIGN KEY (id_reservacion_operaciones, num_sala)
-REFERENCES reservacion_operaciones(id_reservacion_operaciones, num_sala);
+FOREIGN KEY (id_reservacion_operaciones, num_sala, num_piso, id_edificio)
+REFERENCES reservacion_operaciones(id_reservacion_operaciones, num_sala, num_piso, id_edificio);
 
 ALTER TABLE requerir
 ADD CONSTRAINT fk_requerir_pk_programa_curso
@@ -433,8 +447,3 @@ REFERENCES programa_curso(id_programa_curso, id_cliente);
 
 -- Restricciones CHECK
 
-ALTER TABLE piso
-ADD CONSTRAINT check_num_piso
-CHECK (num_piso <= 8);--no funciona bien
-
-ALTER TABLE
