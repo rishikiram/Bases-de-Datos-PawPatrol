@@ -61,46 +61,46 @@ CREATE OR REPLACE TRIGGER num_de_salas
 --             USING HINT 'Los Piso tiene 8 salas al maximo';
 --         END IF
 --     END
-INSERT INTO edificio(id_edificio, calle, cp, numero_exterior)
-VALUES(1, 'avenida', 19540, 1234);
-DELETE FROM piso;
-INSERT INTO piso(num_piso, id_edificio)
-VALUES (1, 1);
-INSERT INTO piso(num_piso, id_edificio)
-VALUES (2, 1);
-INSERT INTO piso(num_piso, id_edificio)
-VALUES (3, 1);
-INSERT INTO piso(num_piso, id_edificio)
-VALUES (4, 1);
-INSERT INTO piso(num_piso, id_edificio)
-VALUES (5, 1);
-INSERT INTO piso(num_piso, id_edificio)
-VALUES (6, 1);
-INSERT INTO piso(num_piso, id_edificio)
-VALUES (7, 1);
-INSERT INTO piso(num_piso, id_edificio)
-VALUES (8, 1);
-INSERT INTO piso(num_piso, id_edificio)
-VALUES (9, 1);
-INSERT INTO piso(num_piso, id_edificio)
-VALUES (10, 1);
-INSERT INTO piso(num_piso, id_edificio)
-VALUES (13, 1);
-INSERT INTO sala( num_sala, num_piso, id_edificio, costo)
-VALUES(1, 1, 1, 1);
-INSERT INTO sala( num_sala, num_piso, id_edificio, costo)
-VALUES(2, 1, 1, 1);
-INSERT INTO sala( num_sala, num_piso, id_edificio, costo)
-VALUES(3, 1, 1, 1);
-INSERT INTO sala( num_sala, num_piso, id_edificio, costo)
-VALUES(4, 1, 1, 1);
-INSERT INTO sala( num_sala, num_piso, id_edificio, costo)
-VALUES(5, 1, 1, 1);
-INSERT INTO sala( num_sala, num_piso, id_edificio, costo)
-VALUES(6, 1, 1, 1);
-INSERT INTO sala( num_sala, num_piso, id_edificio, costo)
-VALUES(7, 1, 1, 1);
-INSERT INTO sala( num_sala, num_piso, id_edificio, costo)
-VALUES(8, 1, 1, 1);
-INSERT INTO sala( num_sala, num_piso, id_edificio, costo)
-VALUES(9, 1, 1, 1);
+-- INSERT INTO edificio(id_edificio, calle, cp, numero_exterior)
+-- VALUES(1, 'avenida', 19540, 1234);
+-- DELETE FROM piso;
+-- INSERT INTO piso(num_piso, id_edificio)
+-- VALUES (1, 1);
+-- INSERT INTO piso(num_piso, id_edificio)
+-- VALUES (2, 1);
+-- INSERT INTO piso(num_piso, id_edificio)
+-- VALUES (3, 1);
+-- INSERT INTO piso(num_piso, id_edificio)
+-- VALUES (4, 1);
+-- INSERT INTO piso(num_piso, id_edificio)
+-- VALUES (5, 1);
+-- INSERT INTO piso(num_piso, id_edificio)
+-- VALUES (6, 1);
+-- INSERT INTO piso(num_piso, id_edificio)
+-- VALUES (7, 1);
+-- INSERT INTO piso(num_piso, id_edificio)
+-- VALUES (8, 1);
+-- INSERT INTO piso(num_piso, id_edificio)
+-- VALUES (9, 1);
+-- INSERT INTO piso(num_piso, id_edificio)
+-- VALUES (10, 1);
+-- INSERT INTO piso(num_piso, id_edificio)
+-- VALUES (13, 1);
+-- INSERT INTO sala( num_sala, num_piso, id_edificio, costo)
+-- VALUES(1, 1, 1, 1);
+-- INSERT INTO sala( num_sala, num_piso, id_edificio, costo)
+-- VALUES(2, 1, 1, 1);
+-- INSERT INTO sala( num_sala, num_piso, id_edificio, costo)
+-- VALUES(3, 1, 1, 1);
+-- INSERT INTO sala( num_sala, num_piso, id_edificio, costo)
+-- VALUES(4, 1, 1, 1);
+-- INSERT INTO sala( num_sala, num_piso, id_edificio, costo)
+-- VALUES(5, 1, 1, 1);
+-- INSERT INTO sala( num_sala, num_piso, id_edificio, costo)
+-- VALUES(6, 1, 1, 1);
+-- INSERT INTO sala( num_sala, num_piso, id_edificio, costo)
+-- VALUES(7, 1, 1, 1);
+-- INSERT INTO sala( num_sala, num_piso, id_edificio, costo)
+-- VALUES(8, 1, 1, 1);
+-- INSERT INTO sala( num_sala, num_piso, id_edificio, costo)
+-- VALUES(9, 1, 1, 1);
