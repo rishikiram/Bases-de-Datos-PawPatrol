@@ -24,9 +24,9 @@ CREATE OR REPLACE FUNCTION evaluar_check_faltas_function(
     id_curso int,
     id_programa_curso int,
     id_cliente int
-  ) RETURNS boolean LANGUAGE plpgsql AS 
+  ) RETURNS boolean LANGUAGE plpgsql AS
   $$
-    BEGIN 
+    BEGIN
       IF (
         calificacion < 8
         OR get_numero_de_faltas_en_curso (
@@ -35,9 +35,9 @@ CREATE OR REPLACE FUNCTION evaluar_check_faltas_function(
           id_programa_curso,
           id_cliente
         ) < 3
-      ) THEN 
+      ) THEN
         RETURN true;
-      ELSE 
+      ELSE
         RAISE NOTICE 'La calificación no puede ser aprobatoria si faltó 3 veces';
         RETURN false;
       END IF;
@@ -73,15 +73,15 @@ CREATE OR REPLACE FUNCTION laborar_operaciones_check_aprobacion_function(
 DECLARE num_programas_aprobados int;
 DECLARE num_programas_requeridos int;
 BEGIN
-    SELECT 
+    SELECT
         COUNT(*),
-        SUM(CASE 
-            WHEN ya_aprobo_programa(p_id_agente, requerir.id_programa_curso, requerir.id_cliente) 
-                THEN 1 
-                ELSE 0 
+        SUM(CASE
+            WHEN ya_aprobo_programa(p_id_agente, requerir.id_programa_curso, requerir.id_cliente)
+                THEN 1
+                ELSE 0
             END
-        ) 
-    INTO 
+        )
+    INTO
         num_programas_requeridos,
         num_programas_aprobados
     FROM requerir
@@ -90,9 +90,9 @@ BEGIN
         AND requerir.num_piso = p_num_piso
         AND requerir.id_edificio = p_id_edificio;
 
-    IF COALESCE(num_programas_aprobados = num_programas_requeridos, true) THEN 
+    IF COALESCE(num_programas_aprobados = num_programas_requeridos, true) THEN
         RETURN TRUE;
-    ELSE 
+    ELSE
         RAISE NOTICE 'El agente (%) no puede laborar en esta sala, ya que no ha aprobado algún curso con el programa necesario (%)', p_id_agente, p_id_programa_curso;
         RETURN false;
     END IF;
@@ -258,7 +258,7 @@ CREATE OR REPLACE FUNCTION get_duracion_curso_durante_semana(
     DECLARE duracion interval;
     BEGIN
         WITH tiempos AS (
-            SELECT 
+            SELECT
                 UPPER(rango) AS ts_fin,
                 LOWER(rango) AS ts_inicio
             FROM horario_curso
@@ -270,9 +270,9 @@ CREATE OR REPLACE FUNCTION get_duracion_curso_durante_semana(
             COALESCE(SUM(ts_fin-ts_inicio), '00:00:00'::interval)
         INTO duracion
         FROM tiempos
-        WHERE 
+        WHERE
             -- Como no hay reservas en domingo, ts_inicio y ts_fin están en la misma semana
-            EXTRACT(week from ts_inicio::date)=p_semana 
+            EXTRACT(week from ts_inicio::date)=p_semana
             AND EXTRACT(year from ts_inicio::date)=p_anio;
         RETURN duracion;
     END;
@@ -307,4 +307,26 @@ CREATE OR REPLACE FUNCTION horario_curso_check_weekly_time_limit_function(
             RETURN TRUE;
         END IF;
     END;
+$$;
+
+CREATE OR REPLACE FUNCTION check_numero_salas(
+  num_pis int,
+  id_edi int
+) RETURNS boolean LANGUAGE plpgsql AS $$
+DECLARE
+sal BIGINT;
+BEGIN
+  SELECT COUNT(sala.num_sala)
+    AS cnt
+    FROM sala
+    GROUP BY sala.id_edificio, sala.num_piso
+    HAVING sala.id_edificio = id_edi AND sala.num_piso = num_pis
+    INTO sal;
+    IF (sal > 7)
+        THEN RAISE EXCEPTION 'El Piso % en Edificio % ya tiene 8 pisos', num_pis, id_edi
+        USING HINT = 'Los Piso tiene 8 salas al maximo';
+        RETURN FALSE;
+    END IF;
+    RETURN TRUE;
+END
 $$;

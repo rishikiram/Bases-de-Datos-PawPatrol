@@ -57,3 +57,17 @@ ADD CONSTRAINT horario_curso_check_weekly_time_limit CHECK (
       rango
     )
   );
+  ALTER TABLE sala_operacion
+  ADD CONSTRAINT num_sala_operacion CHECK (
+      check_numero_salas (
+        num_piso,
+        id_edificio
+      )
+    );
+  ALTER TABLE sala_capacitacion
+  ADD CONSTRAINT num_sala_capacitacion CHECK (
+      check_numero_salas (
+        num_piso,
+        id_edificio
+      )
+    );

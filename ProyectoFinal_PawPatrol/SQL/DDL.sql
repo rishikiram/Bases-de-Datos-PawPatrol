@@ -98,7 +98,7 @@ CREATE TABLE sala(
     costo int
 );
 
-CREATE TABLE sala_operaciones() INHERITS (sala);
+CREATE TABLE sala_operacion() INHERITS (sala);
 
 CREATE TABLE sala_capacitacion() INHERITS (sala);
 
@@ -233,8 +233,8 @@ ALTER TABLE sala
 ADD CONSTRAINT pk_sala
 PRIMARY KEY (num_sala, num_piso, id_edificio);
 
-ALTER TABLE sala_operaciones
-ADD CONSTRAINT pk_sala_operaciones
+ALTER TABLE sala_operacion
+ADD CONSTRAINT pk_sala_operacion
 PRIMARY KEY (num_sala, num_piso, id_edificio);
 
 ALTER TABLE sala_capacitacion
@@ -263,13 +263,13 @@ REFERENCES edificio(id_edificio);
 
 ALTER TABLE entrenador
 ADD CONSTRAINT fk_entrenador_num_piso
-FOREIGN KEY (num_piso)
-REFERENCES piso(num_piso);
+FOREIGN KEY (num_piso, id_edificio)
+REFERENCES piso(num_piso, id_edificio);
 
-ALTER TABLE entrenador
-ADD CONSTRAINT fk_entrenador_id_edificio
-FOREIGN KEY (id_edificio)
-REFERENCES edificio(id_edificio);
+-- ALTER TABLE entrenador
+-- ADD CONSTRAINT fk_entrenador_id_edificio
+-- FOREIGN KEY (id_edificio)
+-- REFERENCES edificio(id_edificio);
 
 ALTER TABLE agente
 ADD CONSTRAINT fk_agente_curso
@@ -278,13 +278,13 @@ REFERENCES curso(id_curso, id_programa_curso, id_cliente);
 
 ALTER TABLE agente
 ADD CONSTRAINT fk_agente_id_edificio
-FOREIGN KEY (id_edificio)
-REFERENCES edificio(id_edificio);
+FOREIGN KEY (num_piso, id_edificio)
+REFERENCES piso(num_piso,id_edificio);
 
-ALTER TABLE agente
-ADD CONSTRAINT fk_agente_num_piso
-FOREIGN KEY (num_piso)
-REFERENCES piso(num_piso);
+-- ALTER TABLE agente
+-- ADD CONSTRAINT fk_agente_num_piso
+-- FOREIGN KEY (id_edificio)
+-- REFERENCES edificio(id_edificio);
 
 ALTER TABLE faltar
 ADD CONSTRAINT fk_faltar_id_empleado
@@ -336,15 +336,15 @@ ADD CONSTRAINT fk_asistencia_id_empleado
 FOREIGN KEY (id_empleado)
 REFERENCES empleado(id_empleado);
 
-ALTER TABLE asistencia
-ADD CONSTRAINT fk_asistencia_id_edificio
-FOREIGN KEY (id_edificio)
-REFERENCES edificio(id_edificio);
+-- ALTER TABLE asistencia
+-- ADD CONSTRAINT fk_asistencia_id_edificio
+-- FOREIGN KEY (id_edificio)
+-- REFERENCES edificio(id_edificio);
 
 ALTER TABLE asistencia
 ADD CONSTRAINT fk_asistencia_num_piso
-FOREIGN KEY (num_piso)
-REFERENCES piso(num_piso);
+FOREIGN KEY (num_piso, id_edificio)
+REFERENCES piso(num_piso, id_edificio);
 
 ALTER TABLE registro_asistencia
 ADD CONSTRAINT fk_registro_asistencia_id_empleado
@@ -353,58 +353,58 @@ REFERENCES empleado(id_empleado);
 
 ALTER TABLE registro_asistencia
 ADD CONSTRAINT fk_registro_asistencia_num_piso
-FOREIGN KEY (num_piso)
-REFERENCES piso(num_piso);
+FOREIGN KEY (num_piso, id_edificio)
+REFERENCES piso(num_piso, id_edificio);
 
-ALTER TABLE registro_asistencia
-ADD CONSTRAINT fk_registro_asistencia_id_edificio
-FOREIGN KEY (id_edificio)
-REFERENCES edificio(id_edificio);
+-- ALTER TABLE registro_asistencia
+-- ADD CONSTRAINT fk_registro_asistencia_id_edificio
+-- FOREIGN KEY (id_edificio)
+-- REFERENCES edificio(id_edificio);
 
 ALTER TABLE estacion
 ADD CONSTRAINT fk_estacion_num_sala
-FOREIGN KEY (num_sala)
-REFERENCES sala(num_sala);
+FOREIGN KEY (num_sala, num_piso, id_edificio)
+REFERENCES sala(num_sala, num_piso, id_edificio);
 
-ALTER TABLE estacion
-ADD CONSTRAINT fk_estacion_num_piso
-FOREIGN KEY (num_piso)
-REFERENCES piso(num_piso);
-
-ALTER TABLE estacion
-ADD CONSTRAINT fk_estacion_id_edificio
-FOREIGN KEY (id_edificio)
-REFERENCES edificio(id_edificio);
+-- ALTER TABLE estacion
+-- ADD CONSTRAINT fk_estacion_num_piso
+-- FOREIGN KEY (num_piso)
+-- REFERENCES piso(num_piso);
+--
+-- ALTER TABLE estacion
+-- ADD CONSTRAINT fk_estacion_id_edificio
+-- FOREIGN KEY (id_edificio)
+-- REFERENCES edificio(id_edificio);
 
 ALTER TABLE sala
 ADD CONSTRAINT fk_sala_num_piso
-FOREIGN KEY (num_piso)
-REFERENCES piso(num_piso);
+FOREIGN KEY (num_piso, id_edificio)
+REFERENCES piso(num_piso, id_edificio);
 
-ALTER TABLE sala
-ADD CONSTRAINT fk_sala_id_edificio
-FOREIGN KEY (id_edificio)
-REFERENCES edificio(id_edificio);
+-- ALTER TABLE sala
+-- ADD CONSTRAINT fk_sala_id_edificio
+-- FOREIGN KEY (id_edificio)
+-- REFERENCES edificio(id_edificio);
 
 ALTER TABLE accesorio
 ADD CONSTRAINT fk_accesorio_num_estacion
-FOREIGN KEY (num_estacion)
-REFERENCES estacion(num_estacion);
+FOREIGN KEY (num_estacion, num_sala, num_piso, id_edificio)
+REFERENCES estacion(num_estacion, num_sala, num_piso, id_edificio);
 
-ALTER TABLE accesorio
-ADD CONSTRAINT fk_accesorio_num_sala
-FOREIGN KEY (num_sala)
-REFERENCES sala(num_sala);
-
-ALTER TABLE accesorio
-ADD CONSTRAINT fk_accesorio_id_edificio
-FOREIGN KEY (id_edificio)
-REFERENCES edificio(id_edificio);
-
-ALTER TABLE accesorio
-ADD CONSTRAINT fk_accesorio_num_piso
-FOREIGN KEY (num_piso)
-REFERENCES piso(num_piso);
+-- ALTER TABLE accesorio
+-- ADD CONSTRAINT fk_accesorio_num_sala
+-- FOREIGN KEY (num_sala)
+-- REFERENCES sala(num_sala);
+--
+-- ALTER TABLE accesorio
+-- ADD CONSTRAINT fk_accesorio_id_edificio
+-- FOREIGN KEY (id_edificio)
+-- REFERENCES edificio(id_edificio);
+--
+-- ALTER TABLE accesorio
+-- ADD CONSTRAINT fk_accesorio_num_piso
+-- FOREIGN KEY (num_piso)
+-- REFERENCES piso(num_piso);
 
 ALTER TABLE asignar
 ADD CONSTRAINT fk_asignar_fk_sala_capacitacion
@@ -417,9 +417,9 @@ FOREIGN KEY (id_curso, id_programa_curso, id_cliente)
 REFERENCES curso(id_curso, id_programa_curso, id_cliente);
 
 ALTER TABLE reservacion_operaciones
-ADD CONSTRAINT fk_reservacion_operaciones_pk_sala_operaciones
+ADD CONSTRAINT fk_reservacion_operaciones_pk_sala_operacion
 FOREIGN KEY (num_sala, num_piso, id_edificio)
-REFERENCES sala_operaciones(num_sala, num_piso, id_edificio);
+REFERENCES sala_operacion(num_sala, num_piso, id_edificio);
 
 ALTER TABLE fecha_reservacion_operaciones
 ADD CONSTRAINT fk_fecha_reservacion_operaciones_pk_reservacion_operaciones
@@ -445,4 +445,3 @@ ALTER TABLE requerir
 ADD CONSTRAINT fk_requerir_pk_programa_curso
 FOREIGN KEY (id_programa_curso, id_cliente)
 REFERENCES programa_curso(id_programa_curso, id_cliente);
-

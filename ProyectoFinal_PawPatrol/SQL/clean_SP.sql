@@ -81,3 +81,7 @@ DROP FUNCTION horario_curso_check_weekly_time_limit_function(
     p_id_cliente int,
     p_rango tsrange
 );
+DROP FUNCTION check_numero_salas(
+  num_pis int,
+  id_edi int
+);
