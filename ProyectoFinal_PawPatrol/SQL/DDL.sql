@@ -121,7 +121,7 @@ CREATE TABLE asignar(
     id_curso int,
     id_programa_curso int,
     id_cliente int,
-    horario_reserva time --Revisar si el dato está bien definido
+    horario_reserva tsrange
 );
 
 CREATE TYPE os AS ENUM ('Linux', 'Windows');

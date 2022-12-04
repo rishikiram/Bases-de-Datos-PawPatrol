@@ -35,3 +35,16 @@ ADD CONSTRAINT fecha_reservacion_operaciones_check_no_overlap CHECK (
       fecha
     )
   );
+
+
+-- ELIMINAR DROP ANTES DE ENTREGAR
+ALTER TABLE asignar DROP CONSTRAINT asignar_check_no_overlap;
+ALTER TABLE asignar
+ADD CONSTRAINT asignar_check_no_overlap CHECK (
+    asignar_check_no_overlap_function(
+      num_sala,
+      num_piso,
+      id_edificio,
+      horario_reserva
+    )
+  );

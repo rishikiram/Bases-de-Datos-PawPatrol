@@ -158,3 +158,44 @@ CREATE OR REPLACE FUNCTION fecha_reservacion_operaciones_check_no_overlap_functi
         END IF;
     END;
 $$;
+
+
+-- Revisa si una sala de operaciones está libre durante un rango de tiempo
+CREATE OR REPLACE FUNCTION sala_de_operaciones_esta_libre_durante(
+        p_num_sala int,
+        p_num_piso int,
+        p_id_edificio int,
+        p_rango tsrange
+    ) RETURNS boolean LANGUAGE plpgsql AS $$
+    DECLARE booked boolean;
+    BEGIN
+        SELECT
+            EXISTS (SELECT
+                        1
+                    FROM asignar
+                    WHERE p_rango && asignar.horario_reserva -- Traslape de tsrange
+                        AND p_num_sala = asignar.num_sala
+                        AND p_num_piso = asignar.num_piso
+                        AND p_id_edificio = asignar.id_edificio
+                    LIMIT 1)
+        INTO booked;
+        RETURN NOT booked;
+    END;
+$$;
+
+-- Realiza el check del constraint asignar_check_no_overlap
+CREATE OR REPLACE FUNCTION asignar_check_no_overlap_function(
+        p_num_sala int,
+        p_num_piso int,
+        p_id_edificio int,
+        p_horario tsrange
+    ) RETURNS boolean LANGUAGE plpgsql AS $$
+    BEGIN
+        IF sala_de_operaciones_esta_libre_durante(p_num_sala, p_num_piso, p_id_edificio, p_horario) THEN
+            RETURN TRUE;
+        ELSE
+            RAISE NOTICE 'No se puede asignar la sala durante el horario solicitado, pues la sala (%) del piso (%) del edificio (%) ya está ocupada durante el rango (%)', p_num_sala, p_num_piso, p_id_edificio, p_horario;
+            RETURN FALSE;
+        END IF;
+    END;
+$$;
