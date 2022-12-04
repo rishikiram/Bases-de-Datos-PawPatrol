@@ -1,3 +1,9 @@
+CREATE DOMAIN telephone AS text CHECK(VALUE ~ '^(\+\d{1,2}\s?)?1?\-?\.?\s?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$'); -- https://stackoverflow.com/a/56450924/15217078
+CREATE DOMAIN email AS text
+  CHECK (value ~ '^[a-zA-Z0-9.!#$%&''*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$' ); -- https://dba.stackexchange.com/a/165923
+CREATE TYPE entrada_salida AS ENUM ('entrada', 'salida');
+CREATE TYPE sistema_operativo AS ENUM ('Linux', 'Windows');
+
 CREATE TABLE empleado(
     id_empleado int,
     nombre varchar(100),
@@ -8,8 +14,8 @@ CREATE TABLE empleado(
     num_exterior int,
     fecha_nacimiento date,
     curp varchar(100),
-    correo_electronico varchar(320),
-    telefono varchar(20),
+    correo_electronico email,
+    telefono telephone,
     fotografia_archivo varchar(100)
 );
 
@@ -103,15 +109,13 @@ CREATE TABLE asistencia(
     num_piso int
 );
 
-CREATE TYPE in_out AS ENUM ('entrada', 'salida');
-
 CREATE TABLE registro_asistencia(
     id_empleado int,
     num_piso int,
     id_edificio int,
     fecha date,
     hora time, --Preguntar si está bien definido
-    tipo in_out NOT NULL
+    tipo entrada_salida NOT NULL
 );
 
 CREATE TABLE asignar(
@@ -124,14 +128,12 @@ CREATE TABLE asignar(
     horario_reserva tsrange
 );
 
-CREATE TYPE os AS ENUM ('Linux', 'Windows');
-
 CREATE TABLE estacion(
     num_estacion int,
     num_sala int,
     num_piso int,
     id_edificio int,
-    sistema_operativo os NOT NULL
+    sistema_operativo sistema_operativo NOT NULL
 );
 
 CREATE TABLE accesorio(
@@ -147,9 +149,9 @@ CREATE TABLE cliente(
     id_cliente int,
     razon_social varchar(100),
     rfc varchar(100),
-    telefono varchar(20),
+    telefono telephone,
     persona_contacto varchar(100),
-    correo_contacto varchar(320)
+    correo_contacto email
 );
 
 CREATE TABLE reservacion_operaciones(
@@ -157,7 +159,7 @@ CREATE TABLE reservacion_operaciones(
     num_sala int, -- Sala de operaciones
     num_piso int,
     id_edificio int,
-    sistema_operativo os NOT NULL
+    sistema_operativo sistema_operativo NOT NULL
 );
 
 CREATE TABLE fecha_reservacion_operaciones(

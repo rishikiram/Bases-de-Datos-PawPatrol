@@ -51,3 +51,7 @@ DROP TABLE cliente CASCADE;
 DROP TYPE in_out;
 
 DROP TYPE os;
+
+DROP DOMAIN telephone;
+
+DROP DOMAIN email;
