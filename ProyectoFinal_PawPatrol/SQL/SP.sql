@@ -285,7 +285,7 @@ CREATE OR REPLACE FUNCTION horario_curso_check_weekly_time_limit_function(
         p_id_cliente int,
         p_rango tsrange
     ) RETURNS boolean LANGUAGE plpgsql AS $$
-    DECLARE pasa_limite int;
+    DECLARE pasa_limite boolean;
     BEGIN
         SELECT
             (
@@ -295,8 +295,8 @@ CREATE OR REPLACE FUNCTION horario_curso_check_weekly_time_limit_function(
                     p_id_curso,
                     p_id_programa_curso,
                     p_id_cliente,
-                    EXTRACT(year FROM p_rango),
-                    EXTRACT(week FROM p_rango)
+                    EXTRACT(year FROM LOWER(p_rango))::int,
+                    EXTRACT(week FROM LOWER(p_rango))::int
                 )
             )>'42:00:00'::interval
         INTO pasa_limite;
