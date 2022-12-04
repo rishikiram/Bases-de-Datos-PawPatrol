@@ -48,3 +48,24 @@ ADD CONSTRAINT asignar_check_no_overlap CHECK (
       horario_reserva
     )
   );
+
+-- ELIMINAR DROP ANTES DE ENTREGAR
+ALTER TABLE asignar DROP CONSTRAINT asignar_check_no_sunday;
+ALTER TABLE asignar
+ADD CONSTRAINT asignar_check_no_sunday CHECK (
+    asignar_check_no_sunday_function(
+      horario_reserva
+    )
+  );
+
+-- ELIMINAR DROP ANTES DE ENTREGAR
+ALTER TABLE horario_curso DROP CONSTRAINT horario_curso_check_weekly_time_limit;
+ALTER TABLE horario_curso
+ADD CONSTRAINT horario_curso_check_weekly_time_limit CHECK (
+    horario_curso_check_weekly_time_limit_function(
+      id_curso,
+      id_programa_curso,
+      id_cliente,
+      rango
+    )
+  );

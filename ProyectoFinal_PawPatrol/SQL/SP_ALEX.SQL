@@ -199,3 +199,112 @@ CREATE OR REPLACE FUNCTION asignar_check_no_overlap_function(
         END IF;
     END;
 $$;
+
+-- Extrae las fechas diferentes que ocurren durante un tsrange
+CREATE OR REPLACE FUNCTION get_dates_in_tsrange(
+        p_range tsrange
+    ) RETURNS TABLE (d date) LANGUAGE plpgsql AS $$
+    BEGIN
+        RETURN QUERY (
+            SELECT
+                date_trunc('day', dd)::date AS d
+            FROM
+                generate_series(
+                    lower(p_range)::timestamp,
+                    upper(p_range)::timestamp,
+                    '1 day'::interval
+                ) dd
+        );
+    END;
+$$;
+
+
+-- Revisa si alguna parte de un ts-range sucede durante un domingo. Realiza el check del constraint asignar_check_no_sunday
+CREATE OR REPLACE FUNCTION asignar_check_no_sunday_function(
+        p_horario tsrange
+    ) RETURNS boolean LANGUAGE plpgsql AS $$
+    DECLARE has_sunday boolean;
+    BEGIN
+        SELECT
+            EXISTS (
+                WITH dates AS (
+                    SELECT * FROM get_dates_in_tsrange(p_horario)
+                )
+                SELECT
+                    1
+                FROM dates
+                WHERE EXTRACT(isodow FROM dates.d) = 7
+                LIMIT 1
+            )
+        INTO has_sunday;
+        IF has_sunday THEN
+            RETURN TRUE;
+        ELSE
+            RAISE NOTICE 'No se puede asignar la sala durante un domingo';
+            RETURN FALSE;
+        END IF;
+    END;
+$$;
+
+
+-- Obtiene el número de horas asignadas a una sala de capacitación durante
+CREATE OR REPLACE FUNCTION get_duracion_curso_durante_semana(
+        p_id_curso int,
+        p_id_programa_curso int,
+        p_id_cliente int,
+        p_anio int,
+        p_semana int -- Entre 1 y 52 (EXTRACT(week from date))
+    ) RETURNS interval LANGUAGE plpgsql AS $$
+    DECLARE duracion interval;
+    BEGIN
+        WITH tiempos AS (
+            SELECT 
+                UPPER(rango) AS ts_fin,
+                LOWER(rango) AS ts_inicio
+            FROM horario_curso
+            WHERE horario_curso.id_curso = p_id_curso
+                AND horario_curso.id_programa_curso = p_id_programa_curso
+                AND horario_curso.id_cliente = p_id_cliente
+        )
+        SELECT
+            COALESCE(SUM(ts_fin-ts_inicio), '00:00:00'::interval)
+        INTO duracion
+        FROM tiempos
+        WHERE 
+            -- Como no hay reservas en domingo, ts_inicio y ts_fin están en la misma semana
+            EXTRACT(week from ts_inicio::date)=p_semana 
+            AND EXTRACT(year from ts_inicio::date)=p_anio;
+        RETURN duracion;
+    END;
+$$;
+
+-- Revisa si se puede agregar un nuevo rango de horas sin pasarse del límite de horas por semana. Realiza el check del constraint asignar_check_weekly_time_limit
+CREATE OR REPLACE FUNCTION horario_curso_check_weekly_time_limit_function(
+        p_id_curso int,
+        p_id_programa_curso int,
+        p_id_cliente int,
+        p_rango tsrange
+    ) RETURNS boolean LANGUAGE plpgsql AS $$
+    DECLARE pasa_limite int;
+    BEGIN
+        SELECT
+            (
+                UPPER(p_rango)-LOWER(p_rango)
+                +
+                get_duracion_curso_durante_semana(
+                    p_id_curso,
+                    p_id_programa_curso,
+                    p_id_cliente,
+                    EXTRACT(year FROM p_rango),
+                    EXTRACT(week FROM p_rango)
+                )
+            )>'42:00:00'::interval
+        INTO pasa_limite;
+        IF pasa_limite THEN
+            RAISE NOTICE 'No se puede agregar ese horario, ya que se superaría el límite de 42 horas por semana para este curso';
+            RETURN FALSE;
+        ELSE
+            RETURN TRUE;
+        END IF;
+    END;
+$$;
