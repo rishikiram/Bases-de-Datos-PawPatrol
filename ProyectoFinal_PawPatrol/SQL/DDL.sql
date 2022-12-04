@@ -207,7 +207,7 @@ PRIMARY KEY (id_edificio);
 
 ALTER TABLE piso
 ADD CONSTRAINT pk_piso
-PRIMARY KEY (num_piso);
+PRIMARY KEY (num_piso, id_edificio);
 
 ALTER TABLE programa_curso
 ADD CONSTRAINT pk_programa_curso
@@ -223,7 +223,7 @@ PRIMARY KEY (id_curso, id_programa_curso, id_cliente, rango);
 
 ALTER TABLE estacion
 ADD CONSTRAINT pk_estacion
-PRIMARY KEY (num_estacion);
+PRIMARY KEY (num_estacion, num_sala, num_piso, id_edificio);
 
 ALTER TABLE accesorio
 ADD CONSTRAINT pk_accesorio
@@ -231,7 +231,7 @@ PRIMARY KEY (id_accesorio);
 
 ALTER TABLE sala
 ADD CONSTRAINT pk_sala
-PRIMARY KEY (num_sala);
+PRIMARY KEY (num_sala, num_piso, id_edificio);
 
 ALTER TABLE sala_operaciones
 ADD CONSTRAINT pk_sala_operaciones
