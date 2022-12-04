@@ -444,6 +444,3 @@ ADD CONSTRAINT fk_requerir_pk_programa_curso
 FOREIGN KEY (id_programa_curso, id_cliente)
 REFERENCES programa_curso(id_programa_curso, id_cliente);
 
-
--- Restricciones CHECK
-
