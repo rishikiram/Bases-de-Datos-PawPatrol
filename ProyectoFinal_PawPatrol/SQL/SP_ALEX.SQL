@@ -90,11 +90,71 @@ BEGIN
         AND requerir.num_piso = p_num_piso
         AND requerir.id_edificio = p_id_edificio;
 
-    IF num_programas_aprobados = num_programas_requeridos THEN 
+    IF COALESCE(num_programas_aprobados = num_programas_requeridos, true) THEN 
         RETURN TRUE;
     ELSE 
         RAISE NOTICE 'El agente (%) no puede laborar en esta sala, ya que no ha aprobado algún curso con el programa necesario (%)', p_id_agente, p_id_programa_curso;
         RETURN false;
     END IF;
 END;
+$$;
+
+
+-- Revisa si una sala de operaciones está libre durante un rango de tiempo
+CREATE OR REPLACE FUNCTION sala_de_operaciones_esta_libre_entre(
+        p_num_sala int,
+        p_num_piso int,
+        p_id_edificio int,
+        p_fecha_comienzo date,
+        p_fecha_fin date
+    ) RETURNS boolean LANGUAGE plpgsql AS $$
+    DECLARE booked boolean;
+    BEGIN
+        SELECT
+            EXISTS (SELECT
+                        1
+                    FROM fecha_reservacion_operaciones
+                    WHERE p_fecha_comienzo <= fecha_reservacion_operaciones.fecha
+                        AND fecha_reservacion_operaciones.fecha <= p_fecha_fin
+                        AND fecha_reservacion_operaciones.num_sala = p_num_sala
+                        AND fecha_reservacion_operaciones.num_piso = p_num_piso
+                        AND fecha_reservacion_operaciones.id_edificio = p_id_edificio
+                    LIMIT 1)
+        INTO booked;
+        RETURN NOT booked;
+    END;
+$$;
+
+-- Revisa si una sala de operaciones está libre en una fecha dada
+CREATE OR REPLACE FUNCTION sala_de_operaciones_esta_libre_en(
+        p_num_sala int,
+        p_num_piso int,
+        p_id_edificio int,
+        p_fecha date
+    ) RETURNS boolean LANGUAGE plpgsql AS $$
+    DECLARE libre boolean;
+    BEGIN
+        SELECT
+            sala_de_operaciones_esta_libre_entre(p_num_sala, p_num_piso, p_id_edificio, p_fecha, p_fecha)
+        INTO libre;
+        RETURN libre;
+    END;
+$$;
+
+
+-- Realiza el check del constraint fecha_reservacion_operaciones_check_no_overlap
+CREATE OR REPLACE FUNCTION fecha_reservacion_operaciones_check_no_overlap_function(
+        p_num_sala int,
+        p_num_piso int,
+        p_id_edificio int,
+        p_fecha date
+    ) RETURNS boolean LANGUAGE plpgsql AS $$
+    BEGIN
+        IF sala_de_operaciones_esta_libre_en(p_num_sala, p_num_piso, p_id_edificio, p_fecha) THEN
+            RETURN TRUE;
+        ELSE
+            RAISE NOTICE 'No se puede insertar la fecha de reservación, pues la sala (%) del piso (%) del edificio (%) ya está ocupada en la fecha (%)', p_num_sala, p_num_piso, p_id_edificio, p_fecha;
+            RETURN FALSE;
+        END IF;
+    END;
 $$;

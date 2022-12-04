@@ -23,3 +23,15 @@ ADD CONSTRAINT laborar_operaciones_check_aprobacion CHECK (
       id_empleado
     )
   );
+
+-- ELIMINAR DROP ANTES DE ENTREGAR
+ALTER TABLE fecha_reservacion_operaciones DROP CONSTRAINT fecha_reservacion_operaciones_check_no_overlap;
+ALTER TABLE fecha_reservacion_operaciones
+ADD CONSTRAINT fecha_reservacion_operaciones_check_no_overlap CHECK (
+    fecha_reservacion_operaciones_check_no_overlap_function(
+      num_sala,
+      num_piso,
+      id_edificio,
+      fecha
+    )
+  );
