@@ -19,7 +19,10 @@ BEGIN
 END
 $$
 LANGUAGE plpgsql;
-CREATE OR REPLACE TRIGGER num_de_pisos
+
+
+DROP TRIGGER IF EXISTS num_de_pisos ON piso;
+CREATE TRIGGER num_de_pisos
     AFTER INSERT
     ON piso
     FOR EACH ROW
