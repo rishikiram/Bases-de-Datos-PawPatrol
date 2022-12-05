@@ -279,7 +279,7 @@ REFERENCES piso(num_piso,id_edificio);
 ALTER TABLE faltar
 ADD CONSTRAINT fk_faltar_id_empleado
 FOREIGN KEY (id_empleado)
-REFERENCES empleado(id_empleado);
+REFERENCES agente(id_empleado);
 
 ALTER TABLE faltar
 ADD CONSTRAINT fk_faltar_pk_curso
