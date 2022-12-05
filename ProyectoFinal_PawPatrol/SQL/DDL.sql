@@ -16,21 +16,19 @@ CREATE TABLE empleado(
     curp varchar(100),
     correo_electronico email,
     telefono telephone,
-    fotografia_archivo varchar(100)
+    fotografia_archivo varchar(100),
+    num_piso int,
+    id_edificio int
 );
 
 CREATE TABLE agente(
     id_curso int,
     id_programa_curso int,
     id_cliente int,
-    id_edificio int,
-    num_piso int,
     pasar_piso boolean
 ) INHERITS (empleado);
 
 CREATE TABLE entrenador(
-    num_piso int,
-    id_edificio int,
     fecha_ingresado date,
     numero_seguridad_social int
 ) INHERITS (empleado);

@@ -380,3 +380,43 @@ BEGIN
     RETURN TRUE;
 END
 $$;
+
+-- Indica si un empleado tiene acceso a un piso
+CREATE OR REPLACE FUNCTION empleado_tiene_acceso_a_piso(
+    p_id_empleado int,
+    p_num_piso int,
+    p_id_edificio int
+) RETURNS boolean LANGUAGE plpgsql AS $$
+    DECLARE tiene_acceso boolean;
+    BEGIN
+        SELECT
+            EXISTS(
+                SELECT
+                    1
+                FROM empleado
+                WHERE id_empleado=p_id_empleado
+                    AND num_piso=p_num_piso
+                    AND id_edificio=p_id_edificio
+                LIMIT 1
+            )
+        INTO tiene_acceso;
+        
+        RETURN tiene_acceso;
+    END;
+$$;
+
+-- Realiza el check del constraint check_asistencia_acceso
+CREATE OR REPLACE FUNCTION check_asistencia_acceso_function(
+    id_empleado int,
+    id_edificio int,
+    num_piso int
+) RETURNS boolean LANGUAGE plpgsql AS $$
+    BEGIN
+        IF empleado_tiene_acceso_a_piso(id_empleado, id_edificio, num_piso) THEN
+            RETURN TRUE;
+        ELSE
+            RAISE NOTICE 'El empleado no tiene acceso al piso';
+            RETURN FALSE;
+        END IF;
+    END;
+$$;
