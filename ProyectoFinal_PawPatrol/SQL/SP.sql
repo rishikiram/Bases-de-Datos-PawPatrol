@@ -420,3 +420,38 @@ CREATE OR REPLACE FUNCTION check_asistencia_acceso_function(
         END IF;
     END;
 $$;
+
+-- Indica cuántas tuplas tiene cada una de las tablas en la base de datos
+CREATE OR REPLACE FUNCTION get_database_row_counts() 
+RETURNS TABLE(table_name information_schema.sql_identifier, rows_n int) 
+LANGUAGE plpgsql AS $$
+    BEGIN
+        RETURN QUERY(
+            WITH tbl AS (
+                SELECT table_schema,
+                    information_schema.tables.TABLE_NAME
+                FROM information_schema.tables
+                WHERE information_schema.tables.TABLE_NAME NOT LIKE 'pg_%'
+                    AND table_schema IN ('public')
+            )
+            SELECT tbl.TABLE_NAME AS table_name,
+                (
+                    xpath(
+                        '/row/c/text()',
+                        query_to_xml(
+                            format(
+                                'select count(*) as c from %I.%I',
+                                table_schema,
+                                tbl.TABLE_NAME
+                            ),
+                            FALSE,
+                            TRUE,
+                            ''
+                        )
+                    )
+                ) [1]::text::int AS rows_n
+            FROM tbl
+            ORDER BY rows_n DESC
+        );
+    END;
+$$;
