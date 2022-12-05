@@ -1,3 +1,26 @@
+-- Realiza el check del constraint check_fk_asistencia_pk_empleado
+CREATE OR REPLACE FUNCTION check_fk_asistencia_pk_empleado_function(
+    p_id_empleado int
+  ) RETURNS boolean LANGUAGE plpgsql AS
+  $$
+    DECLARE empleado_exists boolean;
+    BEGIN
+        SELECT
+        EXISTS (SELECT
+                    1
+                FROM empleado -- Aquí sí incluye a agente y a entrenador
+                WHERE id_empleado = p_id_empleado
+                LIMIT 1)
+        INTO empleado_exists;
+        IF empleado_exists THEN
+            RETURN TRUE;
+        ELSE
+            RAISE NOTICE 'El empleado con ID % no está registrado.', p_id_empleado;
+            RETURN FALSE;
+        END IF;
+    END;
+  $$;
+
 -- Realiza el check del constraint check_fk_estacion_pk_sala
 CREATE OR REPLACE FUNCTION check_fk_estacion_pk_sala_function(
     p_num_sala int,

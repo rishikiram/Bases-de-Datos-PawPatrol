@@ -1,3 +1,10 @@
+ALTER TABLE asistencia
+ADD CONSTRAINT check_fk_asistencia_pk_empleado CHECK(
+  check_fk_asistencia_pk_empleado_function(
+    id_empleado
+  )
+);
+
 ALTER TABLE estacion
 ADD CONSTRAINT check_fk_estacion_pk_sala CHECK(
   check_fk_estacion_pk_sala_function(

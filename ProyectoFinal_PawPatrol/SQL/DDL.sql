@@ -241,6 +241,10 @@ ALTER TABLE sala_capacitacion
 ADD CONSTRAINT pk_sala_capacitacion
 PRIMARY KEY (num_sala, num_piso, id_edificio);
 
+ALTER TABLE asistencia
+ADD CONSTRAINT pk_asistencia
+PRIMARY KEY (id_empleado, id_edificio, num_piso);
+
 ALTER TABLE cliente
 ADD CONSTRAINT pk_cliente
 PRIMARY KEY (id_cliente);
@@ -319,12 +323,14 @@ REFERENCES curso(id_curso, id_programa_curso, id_cliente);
 ALTER TABLE impartir
 ADD CONSTRAINT fk_impartir_id_empleado
 FOREIGN KEY (id_empleado)
-REFERENCES empleado(id_empleado);
+REFERENCES entrenador(id_empleado);
 
-ALTER TABLE asistencia
-ADD CONSTRAINT fk_asistencia_id_empleado
-FOREIGN KEY (id_empleado)
-REFERENCES empleado(id_empleado);
+-- ESTO NO SIRVE, VER CONSTRAINT check_fk_asistencia_pk_empleado EN Constraints.sql
+-- https://stackoverflow.com/a/44422806/15217078
+-- ALTER TABLE asistencia
+-- ADD CONSTRAINT fk_asistencia_id_empleado
+-- FOREIGN KEY (id_empleado)
+-- REFERENCES empleado(id_empleado);
 
 ALTER TABLE asistencia
 ADD CONSTRAINT fk_asistencia_pk_piso
@@ -332,9 +338,9 @@ FOREIGN KEY (num_piso, id_edificio)
 REFERENCES piso(num_piso, id_edificio);
 
 ALTER TABLE registro_asistencia
-ADD CONSTRAINT fk_registro_asistencia_id_empleado
-FOREIGN KEY (id_empleado)
-REFERENCES empleado(id_empleado);
+ADD CONSTRAINT fk_registro_asistencia
+FOREIGN KEY (id_empleado, num_piso, id_edificio)
+REFERENCES asistencia(id_empleado, num_piso, id_edificio);
 
 ALTER TABLE registro_asistencia
 ADD CONSTRAINT fk_registro_asistencia_pk_piso
