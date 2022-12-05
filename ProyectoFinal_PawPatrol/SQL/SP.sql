@@ -288,10 +288,10 @@ CREATE OR REPLACE FUNCTION asignar_check_no_sunday_function(
             )
         INTO has_sunday;
         IF has_sunday THEN
-            RETURN TRUE;
-        ELSE
             RAISE NOTICE 'No se puede asignar la sala durante un domingo';
             RETURN FALSE;
+        ELSE
+            RETURN TRUE;
         END IF;
     END;
 $$;

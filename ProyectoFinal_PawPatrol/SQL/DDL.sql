@@ -24,8 +24,7 @@ CREATE TABLE empleado(
 CREATE TABLE agente(
     id_curso int,
     id_programa_curso int,
-    id_cliente int,
-    pasar_piso boolean
+    id_cliente int
 ) INHERITS (empleado);
 
 CREATE TABLE entrenador(
