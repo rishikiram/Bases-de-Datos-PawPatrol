@@ -341,10 +341,12 @@ ADD CONSTRAINT fk_registro_asistencia_pk_piso
 FOREIGN KEY (num_piso, id_edificio)
 REFERENCES piso(num_piso, id_edificio);
 
-ALTER TABLE estacion
-ADD CONSTRAINT fk_estacion_pk_sala
-FOREIGN KEY (num_sala, num_piso, id_edificio)
-REFERENCES sala(num_sala, num_piso, id_edificio);
+-- ESTO NO SIRVE, VER CONSTRAINT check_fk_estacion_pk_sala EN Constraints.sql
+-- https://stackoverflow.com/a/44422806/15217078
+-- ALTER TABLE estacion
+-- ADD CONSTRAINT fk_estacion_pk_sala
+-- FOREIGN KEY (num_sala, num_piso, id_edificio)
+-- REFERENCES sala(num_sala, num_piso, id_edificio);
 
 ALTER TABLE sala
 ADD CONSTRAINT fk_sala_pk_piso

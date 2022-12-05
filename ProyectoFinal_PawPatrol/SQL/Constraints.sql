@@ -1,3 +1,12 @@
+ALTER TABLE estacion
+ADD CONSTRAINT check_fk_estacion_pk_sala CHECK(
+  check_fk_estacion_pk_sala_function(
+    num_sala,
+    num_piso,
+    id_edificio
+  )
+);
+
 ALTER TABLE evaluar
 ADD CONSTRAINT evaluar_check_faltas CHECK (
     evaluar_check_faltas_function(

@@ -1,3 +1,30 @@
+-- Realiza el check del constraint check_fk_estacion_pk_sala
+CREATE OR REPLACE FUNCTION check_fk_estacion_pk_sala_function(
+    p_num_sala int,
+    p_num_piso int,
+    p_id_edificio int
+  ) RETURNS boolean LANGUAGE plpgsql AS
+  $$
+    DECLARE sala_pk_exists boolean;
+    BEGIN
+        SELECT
+        EXISTS (SELECT
+                    1
+                FROM sala -- Aquí sí incluye a sala_operaciones y a sala_reserva
+                WHERE num_sala = p_num_sala
+                    AND num_piso = p_num_piso
+                    AND id_edificio = p_id_edificio
+                LIMIT 1)
+        INTO sala_pk_exists;
+        IF sala_pk_exists THEN
+            RETURN TRUE;
+        ELSE
+            RAISE NOTICE 'No existe una sala con número (%), piso (%) y edificio (%) en ninguna de las tablas de sala.', p_num_sala, p_num_piso, p_id_edificio;
+            RETURN FALSE;
+        END IF;
+    END;
+  $$;
+
 -- Indica el número de veces que un agente ha faltado a un curso
 CREATE OR REPLACE FUNCTION get_numero_de_faltas_en_curso(
         p_id_agente int,
