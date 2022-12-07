@@ -67,33 +67,6 @@ BEGIN
 END;
 $$;
 
--- Realiza el check del constraint evaluar_check_faltas
-CREATE OR REPLACE FUNCTION evaluar_check_faltas_function(
-    calificacion int,
-    id_empleado int,
-    id_curso int,
-    id_programa_curso int,
-    id_cliente int
-  ) RETURNS boolean LANGUAGE plpgsql AS
-  $$
-    BEGIN
-      IF (
-        calificacion < 8
-        OR get_numero_de_faltas_en_curso (
-          id_empleado,
-          id_curso,
-          id_programa_curso,
-          id_cliente
-        ) < 3
-      ) THEN
-        RETURN true;
-      ELSE
-        RAISE NOTICE 'La calificación no puede ser aprobatoria si faltó 3 veces';
-        RETURN false;
-      END IF;
-    END;
-  $$;
-
 
 -- Indica si un agente ya aprobó algún curso con el programa dado
 CREATE OR REPLACE FUNCTION ya_aprobo_programa(
@@ -400,7 +373,7 @@ CREATE OR REPLACE FUNCTION empleado_tiene_acceso_a_piso(
                 LIMIT 1
             )
         INTO tiene_acceso;
-        
+
         RETURN tiene_acceso;
     END;
 $$;
@@ -422,8 +395,8 @@ CREATE OR REPLACE FUNCTION check_asistencia_acceso_function(
 $$;
 
 -- Indica cuántas tuplas tiene cada una de las tablas en la base de datos
-CREATE OR REPLACE FUNCTION get_database_row_counts() 
-RETURNS TABLE(table_name information_schema.sql_identifier, rows_n int) 
+CREATE OR REPLACE FUNCTION get_database_row_counts()
+RETURNS TABLE(table_name information_schema.sql_identifier, rows_n int)
 LANGUAGE plpgsql AS $$
     BEGIN
         RETURN QUERY(

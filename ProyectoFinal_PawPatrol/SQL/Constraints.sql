@@ -14,16 +14,6 @@ ADD CONSTRAINT check_fk_estacion_pk_sala CHECK(
   )
 );
 
-ALTER TABLE evaluar
-ADD CONSTRAINT evaluar_check_faltas CHECK (
-    evaluar_check_faltas_function(
-      calificacion,
-      id_empleado,
-      id_curso,
-      id_programa_curso,
-      id_cliente
-    )
-  );
 
 ALTER TABLE laborar_operaciones
 ADD CONSTRAINT laborar_operaciones_check_aprobacion CHECK (

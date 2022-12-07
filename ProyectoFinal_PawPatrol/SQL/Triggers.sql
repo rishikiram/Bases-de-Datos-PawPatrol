@@ -27,60 +27,61 @@ CREATE TRIGGER num_de_pisos
     ON piso
     FOR EACH ROW
     EXECUTE PROCEDURE check_num_pisos();
-	
---Max cantidad de salas de cada piso es 8 (NO FUNCIONA)
--- CREATE OR REPLACE FUNCTION check_num_salas() RETURNS TRIGGER
--- AS
--- $$
--- DECLARE
--- -- op BIGINT;
--- -- cap BIGINT;
--- sal BIGINT;
--- BEGIN
--- -- 	RAISE NOTICE 'test';
--- -- 	RETURN NULL;
--- --     SELECT COUNT(num_sala)
--- --     AS cnt
--- --     FROM sala_operacion
--- --     GROUP BY id_edificio, num_piso
--- --     HAVING id_edificio = NEW.id_edificio AND num_piso = NEW.num_piso
--- --     INTO op;
--- --     SELECT COUNT(num_sala)
--- --     AS cnt
--- --     FROM sala_capacitacion
--- --     GROUP BY id_edificio, num_piso
--- --     HAVING id_edificio = NEW.id_edificio AND num_piso = NEW.num_piso
--- --     INTO cap;
---     SELECT COUNT(sala.num_sala)
---     AS cnt
---     FROM sala
---     GROUP BY sala.id_edificio, sala.num_piso
---     HAVING sala.id_edificio = NEW.id_edificio AND sala.num_piso = NEW.num_piso
---     INTO sal;
--- --     RAISE NOTICE 'o % c % s %', op, cap, sal;
---     IF (sal > 8)
---         THEN RAISE EXCEPTION 'El Piso % en Edificio % ya tiene 8 pisos', NEW.num_piso, NEW.id_edificio
---         USING HINT = 'Los Piso tiene 8 salas al maximo';
---     END IF;
---     RETURN NULL;
--- END
--- $$
--- LANGUAGE plpgsql;
--- CREATE OR REPLACE TRIGGER num_de_salas
---     BEFORE INSERT
---     ON sala
---     FOR EACH ROW
---     EXECUTE PROCEDURE check_num_salas();
--- CREATE OR REPLACE TRIGGER num_de_salas_capacitacion
---     BEFORE INSERT
---     ON sala_capacitacion
---     FOR EACH ROW
---     EXECUTE PROCEDURE check_num_salas();
--- CREATE OR REPLACE TRIGGER num_de_salas_operacion
---     BEFORE INSERT
---     ON sala_operacion
---     FOR EACH ROW
---     EXECUTE PROCEDURE check_num_salas();
+
+  CREATE OR REPLACE FUNCTION check_num_faltas() RETURNS TRIGGER
+  AS
+  $$
+  DECLARE
+  f BIGINT;
+  BEGIN
+      SELECT COUNT(fecha)
+      AS cnt
+      FROM faltar
+      WHERE faltar.id_curso = NEW.id_curso AND faltar.id_empleado = NEW.id_empleado
+      GROUP BY NEW.id_curso, NEW.id_empleado
+      INTO f;
+      IF (f >= 3 AND NEW.calificacion >=8 )
+          THEN RAISE EXCEPTION 'El calificacion no se puede ser 8 o más porque el empleado % faltó % veces a la clase %.', NEW.id_empleado, NEW.id_curso, f
+          USING HINT = 'Para aprobar, los empleados no pueden faltar 3 o más clases.';
+      END IF;
+      RETURN NULL;
+  END
+  $$
+  LANGUAGE plpgsql;
+
+
+DROP TRIGGER IF EXISTS num_faltas_update ON evaluar;
+CREATE TRIGGER num_faltas_update
+  AFTER UPDATE of calificacion
+  ON evaluar
+  FOR EACH ROW
+  EXECUTE PROCEDURE check_num_faltas();
+  
+DROP TRIGGER IF EXISTS num_faltas_insert ON evaluar;
+CREATE TRIGGER num_faltas_insert
+  AFTER INSERT
+  ON evaluar
+  FOR EACH ROW
+  EXECUTE PROCEDURE check_num_faltas();
+
+--Pruebas
+--Despues de DML.sql, debe fallar
+-- INSERT INTO evaluar(
+--     id_empleado,
+--     id_curso,
+--     id_programa_curso,
+--     id_cliente,
+--     calificacion
+-- ) VALUES (16,16,16,215,8);
+--Despues de DML.sql, debe funciona
+-- INSERT INTO evaluar(
+--     id_empleado,
+--     id_curso,
+--     id_programa_curso,
+--     id_cliente,
+--     calificacion
+-- ) VALUES (12,12,12,211,9);
+
 
 -- DELETE FROM sala;
 -- DELETE FROM piso;
@@ -110,26 +111,4 @@ CREATE TRIGGER num_de_pisos
 -- VALUES (10, 1);
 -- INSERT INTO piso(num_piso, id_edificio)
 -- VALUES (13, 1);
--- DELETE FROM sala;
--- INSERT INTO sala_capacitacion( num_sala, num_piso, id_edificio, costo)
--- VALUES(1, 1, 1, 1);
--- INSERT INTO sala_operacion( num_sala, num_piso, id_edificio, costo)
--- VALUES(2, 1, 1, 1);
--- INSERT INTO sala_capacitacion( num_sala, num_piso, id_edificio, costo)
--- VALUES(3, 1, 1, 1);
--- INSERT INTO sala_operacion( num_sala, num_piso, id_edificio, costo)
--- VALUES(4, 1, 1, 1);
--- INSERT INTO sala( num_sala, num_piso, id_edificio, costo)
--- VALUES(5, 1, 1, 1);
--- INSERT INTO sala_capacitacion( num_sala, num_piso, id_edificio, costo)
--- VALUES(6, 1, 1, 1);
--- INSERT INTO sala_capacitacion( num_sala, num_piso, id_edificio, costo)
--- VALUES(7, 1, 1, 1);
--- INSERT INTO sala_capacitacion( num_sala, num_piso, id_edificio, costo)
--- VALUES(8, 1, 1, 1);
--- INSERT INTO sala_capacitacion( num_sala, num_piso, id_edificio, costo)
--- VALUES(9, 1, 1, 1);
--- INSERT INTO sala_capacitacion( num_sala, num_piso, id_edificio, costo)
--- VALUES(10, 1, 1, 1);
--- INSERT INTO sala_capacitacion( num_sala, num_piso, id_edificio, costo)
--- VALUES(11, 1, 1, 1);
+
