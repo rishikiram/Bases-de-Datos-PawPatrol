@@ -82,8 +82,16 @@ COMMENT ON COLUMN sala.id_edificio IS 'ID del edificio donde se encuentra';
 COMMENT ON COLUMN sala.costo IS 'Costo de la sala';
 
 COMMENT ON TABLE sala_operacion IS 'Tabla que representa una sala de operaciones del centro de control';
+COMMENT ON COLUMN sala_operacion.num_sala IS 'Numero de sala de operacion';
+COMMENT ON COLUMN sala_operacion.num_piso IS 'Numero del piso en el que encuentra';
+COMMENT ON COLUMN sala_operacion.id_edificio IS 'ID del edificio donde se encuentra';
+COMMENT ON COLUMN sala_operacion.costo IS 'Costo de la sala';
 
 COMMENT ON TABLE sala_capacitacion IS 'Tabla que representa una sala de capacitacion del centro de control';
+COMMENT ON COLUMN sala_capacitacion.num_sala IS 'Numero de sala de operacion';
+COMMENT ON COLUMN sala_capacitacion.num_piso IS 'Numero del piso en el que encuentra';
+COMMENT ON COLUMN sala_capacitacion.id_edificio IS 'ID del edificio donde se encuentra';
+COMMENT ON COLUMN sala_capacitacion.costo IS 'Costo de la sala';
 
 COMMENT ON TABLE asistencia IS 'Tabla que representa la asistencia de un empleado a un piso';
 COMMENT ON COLUMN asistencia.id_empleado IS 'ID del empleado al que se le tomará asistencia';
