@@ -5,14 +5,6 @@ DROP FUNCTION get_numero_de_faltas_en_curso(
     p_id_cliente int
 );
 
-DROP FUNCTION evaluar_check_faltas_function(
-    calificacion int,
-    id_empleado int,
-    id_curso int,
-    id_programa_curso int,
-    id_cliente int
-);
-
 DROP FUNCTION ya_aprobo_programa(
     p_id_agente int,
     p_id_programa_curso int,
