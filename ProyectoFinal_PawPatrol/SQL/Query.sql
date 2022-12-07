@@ -41,10 +41,14 @@ FROM estacion est
 WHERE est.sistema_operativo = 'Linux' AND
   acc.tipo SIMILAR TO '%[Mm](OUSE|ouse)%';
 
---todos los dias trabajado en operaciones de empleado numero 13 en 2022
-SELECT emp.id_empleado, fro.fecha
-FROM empleado emp INNER JOIN laborar_operaciones lo ON 
+--todos los dias trabajado en operaciones de empleado numero 13 en 2022 y la costo por cada dia
+SELECT emp.id_empleado, fro.fecha, sala.costo
+FROM empleado emp INNER JOIN laborar_operaciones lo ON
 emp.id_empleado = lo.id_empleado
-INNER JOIN fecha_reservacion_operaciones fro ON 
+INNER JOIN fecha_reservacion_operaciones fro ON
 fro.id_reservacion_operaciones = lo.id_reservacion_operaciones
+INNER JOIN sala ON(
+    sala.num_sala  = lo.num_sala AND
+    sala.num_piso = lo.num_piso  AND
+    sala.id_edificio = lo.id_edificio)
 WHERE emp.id_empleado = 13 and fro.fecha BETWEEN '2022-01-01' AND '2022-12-31';
