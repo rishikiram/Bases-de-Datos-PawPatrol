@@ -60,9 +60,8 @@ FROM evaluar INNER JOIN agente ON agente.id_empleado = evaluar.id_empleado
 	INNER JOIN curso ON curso.id_curso = agente.id_curso 
 WHERE evaluar.calificacion = '10' and curso.modalidad = 'presencial';
 
--- Nombre y telefono de los empleados que faltaron en el 2022 en el curso "MOVIES" 
-SELECT agente.nombre, agente.telefono
-FROM agente INNER JOIN faltar ON faltar.id_empleado = agente.id_empleado 
-	INNER JOIN curso ON curso.id_curso = faltar.id_curso 
+-- ID del empleado, nombre del programa y fechas en las que faltaron los agentes con id 10 al 20
+SELECT faltar.id_empleado, programa_curso.nombre, faltar.fecha
+FROM faltar INNER JOIN curso ON curso.id_curso = faltar.id_curso 
 	INNER JOIN programa_curso ON programa_curso.id_programa_curso = curso.id_programa_curso
-WHERE faltar.fecha BETWEEN '2022-01-01' AND '2022-12-31' and programa_curso.nombre = 'Jewelry';
+WHERE faltar.id_empleado BETWEEN '10' AND '20';
