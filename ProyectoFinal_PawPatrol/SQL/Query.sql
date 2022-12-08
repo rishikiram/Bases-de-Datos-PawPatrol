@@ -153,3 +153,53 @@ FROM curso;
 -- Consulta 13
 -- Calificacion promedio de los cursos tomados por los agentes
 SELECT AVG(calificacion) as promedio FROM evaluar;
+
+-- Consulta 14
+-- El total recaudado de todas las salas de operaciones en el tercer trimestre del año
+WITH recaudado_trimestre AS(
+    SELECT fecha_reservacion_operaciones.id_reservacion_operaciones, fecha_reservacion_operaciones.num_sala, fecha_reservacion_operaciones.num_piso, fecha_reservacion_operaciones.id_edificio, fecha_reservacion_operaciones.fecha, sala_operacion.costo
+    FROM fecha_reservacion_operaciones INNER JOIN sala_operacion ON sala_operacion.num_sala = fecha_reservacion_operaciones.num_sala AND sala_operacion.num_piso = fecha_reservacion_operaciones.num_piso AND sala_operacion.id_edificio = fecha_reservacion_operaciones.id_edificio
+    WHERE fecha_reservacion_operaciones.fecha 
+    BETWEEN ('2022-07-01') AND ('2022-09-30')
+)
+SELECT SUM(recaudado_trimestre.costo) AS total_recaudado_tercer_trimestre
+FROM recaudado_trimestre
+
+-- Consulta 15
+-- El total recaudado de las salas de operaciones en el año 2022 por edificio
+WITH salas_reservadas_anual AS(
+    SELECT fecha_reservacion_operaciones.id_reservacion_operaciones, fecha_reservacion_operaciones.num_sala, fecha_reservacion_operaciones.num_piso, fecha_reservacion_operaciones.id_edificio, fecha_reservacion_operaciones.fecha, sala_operacion.costo
+    FROM fecha_reservacion_operaciones INNER JOIN sala_operacion ON sala_operacion.num_sala = fecha_reservacion_operaciones.num_sala AND sala_operacion.num_piso = fecha_reservacion_operaciones.num_piso AND sala_operacion.id_edificio = fecha_reservacion_operaciones.id_edificio
+    WHERE fecha_reservacion_operaciones.fecha BETWEEN ('2022-09-01') AND ('2022-09-30')
+    ),
+    recaudado_edificio1 AS(
+        SELECT SUM(salas_reservadas_anual.costo) AS total_salas_operacion_edificio1
+        FROM salas_reservadas_anual
+        WHERE salas_reservadas_anual.id_edificio = 1
+    ),
+    recaudado_edificio2 AS(
+        SELECT SUM(salas_reservadas_anual.costo) AS total_salas_operacion_edificio2
+        FROM salas_reservadas_anual
+        WHERE salas_reservadas_anual.id_edificio = 2
+    ),
+    recaudado_edificio3 AS(
+        SELECT SUM(salas_reservadas_anual.costo) AS total_salas_operacion_edificio3
+        FROM salas_reservadas_anual
+        WHERE salas_reservadas_anual.id_edificio = 3
+    ),
+    recaudado_edificio4 AS(
+        SELECT SUM(salas_reservadas_anual.costo) AS total_salas_operacion_edificio4
+        FROM salas_reservadas_anual
+        WHERE salas_reservadas_anual.id_edificio = 4
+    ),
+    recaudado_edificio5 AS(
+        SELECT SUM(salas_reservadas_anual.costo) AS total_salas_operacion_edificio5
+        FROM salas_reservadas_anual
+        WHERE salas_reservadas_anual.id_edificio = 5
+    )
+SELECT *
+FROM recaudado_edificio1 
+    CROSS JOIN recaudado_edificio2 
+    CROSS JOIN recaudado_edificio3
+    CROSS JOIN recaudado_edificio4
+    CROSS JOIN recaudado_edificio5
