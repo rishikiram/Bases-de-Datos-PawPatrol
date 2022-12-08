@@ -1,10 +1,10 @@
--- Consulta 1:
+-- Consulta 1: El número, nombre, y id del curso en el que están de los agentes  que se tienen en capacitación en todos los edificios conocidos
 SELECT DISTINCT agente.id_curso, agente.nombre, agente.apellido_paterno, agente.apellido_materno 
 FROM agente
 	INNER JOIN asignar ON(
 	agente.id_curso = asignar.id_curso)
 
--- Consulta 2:
+-- Consulta 2: El nombre de los agentes, id y a que edificio pertenecen de todos aquellos que su calificación sea mayor a 8.
 SELECT nombre,  agente.apellido_paterno, agente.apellido_materno, agente.id_empleado, agente.id_edificio
 FROM agente
 	INNER JOIN evaluar ON(
@@ -42,16 +42,25 @@ INNER JOIN sala ON(
 WHERE emp.id_empleado = 13 and fro.fecha BETWEEN '2022-01-01' AND '2022-12-31';
 
 -- Consulta 6: Nombre completo de los agentes que sacaron la calificación de 10 en algun curso presencial 
-SELECT evaluar.calificacion, agente.nombre , agente.apellido_paterno , 
-	agente.apellido_materno, curso.modalidad
-FROM evaluar INNER JOIN agente ON agente.id_empleado = evaluar.id_empleado 
-	INNER JOIN curso ON curso.id_curso = agente.id_curso 
-WHERE evaluar.calificacion = '10' and curso.modalidad = 'presencial';
+SELECT evaluar.calificacion,
+    agente.nombre,
+    agente.apellido_paterno,
+    agente.apellido_materno,
+    curso.modalidad
+FROM evaluar
+    INNER JOIN agente ON agente.id_empleado = evaluar.id_empleado
+    INNER JOIN curso ON curso.id_curso = agente.id_curso
+WHERE evaluar.calificacion = '10'
+    AND curso.modalidad = 'presencial';
 
 -- Consulta 7: ID del empleado, nombre del programa y fechas en las que faltaron los agentes con id 10 al 20
-SELECT faltar.id_empleado, programa_curso.nombre, faltar.fecha
-FROM faltar INNER JOIN curso ON curso.id_curso = faltar.id_curso 
-	INNER JOIN programa_curso ON programa_curso.id_programa_curso = curso.id_programa_curso
+SELECT faltar.id_empleado,
+    programa_curso.nombre,
+    faltar.fecha
+FROM faltar
+    INNER JOIN curso ON curso.id_curso = faltar.id_curso
+    INNER JOIN programa_curso 
+        ON programa_curso.id_programa_curso = curso.id_programa_curso
 WHERE faltar.id_empleado BETWEEN '10' AND '20';
 
 
@@ -125,11 +134,13 @@ LIMIT 5;
 
 -- Consulta 10: Edad promedio de los entrenadores y de los agentes registrados al 7 de diciembre de 2022
 WITH edad_promedio_agentes AS (
-    SELECT AVG(age('2022-12-07'::date, fecha_nacimiento)) AS edad_promedio_agentes
+    SELECT AVG(age('2022-12-07'::date, fecha_nacimiento)) 
+        AS edad_promedio_agentes
     FROM agente
 ),
 edad_promedio_entrenadores AS (
-    SELECT AVG(age('2022-12-07'::date, fecha_nacimiento)) AS edad_promedio_entrenador
+    SELECT AVG(age('2022-12-07'::date, fecha_nacimiento)) 
+        AS edad_promedio_entrenador
     FROM entrenador
 )
 SELECT *
@@ -163,43 +174,16 @@ WITH recaudado_trimestre AS(
     BETWEEN ('2022-07-01') AND ('2022-09-30')
 )
 SELECT SUM(recaudado_trimestre.costo) AS total_recaudado_tercer_trimestre
-FROM recaudado_trimestre
+FROM recaudado_trimestre;
 
 -- Consulta 15
 -- El total recaudado de las salas de operaciones en el año 2022 por edificio
-WITH salas_reservadas_anual AS(
-    SELECT fecha_reservacion_operaciones.id_reservacion_operaciones, fecha_reservacion_operaciones.num_sala, fecha_reservacion_operaciones.num_piso, fecha_reservacion_operaciones.id_edificio, fecha_reservacion_operaciones.fecha, sala_operacion.costo
-    FROM fecha_reservacion_operaciones INNER JOIN sala_operacion ON sala_operacion.num_sala = fecha_reservacion_operaciones.num_sala AND sala_operacion.num_piso = fecha_reservacion_operaciones.num_piso AND sala_operacion.id_edificio = fecha_reservacion_operaciones.id_edificio
-    WHERE fecha_reservacion_operaciones.fecha BETWEEN ('2022-09-01') AND ('2022-09-30')
-    ),
-    recaudado_edificio1 AS(
-        SELECT SUM(salas_reservadas_anual.costo) AS total_salas_operacion_edificio1
-        FROM salas_reservadas_anual
-        WHERE salas_reservadas_anual.id_edificio = 1
-    ),
-    recaudado_edificio2 AS(
-        SELECT SUM(salas_reservadas_anual.costo) AS total_salas_operacion_edificio2
-        FROM salas_reservadas_anual
-        WHERE salas_reservadas_anual.id_edificio = 2
-    ),
-    recaudado_edificio3 AS(
-        SELECT SUM(salas_reservadas_anual.costo) AS total_salas_operacion_edificio3
-        FROM salas_reservadas_anual
-        WHERE salas_reservadas_anual.id_edificio = 3
-    ),
-    recaudado_edificio4 AS(
-        SELECT SUM(salas_reservadas_anual.costo) AS total_salas_operacion_edificio4
-        FROM salas_reservadas_anual
-        WHERE salas_reservadas_anual.id_edificio = 4
-    ),
-    recaudado_edificio5 AS(
-        SELECT SUM(salas_reservadas_anual.costo) AS total_salas_operacion_edificio5
-        FROM salas_reservadas_anual
-        WHERE salas_reservadas_anual.id_edificio = 5
-    )
-SELECT *
-FROM recaudado_edificio1 
-    CROSS JOIN recaudado_edificio2 
-    CROSS JOIN recaudado_edificio3
-    CROSS JOIN recaudado_edificio4
-    CROSS JOIN recaudado_edificio5
+SELECT fecha_reservacion_operaciones.id_edificio,
+    SUM(sala_operacion.costo) AS total_recaudado
+FROM fecha_reservacion_operaciones
+    INNER JOIN sala_operacion 
+    ON sala_operacion.num_sala = fecha_reservacion_operaciones.num_sala
+    AND sala_operacion.num_piso = fecha_reservacion_operaciones.num_piso
+    AND sala_operacion.id_edificio = fecha_reservacion_operaciones.id_edificio
+WHERE fecha_reservacion_operaciones.fecha BETWEEN ('2022-09-01') AND ('2022-09-30')
+GROUP BY fecha_reservacion_operaciones.id_edificio;
