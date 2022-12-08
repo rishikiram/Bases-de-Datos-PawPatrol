@@ -2,14 +2,14 @@
 SELECT DISTINCT agente.id_curso, agente.nombre, agente.apellido_paterno, agente.apellido_materno 
 FROM agente
 	INNER JOIN asignar ON(
-	agente.id_curso = asignar.id_curso)
+	agente.id_curso = asignar.id_curso);
 
 -- Consulta 2: El nombre de los agentes, id y a que edificio pertenecen de todos aquellos que su calificación sea mayor a 8.
 SELECT nombre,  agente.apellido_paterno, agente.apellido_materno, agente.id_empleado, agente.id_edificio
 FROM agente
 	INNER JOIN evaluar ON(
 	agente.id_empleado = evaluar.id_empleado)
-WHERE evaluar.calificacion > 8
+WHERE evaluar.calificacion > 8;
 
 -- Consulta 3: Empleados que han faltado entre el 21 de septiembre y el 6 de noviembre de 2022
 SELECT DISTINCT faltar.id_empleado, empleado.nombre, faltar.fecha
