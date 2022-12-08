@@ -1,28 +1,15 @@
 -- Consulta 1:
-SELECT a.id_empleado,
-    a.nombre,
-    a.id_edificio,
-    s.num_piso
-FROM sala_capacitacion s
-    INNER JOIN agente a ON (
-        a.num_piso = s.num_piso
-        AND a.id_edificio = s.id_edificio
-    )
-WHERE s.num_piso = 5
-    AND a.num_piso = 5;
+SELECT DISTINCT agente.id_curso, agente.nombre, agente.apellido_paterno, agente.apellido_materno 
+FROM agente
+	INNER JOIN asignar ON(
+	agente.id_curso = asignar.id_curso)
 
 -- Consulta 2:
-SELECT a.id_empleado,
-    a.nombre,
-    a.id_edificio,
-    s.num_piso
-FROM sala_capacitacion s
-    INNER JOIN entrenador a ON (
-        a.num_piso = s.num_piso
-        AND a.id_edificio = s.id_edificio
-    )
-WHERE s.num_piso = 5
-    AND a.num_piso = 5;
+SELECT nombre,  agente.apellido_paterno, agente.apellido_materno, agente.id_empleado, agente.id_edificio
+FROM agente
+	INNER JOIN evaluar ON(
+	agente.id_empleado = evaluar.id_empleado)
+WHERE evaluar.calificacion > 8
 
 -- Consulta 3: Empleados que han faltado entre el 21 de septiembre y el 6 de noviembre de 2022
 SELECT DISTINCT faltar.id_empleado, empleado.nombre, faltar.fecha
