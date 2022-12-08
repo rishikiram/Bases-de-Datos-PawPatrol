@@ -148,3 +148,21 @@ edad_promedio_entrenadores AS (
 SELECT *
 FROM edad_promedio_agentes
     CROSS JOIN edad_promedio_entrenadores;
+
+-- Consulta 10
+-- El nombre de los 5 agentes que mas han faltado
+SELECT faltar.id_empleado, empleado.nombre, COUNT(*)
+FROM faltar INNER JOIN empleado
+ON faltar.id_empleado = empleado.id_empleado
+GROUP BY faltar.id_empleado, empleado.nombre
+ORDER BY COUNT(*) DESC LIMIT 5;
+
+-- Consulta 11
+-- El porcentaje de cursos en linea
+SELECT 100.0 * COUNT(CASE WHEN modalidad LIKE 'online'
+				   THEN 1 ELSE NULL END) / COUNT(*) as porcentaje_cursos_online
+FROM curso;
+
+-- Consulta 12
+-- Calificacion promedio de los cursos tomados por los agentes
+SELECT AVG(calificacion) as promedio FROM evaluar;
