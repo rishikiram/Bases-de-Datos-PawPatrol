@@ -39,7 +39,7 @@ INNER JOIN sala ON(
     sala.num_sala  = lo.num_sala AND
     sala.num_piso = lo.num_piso  AND
     sala.id_edificio = lo.id_edificio)
-WHERE emp.id_empleado = 13 and fro.fecha BETWEEN '2022-01-01' AND '2022-12-31';
+WHERE emp.id_empleado = 13 AND fro.fecha BETWEEN '2022-01-01' AND '2022-12-31';
 
 -- Consulta 6: Nombre completo de los agentes que sacaron la calificación de 10 en algun curso presencial 
 SELECT evaluar.calificacion,
@@ -76,7 +76,7 @@ costos_sobre_promedio AS(
         costo,
         costo / costo_promedio AS porcentaje_de_costo_promedio
     FROM sala_capacitacion
-        CROSS JOIN precio_promedio    
+        CROSS JOIN precio_promedio
 )
 (
     SELECT *
@@ -169,8 +169,11 @@ SELECT AVG(calificacion) as promedio FROM evaluar;
 -- El total recaudado de todas las salas de operaciones en el tercer trimestre del año
 WITH recaudado_trimestre AS(
     SELECT fecha_reservacion_operaciones.id_reservacion_operaciones, fecha_reservacion_operaciones.num_sala, fecha_reservacion_operaciones.num_piso, fecha_reservacion_operaciones.id_edificio, fecha_reservacion_operaciones.fecha, sala_operacion.costo
-    FROM fecha_reservacion_operaciones INNER JOIN sala_operacion ON sala_operacion.num_sala = fecha_reservacion_operaciones.num_sala AND sala_operacion.num_piso = fecha_reservacion_operaciones.num_piso AND sala_operacion.id_edificio = fecha_reservacion_operaciones.id_edificio
-    WHERE fecha_reservacion_operaciones.fecha 
+    FROM fecha_reservacion_operaciones INNER JOIN sala_operacion ON
+      sala_operacion.num_sala = fecha_reservacion_operaciones.num_sala AND
+      sala_operacion.num_piso = fecha_reservacion_operaciones.num_piso AND
+      sala_operacion.id_edificio = fecha_reservacion_operaciones.id_edificio
+    WHERE fecha_reservacion_operaciones.fecha
     BETWEEN ('2022-07-01') AND ('2022-09-30')
 )
 SELECT SUM(recaudado_trimestre.costo) AS total_recaudado_tercer_trimestre
