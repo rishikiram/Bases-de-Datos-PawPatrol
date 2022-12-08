@@ -1,5 +1,5 @@
 -- Consulta 1:
-SELECT DISTINCT agente.id_curso, agente.nombre, agente.apellido_paterno, agente.apellido_materno 
+SELECT DISTINCT agente.id_curso, agente.nombre, agente.apellido_paterno, agente.apellido_materno
 FROM agente
 	INNER JOIN asignar ON(
 	agente.id_curso = asignar.id_curso)
@@ -39,19 +39,20 @@ INNER JOIN sala ON(
     sala.num_sala  = lo.num_sala AND
     sala.num_piso = lo.num_piso  AND
     sala.id_edificio = lo.id_edificio)
-WHERE emp.id_empleado = 13 and fro.fecha BETWEEN '2022-01-01' AND '2022-12-31';
+WHERE emp.id_empleado = 13 AND fro.fecha BETWEEN '2022-01-01' AND '2022-12-31';
 
--- Consulta 6: Nombre completo de los agentes que sacaron la calificación de 10 en algun curso presencial 
-SELECT evaluar.calificacion, agente.nombre , agente.apellido_paterno , 
+-- Consulta 6: Nombre completo de los agentes que sacaron la calificación de 10 en algun curso presencial
+SELECT evaluar.calificacion, agente.nombre , agente.apellido_paterno ,
 	agente.apellido_materno, curso.modalidad
-FROM evaluar INNER JOIN agente ON agente.id_empleado = evaluar.id_empleado 
-	INNER JOIN curso ON curso.id_curso = agente.id_curso 
-WHERE evaluar.calificacion = '10' and curso.modalidad = 'presencial';
+FROM evaluar INNER JOIN agente ON agente.id_empleado = evaluar.id_empleado
+	INNER JOIN curso ON curso.id_curso = agente.id_curso
+WHERE evaluar.calificacion = '10' AND curso.modalidad = 'presencial';
 
 -- Consulta 7: ID del empleado, nombre del programa y fechas en las que faltaron los agentes con id 10 al 20
 SELECT faltar.id_empleado, programa_curso.nombre, faltar.fecha
-FROM faltar INNER JOIN curso ON curso.id_curso = faltar.id_curso 
-	INNER JOIN programa_curso ON programa_curso.id_programa_curso = curso.id_programa_curso
+FROM faltar INNER JOIN curso ON curso.id_curso = faltar.id_curso
+	INNER JOIN programa_curso
+  ON programa_curso.id_programa_curso = curso.id_programa_curso
 WHERE faltar.id_empleado BETWEEN '10' AND '20';
 
 
@@ -67,7 +68,7 @@ costos_sobre_promedio AS(
         costo,
         costo / costo_promedio AS porcentaje_de_costo_promedio
     FROM sala_capacitacion
-        CROSS JOIN precio_promedio    
+        CROSS JOIN precio_promedio
 )
 (
     SELECT *
@@ -158,8 +159,11 @@ SELECT AVG(calificacion) as promedio FROM evaluar;
 -- El total recaudado de todas las salas de operaciones en el tercer trimestre del año
 WITH recaudado_trimestre AS(
     SELECT fecha_reservacion_operaciones.id_reservacion_operaciones, fecha_reservacion_operaciones.num_sala, fecha_reservacion_operaciones.num_piso, fecha_reservacion_operaciones.id_edificio, fecha_reservacion_operaciones.fecha, sala_operacion.costo
-    FROM fecha_reservacion_operaciones INNER JOIN sala_operacion ON sala_operacion.num_sala = fecha_reservacion_operaciones.num_sala AND sala_operacion.num_piso = fecha_reservacion_operaciones.num_piso AND sala_operacion.id_edificio = fecha_reservacion_operaciones.id_edificio
-    WHERE fecha_reservacion_operaciones.fecha 
+    FROM fecha_reservacion_operaciones INNER JOIN sala_operacion ON
+      sala_operacion.num_sala = fecha_reservacion_operaciones.num_sala AND
+      sala_operacion.num_piso = fecha_reservacion_operaciones.num_piso AND
+      sala_operacion.id_edificio = fecha_reservacion_operaciones.id_edificio
+    WHERE fecha_reservacion_operaciones.fecha
     BETWEEN ('2022-07-01') AND ('2022-09-30')
 )
 SELECT SUM(recaudado_trimestre.costo) AS total_recaudado_tercer_trimestre
@@ -169,7 +173,10 @@ FROM recaudado_trimestre
 -- El total recaudado de las salas de operaciones en el año 2022 por edificio
 WITH salas_reservadas_anual AS(
     SELECT fecha_reservacion_operaciones.id_reservacion_operaciones, fecha_reservacion_operaciones.num_sala, fecha_reservacion_operaciones.num_piso, fecha_reservacion_operaciones.id_edificio, fecha_reservacion_operaciones.fecha, sala_operacion.costo
-    FROM fecha_reservacion_operaciones INNER JOIN sala_operacion ON sala_operacion.num_sala = fecha_reservacion_operaciones.num_sala AND sala_operacion.num_piso = fecha_reservacion_operaciones.num_piso AND sala_operacion.id_edificio = fecha_reservacion_operaciones.id_edificio
+    FROM fecha_reservacion_operaciones INNER JOIN sala_operacion ON
+      sala_operacion.num_sala = fecha_reservacion_operaciones.num_sala AND
+      sala_operacion.num_piso = fecha_reservacion_operaciones.num_piso AND
+      sala_operacion.id_edificio = fecha_reservacion_operaciones.id_edificio
     WHERE fecha_reservacion_operaciones.fecha BETWEEN ('2022-09-01') AND ('2022-09-30')
     ),
     recaudado_edificio1 AS(
@@ -198,8 +205,8 @@ WITH salas_reservadas_anual AS(
         WHERE salas_reservadas_anual.id_edificio = 5
     )
 SELECT *
-FROM recaudado_edificio1 
-    CROSS JOIN recaudado_edificio2 
+FROM recaudado_edificio1
+    CROSS JOIN recaudado_edificio2
     CROSS JOIN recaudado_edificio3
     CROSS JOIN recaudado_edificio4
     CROSS JOIN recaudado_edificio5
