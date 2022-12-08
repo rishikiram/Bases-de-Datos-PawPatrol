@@ -31,7 +31,7 @@ FROM faltar
 	faltar.id_empleado = empleado.id_empleado)
 WHERE fecha BETWEEN '2022-09-21' AND '2022-11-06';
 
--- Consulta 3: Todas los estaciones con sistema operativo 'Linux' y con un mouse
+-- Consulta 4: Todas los estaciones con sistema operativo 'Linux' y con un mouse
 SELECT est.num_estacion, est.num_sala, est.num_piso, est.id_edificio, est.sistema_operativo, acc.tipo
 FROM estacion est
 	INNER JOIN accesorio acc ON(
@@ -42,7 +42,7 @@ FROM estacion est
 WHERE est.sistema_operativo = 'Linux' AND
   acc.tipo SIMILAR TO '%[Mm](OUSE|ouse)%';
 
--- Consulta 4: Todos los dias que trabajo en operaciones el empleado numero 13 en 2022 y el costo por dia
+-- Consulta 5: Todos los dias que trabajo en operaciones el empleado numero 13 en 2022 y el costo por dia
 SELECT emp.id_empleado, fro.fecha, sala.costo
 FROM empleado emp INNER JOIN laborar_operaciones lo ON
 emp.id_empleado = lo.id_empleado
@@ -54,21 +54,21 @@ INNER JOIN sala ON(
     sala.id_edificio = lo.id_edificio)
 WHERE emp.id_empleado = 13 and fro.fecha BETWEEN '2022-01-01' AND '2022-12-31';
 
--- Consulta 5: Nombre completo de los agentes que sacaron la calificación de 10 en algun curso presencial 
+-- Consulta 6: Nombre completo de los agentes que sacaron la calificación de 10 en algun curso presencial 
 SELECT evaluar.calificacion, agente.nombre , agente.apellido_paterno , 
 	agente.apellido_materno, curso.modalidad
 FROM evaluar INNER JOIN agente ON agente.id_empleado = evaluar.id_empleado 
 	INNER JOIN curso ON curso.id_curso = agente.id_curso 
 WHERE evaluar.calificacion = '10' and curso.modalidad = 'presencial';
 
--- Consulta 6: ID del empleado, nombre del programa y fechas en las que faltaron los agentes con id 10 al 20
+-- Consulta 7: ID del empleado, nombre del programa y fechas en las que faltaron los agentes con id 10 al 20
 SELECT faltar.id_empleado, programa_curso.nombre, faltar.fecha
 FROM faltar INNER JOIN curso ON curso.id_curso = faltar.id_curso 
 	INNER JOIN programa_curso ON programa_curso.id_programa_curso = curso.id_programa_curso
 WHERE faltar.id_empleado BETWEEN '10' AND '20';
 
 
--- Consulta 7: Las 5 salas de capacitación más caras  y las 5 salas de capacitación más baratas así como lo que cuestan en términos del costo promedio de todas las salas de capacitación
+-- Consulta 8: Las 5 salas de capacitación más caras  y las 5 salas de capacitación más baratas así como lo que cuestan en términos del costo promedio de todas las salas de capacitación
 WITH precio_promedio AS(
     SELECT AVG(costo) AS costo_promedio
     FROM sala_capacitacion
@@ -97,7 +97,7 @@ UNION
 )
 ORDER BY costo DESC;
 
--- Consulta 8: Tiempo promedio por semana de los 5 cursos con más horas de trabajo por semana
+-- Consulta 9: Tiempo promedio por semana de los 5 cursos con más horas de trabajo por semana
 WITH bloques_horario AS (
     SELECT id_curso,
         id_programa_curso,
@@ -136,7 +136,7 @@ GROUP BY id_curso,
 ORDER BY duracion_semanal_promedio DESC
 LIMIT 5;
 
--- Consulta 9: Edad promedio de los entrenadores y de los agentes registrados al 7 de diciembre de 2022
+-- Consulta 10: Edad promedio de los entrenadores y de los agentes registrados al 7 de diciembre de 2022
 WITH edad_promedio_agentes AS (
     SELECT AVG(age('2022-12-07'::date, fecha_nacimiento)) AS edad_promedio_agentes
     FROM agente
@@ -149,7 +149,7 @@ SELECT *
 FROM edad_promedio_agentes
     CROSS JOIN edad_promedio_entrenadores;
 
--- Consulta 10
+-- Consulta 11
 -- El nombre de los 5 agentes que mas han faltado
 SELECT faltar.id_empleado, empleado.nombre, COUNT(*)
 FROM faltar INNER JOIN empleado
@@ -157,12 +157,12 @@ ON faltar.id_empleado = empleado.id_empleado
 GROUP BY faltar.id_empleado, empleado.nombre
 ORDER BY COUNT(*) DESC LIMIT 5;
 
--- Consulta 11
+-- Consulta 12
 -- El porcentaje de cursos en linea
 SELECT 100.0 * COUNT(CASE WHEN modalidad LIKE 'online'
 				   THEN 1 ELSE NULL END) / COUNT(*) as porcentaje_cursos_online
 FROM curso;
 
--- Consulta 12
+-- Consulta 13
 -- Calificacion promedio de los cursos tomados por los agentes
 SELECT AVG(calificacion) as promedio FROM evaluar;
